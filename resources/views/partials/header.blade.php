@@ -32,7 +32,7 @@
 
             <div class="ms-auto flex items-center gap-2">
                 <button type="button" data-theme-toggle class="icon-btn" aria-label="تغییر تم" aria-pressed="false">
-                    <svg class="h-[1.15em] w-[1.15em]" data-theme-icon aria-hidden="true"><use href="{{ asset('icons.svg') }}#i-moon"></use></svg>
+                    <svg class="h-[1.15em] w-[1.15em]" data-theme-icon aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="{{ asset('icons.svg') }}#i-moon"></use></svg>
                 </button>
 
                 <x-ui.button :href="route('contact.show')" variant="primary" size="sm" class="hidden md:inline-flex">تماس با من</x-ui.button>

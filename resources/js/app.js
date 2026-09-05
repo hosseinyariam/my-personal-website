@@ -14,6 +14,11 @@ const toFa = (v) => String(v).replace(/\d/g, (d) => FA_DIGITS[d]);
 
 /* ── سیستم توست ─────────────────────────────────────────── */
 
+// <use> صفاتِ نمایشیِ فایل اسپرایت را به ارث نمی‌برد؛ روی هر svg تکرار می‌شود.
+const STROKE_ATTRS =
+    'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+
 const TOAST_ICONS = { success: 'circle-check', error: 'alert-circle', info: 'info-circle' };
 const TOAST_TILES = { success: 'tile-brand', error: 'tile-deep', info: 'tile-line' };
 
@@ -28,7 +33,7 @@ function toast(type = 'info', title = '', message = '') {
 
     const tile = document.createElement('span');
     tile.className = `icon-tile ${TOAST_TILES[type] ?? TOAST_TILES.info} h-9 w-9 rounded-xl text-base`;
-    tile.innerHTML = `<svg class="h-5 w-5" aria-hidden="true"><use href="/icons.svg#i-${TOAST_ICONS[type] ?? TOAST_ICONS.info}"></use></svg>`;
+    tile.innerHTML = `<svg class="h-5 w-5" ${STROKE_ATTRS}><use href="/icons.svg#i-${TOAST_ICONS[type] ?? TOAST_ICONS.info}"></use></svg>`;
 
     const text = document.createElement('div');
     text.className = 'min-w-0 flex-1';
@@ -48,7 +53,7 @@ function toast(type = 'info', title = '', message = '') {
     const close = document.createElement('button');
     close.className = 'mt-0.5 text-muted transition-colors hover:text-heading';
     close.setAttribute('aria-label', 'بستن');
-    close.innerHTML = '<svg class="h-4 w-4" aria-hidden="true"><use href="/icons.svg#i-x"></use></svg>';
+    close.innerHTML = `<svg class="h-4 w-4" ${STROKE_ATTRS}><use href="/icons.svg#i-x"></use></svg>`;
 
     const bar = document.createElement('span');
     bar.className = 'absolute bottom-0 start-0 h-0.5 bg-brand-500/70 animate-bar';

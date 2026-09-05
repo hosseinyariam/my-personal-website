@@ -4,7 +4,15 @@
     'live' => false,
 ])
 
-<span {{ $attributes->merge(['class' => "badge badge-{$variant}"]) }}>
+@php
+    $variants = [
+        'brand' => 'badge-brand',
+        'line' => 'badge-line',
+        'deep' => 'badge-deep',
+    ];
+@endphp
+
+<span {{ $attributes->merge(['class' => 'badge '.($variants[$variant] ?? $variants['brand'])]) }}>
     @if ($live)
         <span class="live-dot"></span>
     @elseif ($icon)

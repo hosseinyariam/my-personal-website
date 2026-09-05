@@ -31,10 +31,17 @@
                 <div>
                     <p class="mb-3 text-[11px] font-bold text-muted">برند</p>
                     <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-                        @foreach (['700' => '#B23417', '500' => '#F2542D', '300' => '#FF9F6B', '200' => '#FFC19E', '100' => '#FFE3D1', '50' => '#FFF4ED'] as $step => $hex)
+                        @foreach ([
+                            'brand · 700' => ['#B23417', 'bg-brand-700'],
+                            'brand · 500' => ['#F2542D', 'bg-brand-500'],
+                            'brand · 300' => ['#FF9F6B', 'bg-brand-300'],
+                            'brand · 200' => ['#FFC19E', 'bg-brand-200'],
+                            'brand · 100' => ['#FFE3D1', 'bg-brand-100'],
+                            'brand · 50' => ['#FFF4ED', 'bg-brand-50'],
+                        ] as $name => [$hex, $swatch])
                             <button type="button" class="card card-io p-3 text-start" data-copy="{{ $hex }}">
-                                <span class="block h-14 rounded-xl border border-line bg-brand-{{ $step }}"></span>
-                                <span class="mt-3 block text-xs font-bold text-heading">brand · {{ $step }}</span>
+                                <span class="block h-14 rounded-xl border border-line {{ $swatch }}"></span>
+                                <span class="mt-3 block text-xs font-bold text-heading">{{ $name }}</span>
                                 <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">{{ $hex }}</span>
                             </button>
                         @endforeach
@@ -43,9 +50,14 @@
                 <div>
                     <p class="mb-3 text-[11px] font-bold text-muted">سطح‌ها — نقش معنایی (با تم عوض می‌شوند)</p>
                     <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                        @foreach (['canvas' => 'بومِ صفحه', 'surface' => 'سطحِ کارت', 'line' => 'خط و حاشیه', 'accent' => 'لهجه'] as $token => $role)
+                        @foreach ([
+                            'canvas' => ['بومِ صفحه', 'bg-canvas'],
+                            'surface' => ['سطحِ کارت', 'bg-surface'],
+                            'line' => ['خط و حاشیه', 'bg-line'],
+                            'accent' => ['لهجه', 'bg-accent'],
+                        ] as $token => [$role, $swatch])
                             <div class="card p-3">
-                                <span class="block h-14 rounded-xl border border-line bg-{{ $token }}"></span>
+                                <span class="block h-14 rounded-xl border border-line {{ $swatch }}"></span>
                                 <span class="mt-3 block text-xs font-bold text-heading">{{ $token }}</span>
                                 <span class="mt-0.5 block text-[10px] text-muted">{{ $role }}</span>
                             </div>

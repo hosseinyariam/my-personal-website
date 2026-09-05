@@ -7,7 +7,21 @@
 ])
 
 @php
-    $classes = trim("btn btn-{$variant} btn-{$size}");
+    // نام کلاس‌ها عمداً به‌صورت رشته‌ی کامل نوشته شده‌اند، نه با درون‌یابی:
+    // اسکنر Tailwind فقط رشته‌های کاملِ موجود در فایل را نگه می‌دارد.
+    $variants = [
+        'primary' => 'btn-primary',
+        'glass' => 'btn-glass',
+        'ghost' => 'btn-ghost',
+        'danger' => 'btn-danger',
+    ];
+    $sizes = [
+        'sm' => 'btn-sm',
+        'md' => 'btn-md',
+        'lg' => 'btn-lg',
+    ];
+
+    $classes = 'btn '.($variants[$variant] ?? $variants['primary']).' '.($sizes[$size] ?? $sizes['md']);
     $tag = $href ? 'a' : 'button';
 @endphp
 
