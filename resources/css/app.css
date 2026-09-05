@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ══════════════════════════════════════════════════════════════════
+   ۰. فونت‌های خودمیزبان — بدون CDN (فاز ۱ سند PRD)
+   Vazirmatn به‌صورت متغیر (یک فایل، وزن ۱۰۰ تا ۹۰۰)؛
+   JetBrains Mono زیرمجموعه‌سازی‌شده به گلیف‌های واقعاً استفاده‌شده.
+   ══════════════════════════════════════════════════════════════════ */
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('/fonts/vazirmatn-var.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('/fonts/jetbrains-mono-400.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('/fonts/jetbrains-mono-600.woff2') format('woff2');
+    font-weight: 600 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ۱. توکن‌های معنایی — تم روشن (پایه) و تاریک (مشتق از همان پالت)
+   دارک‌مود دقیقاً ۸ متغیر است؛ هیچ کامپوننتی دوباره نوشته نمی‌شود.
+   ══════════════════════════════════════════════════════════════════ */
+@layer base {
+    :root {
+        --c-canvas: 246 245 243;    /* #F6F5F3 */
+        --c-surface: 255 255 255;   /* #FFFFFF */
+        --c-line: 232 230 226;      /* #E8E6E2 */
+        --c-heading: 22 24 29;      /* Ink 900 */
+        --c-body: 107 111 121;      /* Ink 500 */
+        --c-muted: 135 139 149;     /* Ink 400 */
+        --c-accent: 242 84 45;      /* Brand 500 */
+        --c-accent-deep: 178 52 23; /* Brand 700 */
+        color-scheme: light;
+    }
+
+    html.dark {
+        --c-canvas: 14 16 20;         /* Ink 950 */
+        --c-surface: 22 24 29;        /* Ink 900 */
+        --c-line: 42 46 55;           /* Ink 800 */
+        --c-heading: 243 244 246;
+        --c-body: 166 170 180;
+        --c-muted: 122 127 138;
+        --c-accent: 255 159 107;      /* Brand 300 */
+        --c-accent-deep: 255 193 158; /* Brand 200 */
+        color-scheme: dark;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* دسترس‌پذیری: احترام به کاهش حرکت (WCAG 2.1 — 2.3.3) */
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+        }
+    }
+
+    /* گذارِ نرمِ تعویض تم — فقط در لحظه‌ی سوییچ فعال می‌شود */
+    .theme-anim *,
+    .theme-anim *::before,
+    .theme-anim *::after {
+        transition-property: color, background-color, border-color, fill, stroke, box-shadow !important;
+        transition-duration: 0.4s !important;
+        transition-timing-function: ease !important;
+    }
+
+    /* گِرِینِ کاغذی بسیار ملایم — واقعی‌تر شدن سطوح شیشه‌ای */
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        pointer-events: none;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+    }
+
+    /* پرش‌به‌محتوا — الزام ناوبری کیبورد */
+    .skip-link {
+        @apply sr-only;
+    }
+    .skip-link:focus {
+        @apply not-sr-only fixed inset-x-0 top-4 z-[120] mx-auto w-max rounded-2xl border border-line bg-surface px-5 py-3 text-sm font-bold text-heading shadow-lift;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ۲. کامپوننت‌ها — نگاشت ۱:۱ با جدول ۸.۲ سند PRD.
+      فقط @apply روی توکن‌ها؛ هیچ مقدار رنگ/سایه‌ی خام.
+   ══════════════════════════════════════════════════════════════════ */
+@layer components {
+    /* ── سطح‌های شیشه‌ای ─────────────────────────── */
+    .glass    { @apply border border-line bg-surface/70 shadow-glass backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]; }
+    .card     { @apply glass rounded-3xl; }
+    .card-io  { @apply transition-all duration-300 hover:-translate-y-1 hover:border-brand-300/60 hover:bg-surface hover:shadow-lift dark:hover:border-brand-300/30 dark:hover:bg-white/[0.09]; }
+    .panel    { @apply rounded-2xl border border-line/80 bg-canvas/60 dark:border-white/[0.07] dark:bg-white/[0.04]; }
+    .divider  { @apply h-px w-full bg-line; }
+
+    /* ── دکمه‌ها ──────────────────────────────────── */
+    .btn         { @apply inline-flex cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap rounded-2xl font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40; }
+    .btn-primary { @apply bg-brand-500 text-white shadow-glow hover:bg-brand-600 dark:hover:bg-brand-400; }
+    .btn-glass   { @apply border border-line bg-surface/70 text-heading shadow-soft backdrop-blur-xl hover:border-brand-300/70 dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:hover:border-brand-300/40; }
+    .btn-ghost   { @apply text-body hover:bg-ink-900/[0.06] hover:text-heading dark:hover:bg-white/10 dark:hover:text-white; }
+    .btn-danger  { @apply border border-brand-700/25 bg-brand-100 text-brand-700 hover:border-brand-500 hover:bg-brand-500 hover:text-white dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300 dark:hover:border-brand-500 dark:hover:bg-brand-500 dark:hover:text-white; }
+    .btn-sm      { @apply px-3.5 py-2 text-xs; }
+    .btn-md      { @apply px-5 py-2.5 text-sm; }
+    .btn-lg      { @apply px-7 py-3.5 text-base; }
+    .icon-btn    { @apply grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-xl border border-line bg-surface/70 text-base text-body shadow-soft backdrop-blur-xl transition-all duration-200 hover:border-brand-300/60 hover:text-accent-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 active:scale-95 dark:border-white/10 dark:bg-white/[0.06] dark:text-ink-300 dark:hover:border-brand-300/40 dark:hover:text-brand-300; }
+
+    /* ── نشان‌ها، چیپ‌ها و تگ‌ها ─────────────────── */
+    .badge       { @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold leading-5; }
+    .badge-brand { @apply border border-brand-300/50 bg-brand-100 text-brand-700 dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300; }
+    .badge-line  { @apply border border-line bg-surface text-body dark:border-white/10 dark:bg-white/[0.07] dark:text-ink-300; }
+    .badge-deep  { @apply bg-brand-700 text-brand-100 dark:bg-brand-500 dark:text-white; }
+    .chip        { @apply inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-xs font-medium text-body transition-colors duration-200 hover:border-brand-400/60 hover:text-brand-700 dark:border-white/10 dark:bg-white/[0.05] dark:text-ink-300 dark:hover:border-brand-300/40 dark:hover:text-brand-300; }
+    .chip.is-on  { @apply border-brand-500/50 bg-brand-100 text-brand-700 dark:border-brand-300/40 dark:bg-brand-500/15 dark:text-brand-300; }
+    .chip-static { @apply inline-flex items-center gap-1.5 rounded-full border border-line/80 bg-canvas/70 px-3 py-1.5 text-xs text-body dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-ink-300; }
+    .tag-brand   { @apply inline-flex items-center gap-1.5 rounded-full border border-brand-300/50 bg-brand-100 px-3 py-1.5 text-xs font-bold text-brand-700 dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300; }
+    .recipe      { @apply inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-line/70 bg-ink-900/[0.04] px-2.5 py-1 font-mono text-[10px] text-muted transition-colors duration-200 hover:border-brand-400/50 hover:text-accent-deep dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-ink-400 dark:hover:text-brand-300; }
+
+    /* ── فرم ──────────────────────────────────────── */
+    .label       { @apply mb-2 block text-xs font-bold text-heading; }
+    .input       { @apply w-full rounded-2xl border border-line bg-surface/80 px-4 py-3 text-sm text-heading shadow-soft backdrop-blur-md transition-all duration-200 placeholder:text-muted focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-500/15 dark:border-white/10 dark:bg-white/[0.05] dark:text-white dark:placeholder:text-ink-400; }
+    .input-error { @apply border-brand-500/70 focus:border-brand-500/70 focus:ring-brand-500/20; }
+    .hint        { @apply mt-2 text-[11px] text-muted; }
+    .hint-error  { @apply mt-2 flex items-center gap-1 text-[11px] font-bold text-accent-deep; }
+    .switch      { @apply relative h-6 w-11 shrink-0 cursor-pointer rounded-full border border-line bg-ink-900/[0.07] transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 dark:border-white/10 dark:bg-white/10; }
+    .switch .knob{ @apply absolute start-1 top-1 h-4 w-4 rounded-full bg-surface shadow-soft transition-all duration-300 dark:bg-white; }
+    .switch.is-on{ @apply border-brand-500 bg-brand-500; }
+    .switch.is-on .knob { @apply -translate-x-5 bg-white; }
+
+    /* ── متن و ساختار ─────────────────────────────── */
+    .kicker { @apply text-[11px] font-black text-accent-deep dark:text-accent; }
+    .route  { @apply inline-flex items-center gap-1.5 rounded-lg border border-line/70 bg-ink-900/[0.04] px-2.5 py-1 font-mono text-[10px] text-muted dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-ink-400; }
+
+    /* ── ناوبری ───────────────────────────────────── */
+    .nav-link    { @apply rounded-xl px-3.5 py-2 text-[13px] font-semibold text-body transition-colors duration-200 hover:bg-ink-900/[0.05] hover:text-heading dark:hover:bg-white/10 dark:hover:text-white; }
+    .nav-link.is-active { @apply bg-brand-100 font-bold text-brand-700 dark:bg-brand-500/15 dark:text-brand-300; }
+    .tab         { @apply cursor-pointer rounded-xl px-4 py-2 text-[13px] font-bold text-body transition-all duration-200 hover:text-heading dark:text-ink-300 dark:hover:text-white; }
+    .tab.is-active { @apply border border-line bg-surface text-heading shadow-soft dark:border-white/10 dark:bg-white/10 dark:text-white dark:shadow-none; }
+    .page-btn    { @apply grid h-9 w-9 cursor-pointer place-items-center rounded-xl border border-line bg-surface text-xs font-bold text-body shadow-soft transition-all duration-200 hover:border-brand-300/60 hover:text-heading dark:border-white/10 dark:bg-white/[0.05] dark:text-ink-300 dark:hover:border-brand-300/40 dark:hover:text-white; }
+    .page-btn.is-active { @apply border-brand-500/50 bg-brand-100 text-brand-700 dark:border-brand-300/40 dark:bg-brand-500/15 dark:text-brand-300; }
+    .page-btn.is-disabled { @apply pointer-events-none opacity-40; }
+    .crumb       { @apply text-[13px] font-semibold text-body transition-colors duration-200 hover:text-heading dark:hover:text-white; }
+
+    /* ── کاشی آیکون، آواتار، نقطه‌ی زنده ──────────── */
+    .icon-tile  { @apply grid h-11 w-11 shrink-0 place-items-center rounded-2xl border text-lg; }
+    .tile-brand { @apply border-brand-300/40 bg-brand-100 text-brand-600 dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300; }
+    .tile-line  { @apply border-line bg-canvas text-body dark:border-white/10 dark:bg-white/[0.06] dark:text-ink-300; }
+    .tile-ink   { @apply border-ink-900 bg-ink-900 text-white dark:border-white/25 dark:bg-white dark:text-ink-900; }
+    .tile-deep  { @apply border-brand-700/30 bg-brand-700 text-white dark:border-brand-400/40 dark:bg-brand-500; }
+    .avatar     { @apply grid shrink-0 place-items-center overflow-hidden rounded-2xl border border-brand-300/40 bg-brand-100 font-black text-brand-700 dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300; }
+    .live-dot   { @apply relative flex h-2 w-2; }
+    .live-dot::before { @apply absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-60; content: ''; }
+    .live-dot::after  { @apply relative inline-flex h-2 w-2 rounded-full bg-brand-500; content: ''; }
+
+    /* ── هشدار، تایم‌لاین، لینک ───────────────────── */
+    .alert       { @apply flex items-start gap-3 rounded-2xl border p-4; }
+    .alert-brand { @apply border-brand-300/60 bg-brand-100/60 dark:border-brand-300/25 dark:bg-brand-500/10; }
+    .alert-deep  { @apply border-brand-500/40 bg-brand-500/10 dark:border-brand-400/30 dark:bg-brand-500/15; }
+    .alert-line  { @apply border-line bg-surface/70 dark:border-white/10 dark:bg-white/[0.04]; }
+    .timeline    { @apply border-s-2 border-line dark:border-white/10; }
+    .tl-item     { @apply relative ps-7; }
+    .tl-dot      { @apply absolute -start-2 top-1 h-3.5 w-3.5 rounded-full border-[3px] border-surface bg-brand-500 shadow-glow dark:border-ink-900; }
+    .link-arrow  { @apply inline-flex cursor-pointer items-center gap-1.5 text-sm font-bold text-accent transition-colors duration-200 hover:text-accent-deep; }
+
+
+    /* ── محتوای رندرشده‌ی پست (مارک‌داون) ──────────── */
+    /* تایپوگرافی تک‌پست مطابق کیت؛ بلوک کد همیشه تیره می‌ماند. */
+    .post-content { @apply text-sm leading-8 text-body; }
+    .post-content > * + * { @apply mt-6; }
+    .post-content h2 { @apply mt-10 text-h2 text-heading; }
+    .post-content h3 { @apply mt-8 text-h3 text-heading; }
+    .post-content h4 { @apply mt-6 text-sm font-extrabold text-heading; }
+    .post-content a { @apply font-bold text-accent underline-offset-4 transition-colors hover:text-accent-deep hover:underline; }
+    .post-content strong { @apply font-extrabold text-heading; }
+    .post-content ul { @apply space-y-2.5 ps-1; }
+    .post-content ol { @apply list-decimal space-y-2.5 ps-6; }
+    .post-content ul > li { @apply relative ps-6; }
+    .post-content ul > li::before { @apply absolute start-1 top-3 h-1.5 w-1.5 rounded-full bg-brand-500; content: ''; }
+    .post-content blockquote { @apply border-s-2 border-brand-400 ps-5 text-h3 text-heading; }
+    .post-content img { @apply rounded-2xl border border-line; }
+    .post-content hr { @apply my-8 h-px border-0 bg-line; }
+    .post-content table { @apply w-full border-collapse overflow-hidden rounded-2xl border border-line text-[13px]; }
+    .post-content th { @apply border-b border-line bg-canvas/70 px-4 py-2.5 text-start font-bold text-heading; }
+    .post-content td { @apply border-b border-line/70 px-4 py-2.5; }
+    .post-content :not(pre) > code { @apply rounded-md border border-line/70 bg-ink-900/[0.05] px-1.5 py-0.5 font-mono text-[0.8em] text-accent-deep dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-accent; }
+    .post-content pre { @apply overflow-x-auto rounded-2xl border border-ink-800 bg-ink-950 p-4 font-mono text-xs leading-6 text-ink-100; direction: ltr; text-align: left; }
+    .post-content pre code { @apply border-0 bg-transparent p-0 text-inherit; }
+
+    /* ── اسکرول‌بار نازک ──────────────────────────── */
+    .pretty-scroll { scrollbar-width: thin; scrollbar-color: rgba(120, 120, 120, 0.4) transparent; }
+    .pretty-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .pretty-scroll::-webkit-scrollbar-track { background: transparent; }
+    .pretty-scroll::-webkit-scrollbar-thumb { background: rgba(120, 120, 120, 0.4); border-radius: 99px; }
+}

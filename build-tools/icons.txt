@@ -1,0 +1,86 @@
+# ── آیکون‌های استفاده‌شده (Tabler outline) — مرجع ساخت اسپرایت public/icons.svg
+# چیدمان و ناوبری
+menu-2
+x
+chevron-left
+chevron-right
+chevron-down
+arrow-left
+arrow-right
+arrow-up
+arrow-down
+arrow-up-right
+external-link
+search
+# تم
+moon
+sun
+# اقدام‌ها
+download
+send
+copy
+share
+check
+rss
+bell
+loader-2
+# بازخورد
+circle-check
+alert-circle
+alert-triangle
+info-circle
+point-filled
+# وضعیت پلتفرم
+tools
+flask
+archive
+# هویت و رزومه
+briefcase
+rocket
+article
+book
+school
+award
+user
+id-badge-2
+mail
+map-pin
+clock
+calendar-event
+# پلتفرم و فنی
+color-swatch
+chart-bar
+package
+target
+list-check
+pencil
+code
+database
+terminal-2
+photo
+plant-2
+leaf
+microscope
+stethoscope
+brand-github
+brand-linkedin
+brand-telegram
+brand-x
+brand-instagram
+brand-youtube
+world
+phone
+# حالت خالی و سایر
+notes
+folder-open
+inbox
+layout-grid
+layout-dashboard
+palette
+settings
+shield-lock
+heart
+star
+home
+file-cv
+messages
