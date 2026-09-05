@@ -39,8 +39,14 @@
         --c-surface: 255 255 255;   /* #FFFFFF */
         --c-line: 232 230 226;      /* #E8E6E2 */
         --c-heading: 22 24 29;      /* Ink 900 */
-        --c-body: 107 111 121;      /* Ink 500 */
-        --c-muted: 135 139 149;     /* Ink 400 */
+        /*
+         | بدنه و muted نسبت به کیت یک پله در مقیاسِ جوهر تیره‌تر شده‌اند.
+         | مقادیر اصلی (Ink 500 برای بدنه و Ink 400 برای muted) روی Canvas
+         | به‌ترتیب ۴٫۶ و ۳٫۱ کنتراست می‌دادند و متن ثانویه، معیار AA
+         | (۴٫۵:۱) را رد می‌کرد. جزئیات در D24 دفترچه‌ی تصمیم‌ها.
+         */
+        --c-body: 86 91 103;        /* Ink 600 — ۶٫۲:۱ روی Canvas */
+        --c-muted: 107 111 121;     /* Ink 500 — ۴٫۶:۱ روی Canvas */
         --c-accent: 242 84 45;      /* Brand 500 */
         --c-accent-deep: 178 52 23; /* Brand 700 */
         color-scheme: light;
@@ -52,7 +58,7 @@
         --c-line: 42 46 55;           /* Ink 800 */
         --c-heading: 243 244 246;
         --c-body: 166 170 180;
-        --c-muted: 122 127 138;
+        --c-muted: 138 143 154;     /* روشن‌تر از کیت — ۵٫۵:۱ روی Surface تیره */
         --c-accent: 255 159 107;      /* Brand 300 */
         --c-accent-deep: 255 193 158; /* Brand 200 */
         color-scheme: dark;
@@ -119,7 +125,7 @@
 
     /* ── دکمه‌ها ──────────────────────────────────── */
     .btn         { @apply inline-flex cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap rounded-2xl font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40; }
-    .btn-primary { @apply bg-brand-500 text-white shadow-glow hover:bg-brand-600 dark:hover:bg-brand-400; }
+    .btn-primary { @apply bg-brand-600 text-white shadow-glow hover:bg-brand-700 dark:bg-brand-500 dark:text-ink-950 dark:hover:bg-brand-400; }
     .btn-glass   { @apply border border-line bg-surface/70 text-heading shadow-soft backdrop-blur-xl hover:border-brand-300/70 dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:hover:border-brand-300/40; }
     .btn-ghost   { @apply text-body hover:bg-ink-900/[0.06] hover:text-heading dark:hover:bg-white/10 dark:hover:text-white; }
     .btn-danger  { @apply border border-brand-700/25 bg-brand-100 text-brand-700 hover:border-brand-500 hover:bg-brand-500 hover:text-white dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300 dark:hover:border-brand-500 dark:hover:bg-brand-500 dark:hover:text-white; }

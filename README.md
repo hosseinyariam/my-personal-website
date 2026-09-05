@@ -122,3 +122,20 @@ php artisan optimize:clear
 - [`docs/decision-log.md`](docs/decision-log.md) — گزارش تصمیم‌ها (ADR-lite)
 - [`docs/qa-checklist.md`](docs/qa-checklist.md) — چک‌لیست QA پیش از انتشار
 - [`docs/content-guide.md`](docs/content-guide.md) — راهنمای ورود محتوا از پنل
+- [`docs/launch-plan.md`](docs/launch-plan.md) — لانچ نرم، پایش ۷ روزه و خط پایه‌ی KPI
+
+---
+
+## وضعیت کیفیت
+
+| صفحه | Performance | Accessibility | Best Practices | SEO |
+|---|---|---|---|---|
+| `/` | ۹۸ | ۱۰۰ | ۱۰۰ | ۱۰۰ |
+| `/platforms` | ۹۸ | ۱۰۰ | ۱۰۰ | ۱۰۰ |
+| `/platforms/vinora` | ۹۸ | ۱۰۰ | ۱۰۰ | ۱۰۰ |
+
+Lighthouse موبایل · هدف سند: Performance ≥ ۹۰ و Accessibility ≥ ۹۵.
+
+**۷۸ تست Pest** روی معیارهای پذیرش سند: `./vendor/bin/pest`
+
+بار شبکه‌ی صفحه‌ی اصلی ≈ ۱۳۹ کیلوبایت (بودجه‌ی NFR: < ۵۰۰ کیلوبایت).

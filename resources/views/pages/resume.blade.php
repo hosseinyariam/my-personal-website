@@ -11,6 +11,7 @@
             <x-ui.card data-reveal>
                 <x-ui.empty-state
                     icon="file-cv"
+                    level="h1"
                     title="رزومه هنوز تکمیل نشده است"
                     action="تماس مستقیم"
                     :href="route('contact.show')"

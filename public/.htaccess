@@ -5,21 +5,73 @@
 
     RewriteEngine On
 
-    # Handle Authorization Header
+    # اجبار HTTPS — AutoSSL روی cPanel فعال است
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # هدر Authorization
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Handle X-XSRF-Token Header
-    RewriteCond %{HTTP:x-xsrf-token} .
-    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
-
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # ریدایرکت پوشه‌ها به مسیر بدون اسلش پایانی
+    RewriteCond %{REQUEST_FILENAME} -d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # ارسال همه‌ی درخواست‌های دیگر به فرانت‌کنترلر
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# ── فشرده‌سازی متن ────────────────────────────────────────
+# بدون این، HTML/CSS/JS بدون gzip سرو می‌شوند و Lighthouse
+# «Enable text compression» را رد می‌کند.
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE application/xml application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/xml
+    AddOutputFilterByType BROTLI_COMPRESS application/javascript application/json
+    AddOutputFilterByType BROTLI_COMPRESS image/svg+xml
+</IfModule>
+
+# ── کش دارایی‌های ایستا ───────────────────────────────────
+# فایل‌های build با هش نام‌گذاری می‌شوند، پس کش یک‌ساله بی‌خطر است.
+# HTML هرگز کش نمی‌شود تا تغییرات محتوا بلافاصله دیده شوند.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault                          "access plus 1 month"
+    ExpiresByType text/html                 "access plus 0 seconds"
+    ExpiresByType text/css                  "access plus 1 year"
+    ExpiresByType application/javascript    "access plus 1 year"
+    ExpiresByType font/woff2                "access plus 1 year"
+    ExpiresByType image/svg+xml             "access plus 1 month"
+    ExpiresByType image/webp                "access plus 1 month"
+    ExpiresByType application/xml           "access plus 1 hour"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|woff2)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    <FilesMatch "\.(svg|webp|png|jpg|jpeg|avif)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+
+    # HTML همیشه تازه — محتوا از پنل تغییر می‌کند، نه از دیپلوی
+    <FilesMatch "index\.php$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ── محافظت از فایل‌های حساس ───────────────────────────────
+<FilesMatch "^\.(env|git|htaccess)|composer\.(json|lock)$">
+    Require all denied
+</FilesMatch>
