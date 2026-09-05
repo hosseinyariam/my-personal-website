@@ -1,0 +1,32 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+/*
+ | تم پنل — همان توکن‌های UI Kit «گلس روشن».
+ | هدف: تجربه‌ی بصری یکپارچه بین سایت عمومی و پنل مدیریت (فاز ۳).
+ | رنگ primary/danger از AdminPanelProvider می‌آید؛ اینجا خاکستری‌ها به
+ | مقیاس جوهرِ کیت نگاشت می‌شوند و فونت خودمیزبان تعریف می‌گردد.
+ */
+
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('/fonts/vazirmatn-var.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --gray-50: 246 245 243;    /* Canvas #F6F5F3 */
+    --gray-100: 232 230 226;   /* Line #E8E6E2 */
+    --gray-200: 228 230 233;
+    --gray-300: 198 201 207;
+    --gray-400: 165 169 178;
+    --gray-500: 107 111 121;   /* Ink 500 — متن بدنه */
+    --gray-600: 86 91 103;
+    --gray-700: 62 67 80;
+    --gray-800: 42 46 55;      /* Ink 800 */
+    --gray-900: 22 24 29;      /* Ink 900 — تیترها */
+    --gray-950: 14 16 20;      /* Ink 950 */
+}

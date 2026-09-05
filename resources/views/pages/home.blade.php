@@ -1,4 +1,4 @@
-<x-layouts.app :description="$siteBioShort">
+<x-layouts.app :description="$siteBioShort" :schema="$schema">
     <div class="space-y-5">
 
         {{-- ── هیرو ─────────────────────────────────────────── --}}

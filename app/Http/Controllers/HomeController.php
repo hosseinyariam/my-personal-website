@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Platform;
 use App\Models\Post;
 use App\Services\Settings;
+use App\Services\StructuredData;
 use App\Support\CacheKeys;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +18,7 @@ use Illuminate\View\View;
  */
 class HomeController extends Controller
 {
-    public function __invoke(Settings $settings): View
+    public function __invoke(Settings $settings, StructuredData $schema): View
     {
         $platforms = Cache::rememberForever(
             CacheKeys::PLATFORMS_ACTIVE,
@@ -44,6 +45,7 @@ class HomeController extends Controller
             'isAvailable' => (bool) $settings->get('profile', 'is_available', false),
             // دکمه‌ی رزومه فقط وقتی فایل واقعاً روی دیسک هست (US-M1-3)
             'hasResumePdf' => $resumePdf !== null && Storage::disk('public')->exists($resumePdf),
+            'schema' => $schema->person(),
         ]);
     }
 }

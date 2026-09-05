@@ -4,6 +4,7 @@
     'canonical' => null,
     'ogImage' => null,
     'ogType' => 'website',
+    'schema' => null,
 ])
 
 <!DOCTYPE html>
@@ -25,6 +26,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('head')
+
+    {{-- داده‌ی ساخت‌یافته‌ی هر صفحه --}}
+    @isset($schema)
+        <x-ui.json-ld :data="$schema" />
+    @endisset
+
+    @include('partials.analytics')
 </head>
 
 <body id="top" class="bg-canvas font-sans text-body antialiased selection:bg-brand-100 selection:text-brand-700 dark:selection:bg-brand-500/40 dark:selection:text-white">

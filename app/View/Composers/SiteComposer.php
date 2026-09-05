@@ -46,6 +46,8 @@ final class SiteComposer
             'seoTitle' => $this->settings->get('seo', 'meta_title') ?: $this->settings->displayName(),
             'seoDescription' => $this->settings->get('seo', 'meta_description') ?: $this->settings->get('profile', 'bio_short'),
             'seoImage' => $this->settings->get('seo', 'og_image'),
+            'matomoUrl' => $this->settings->get('seo', 'matomo_url'),
+            'matomoSiteId' => $this->settings->get('seo', 'matomo_site_id'),
 
             'socialLinks' => $this->socialLinks(),
             'footerPlatforms' => $this->footerPlatforms(),

@@ -1,6 +1,7 @@
 <x-layouts.app
     title="پلتفرم‌ها"
     description="پلتفرم‌ها و محصولات نرم‌افزاریِ ساخته‌شده — با وضعیت واقعی و لینک زنده."
+    :schema="$schema"
 >
     <header class="mb-8" data-reveal>
         <x-ui.breadcrumb :items="[

@@ -14,9 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->web(append: [
-            SecurityHeaders::class,
-        ]);
+        // پشته‌ی سراسری، نه گروه web: پاسخ‌های خطا (۴۰۴/۵۰۰) توسط
+        // مدیرِ استثنا رندر می‌شوند و میان‌افزار گروه web را رد می‌کنند —
+        // بدون این، صفحات خطا بدون هدرهای امنیتی سرو می‌شدند.
+        $middleware->append(SecurityHeaders::class);
 
         // پنل پشت پراکسیِ هاست اشتراکی — تشخیص درست HTTPS
         $middleware->trustProxies(at: '*');

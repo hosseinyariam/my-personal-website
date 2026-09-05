@@ -2,6 +2,8 @@
     :title="$post->title"
     :description="$post->meta_description ?: $post->excerpt"
     og-type="article"
+    :og-image="$post->cover"
+    :schema="$schema"
 >
     <div class="space-y-5">
         <div data-reveal>

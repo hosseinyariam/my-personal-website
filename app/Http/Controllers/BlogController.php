@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Services\StructuredData;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -14,6 +15,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class BlogController extends Controller
 {
+    public function __construct(private readonly StructuredData $schema) {}
+
     public function index(): View
     {
         $posts = Post::query()
@@ -41,6 +44,14 @@ class BlogController extends Controller
 
         return view('pages.blog.show', [
             'post' => $post,
+            'schema' => [
+                $this->schema->article($post),
+                $this->schema->breadcrumbs([
+                    ['label' => 'خانه', 'url' => route('home')],
+                    ['label' => 'وبلاگ', 'url' => route('blog.index')],
+                    ['label' => $post->title, 'url' => route('blog.show', $post->slug)],
+                ]),
+            ],
             'related' => Post::query()
                 ->published()
                 ->whereKeyNot($post->getKey())

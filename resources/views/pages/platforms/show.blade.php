@@ -15,6 +15,8 @@
     :title="$platform->title"
     :description="$platform->tagline ?: \Illuminate\Support\Str::limit($platform->problem, 155)"
     og-type="article"
+    :og-image="$platform->og_image"
+    :schema="$schema"
 >
     <div class="space-y-5">
 

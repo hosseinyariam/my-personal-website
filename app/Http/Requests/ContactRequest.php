@@ -26,9 +26,8 @@ class ContactRequest extends FormRequest
             'purpose' => ['required', Rule::enum(ContactPurpose::class)],
             'message' => ['required', 'string', 'min:10', 'max:1000'],
 
-            // honeypot — فیلد مخفی که فقط ربات‌ها پر می‌کنند (D11).
-            // اینجا فقط «باید خالی باشد» اعلام می‌شود؛ رفتار رد بی‌پیام در کنترلر است.
-            'website' => ['nullable', 'prohibited'],
+            // honeypot عمداً قاعده‌ی اعتبارسنجی ندارد: خطای اعتبارسنجی، وجودِ تله را
+            // به ربات لو می‌دهد. رد کردن بی‌سروصدا در کنترلر انجام می‌شود (D11).
         ];
     }
 
