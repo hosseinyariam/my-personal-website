@@ -1,59 +1,124 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# hosseinyariam.ir
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+وب‌سایت شخصی و زیرساخت ویترین پلتفرم‌ها — پیاده‌سازی سند PRD نسخه‌ی ۱.۰.
 
-## About Laravel
+> **اصل حاکم:** محتوا از پنل می‌آید، نه از کد. برای تغییر هر متن، تصویر یا افزودن
+> پلتفرم جدید نیازی به دیپلوی نیست.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## استک
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| لایه | فناوری |
+|---|---|
+| بک‌اند | PHP 8.2+ · Laravel 12 |
+| پنل مدیریت | Filament 3.3 |
+| فرانت‌اند | Blade · Tailwind CSS 3 · جاوااسکریپت وانیلا (بدون SPA) |
+| دیتابیس | MySQL 8 / MariaDB 10.6+ (`utf8mb4_unicode_ci`) |
+| میزبانی | هاست اشتراکی cPanel — بدون worker، ایمیل sync + SMTP خارجی |
+| آنالیتیکس | Matomo سلف‌هاست، بدون کوکی |
 
-## Learning Laravel
+> **چرا Laravel 12 و نه ۱۱؟** سند PRD در ابتدا Laravel 11 را قفل کرده بود، اما
+> Laravel 11 از پنجره‌ی پشتیبانی امنیتی خارج شده و سه advisory باز دارد که در هیچ
+> نسخه‌ی ۱۱.x اصلاح نشده‌اند — از جمله CRLF injection در قانون اعتبارسنجی `email`
+> که مستقیماً روی فرم تماس می‌نشیند. این با استاندارد امنیتی خودِ سند (بخش ۷-هـ)
+> در تضاد بود. تصمیم در **D18** ثبت شده است؛ اسکلت و APIها عملاً یکسان‌اند و
+> Filament 3 روی هر دو کار می‌کند.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## راه‌اندازی محلی
 
-## Laravel Sponsors
+```bash
+composer install
+npm install
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+cp .env.example .env
+php artisan key:generate
 
-### Premium Partners
+# برای توسعه‌ی محلی می‌توانید SQLite استفاده کنید:
+#   DB_CONNECTION=sqlite
+#   DB_DATABASE="/absolute/path/to/database/database.sqlite"
+touch database/database.sqlite
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+php artisan migrate --seed
+php artisan storage:link
 
-## Contributing
+npm run build     # یا: npm run dev
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+مقادیر `ADMIN_EMAIL` و `ADMIN_PASSWORD` را در `.env` تنظیم کنید؛ seeder کاربر مدیر
+را از همین‌جا می‌سازد.
 
-## Code of Conduct
+> `ADMIN_EMAIL` هم‌زمان **فهرست مجازِ ورود به `/admin`** است. خالی بودنش یعنی
+> هیچ‌کس به پنل دسترسی ندارد — شکستِ امن.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## ساختار
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+app/
+  Enums/              PlatformStatus · PostStatus · ContactPurpose · SkillCategory
+  Filament/           منابع، صفحه‌ی تنظیمات و ویجت آمادگی محتوا
+  Http/               کنترلرهای نازک + Form Request + میان‌افزار هدرهای امنیتی
+  Models/             موجودیت‌ها با scopeهای active/ordered/published/featured
+  Observers/          ابطال کش هنگام ذخیره از پنل
+  Services/           Settings · ContactService · SitemapService · StructuredData
+                      ReadingTime · Markdown · ImageOptimizer · ContentReadiness
+  Support/            Slugger (فارسی→لاتین) · CacheKeys · helpers فارسی
+  View/Composers/     داده‌ی مشترک لِی‌اوت (هویت، لینک‌ها، فعال‌سازی وبلاگ)
 
-## License
+resources/views/
+  components/ui/      کتابخانه‌ی x-ui — نگاشت ۱:۱ با جدول ۸.۲ سند
+  components/layouts/ لِی‌اوت اصلی (مش + هدر گلس + فوتر)
+  pages/              خانه · ویترین · کیس‌استادی · رزومه · تماس · وبلاگ
+  dev/kit.blade.php   صفحه‌ی حسابرسی بصری کیت (فقط محیط local)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+build-tools/
+  icons.txt           فهرست گلیف‌های Tabler که وارد اسپرایت می‌شوند
+  build-icons.mjs     سازنده‌ی public/icons.svg
+```
+
+---
+
+## دیزاین‌سیستم
+
+منبع حقیقت بصری: **UI Kit «گلس روشن»** (`docs/ui-kit-personal-site.html`).
+
+- توکن‌های معنایی در `tailwind.config.js` و `resources/css/app.css`.
+- **هیچ مقدار رنگ/سایه/تایپِ خامی بیرون از این دو فایل مجاز نیست.**
+- دارک‌مود = فقط ۸ متغیر CSS؛ هیچ کامپوننتی دوباره نوشته نمی‌شود.
+- کلاس‌های کامپوننتی باید در Blade به‌صورت **رشته‌ی کامل** نوشته شوند
+  (`'btn-primary'`)، نه با درون‌یابی (`"btn-{$variant}"`) — اسکنر Tailwind فقط
+  رشته‌های کامل را می‌بیند و بقیه را purge می‌کند.
+
+برای مقایسه‌ی بصری، در محیط محلی به `/dev/kit` بروید.
+
+### افزودن آیکون جدید
+
+```bash
+echo "نام-آیکون" >> build-tools/icons.txt   # نام از مجموعه‌ی Tabler outline
+npm run icons
+```
+
+---
+
+## فرمان‌های روزمره
+
+```bash
+npm run build          # ساخت CSS/JS + بازتولید اسپرایت آیکون
+npm run icons          # فقط اسپرایت
+./vendor/bin/pest      # کل مجموعه‌ی تست
+php artisan optimize:clear
+```
+
+---
+
+## مستندات
+
+- [`docs/deployment-runbook.md`](docs/deployment-runbook.md) — استقرار روی cPanel، بکاپ و طرح بازگشت
+- [`docs/decision-log.md`](docs/decision-log.md) — گزارش تصمیم‌ها (ADR-lite)
+- [`docs/qa-checklist.md`](docs/qa-checklist.md) — چک‌لیست QA پیش از انتشار
+- [`docs/content-guide.md`](docs/content-guide.md) — راهنمای ورود محتوا از پنل

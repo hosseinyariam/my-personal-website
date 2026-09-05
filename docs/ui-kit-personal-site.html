@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>کیت رابط کاربری — حسین یاری</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23F6F5F3'/%3E%3Ccircle cx='32' cy='32' r='11' fill='%23F2542D'/%3E%3Ccircle cx='42' cy='22' r='5' fill='%23FF9F6B'/%3E%3C/svg%3E">
+
+<!-- فونت‌ها و آیکون‌ها (CDN) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+
+<!-- Tailwind + توکن‌های طراحی -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        /* ── پالت خام (Primitive) ── */
+        ink:   { 950:'#0E1014', 900:'#16181D', 800:'#2A2E37', 700:'#3E4350', 600:'#565B67', 500:'#6B6F79', 400:'#878B95', 300:'#A5A9B2', 200:'#C6C9CF', 100:'#E4E6E9' },
+        brand: { 50:'#FFF4ED', 100:'#FFE3D1', 200:'#FFC19E', 300:'#FF9F6B', 400:'#F97A49', 500:'#F2542D', 600:'#D9431F', 700:'#B23417' },
+        /* ── نقش‌های معنایی (Semantic) — با متغیر CSS؛ تعویض تم فقط با عوض شدن متغیرها ── */
+        canvas:  'rgb(var(--c-canvas) / <alpha-value>)',
+        surface: 'rgb(var(--c-surface) / <alpha-value>)',
+        line:    'rgb(var(--c-line) / <alpha-value>)',
+        heading: 'rgb(var(--c-heading) / <alpha-value>)',
+        body:    'rgb(var(--c-body) / <alpha-value>)',
+        muted:   'rgb(var(--c-muted) / <alpha-value>)',
+        accent:  'rgb(var(--c-accent) / <alpha-value>)',
+        'accent-deep': 'rgb(var(--c-accent-deep) / <alpha-value>)',
+      },
+      fontFamily: {
+        sans: ['Vazirmatn','ui-sans-serif','system-ui','sans-serif'],
+        mono: ['JetBrains Mono','Vazirmatn','monospace'],
+      },
+      fontSize: {
+        display: ['clamp(2.1rem, 4.5vw, 3rem)', { lineHeight:'1.22', fontWeight:'900' }],
+        h1: ['2rem',       { lineHeight:'1.35', fontWeight:'800' }],
+        h2: ['1.5rem',     { lineHeight:'1.45', fontWeight:'800' }],
+        h3: ['1.125rem',   { lineHeight:'1.55', fontWeight:'700' }],
+      },
+      boxShadow: {
+        soft:  '0 1px 2px rgba(22,24,29,0.04), 0 4px 12px -4px rgba(22,24,29,0.06)',
+        lift:  '0 2px 4px rgba(22,24,29,0.04), 0 18px 36px -16px rgba(22,24,29,0.16)',
+        glass: '0 1px 2px rgba(22,24,29,0.03), 0 16px 40px -20px rgba(22,24,29,0.14), inset 0 1px 0 rgba(255,255,255,0.6)',
+        glow:  '0 10px 22px -8px rgba(242,84,45,0.45)',
+      },
+      keyframes: {
+        'fade-up':   { from:{opacity:'0',transform:'translateY(20px)'}, to:{opacity:'1',transform:'translateY(0)'} },
+        'toast-in':  { from:{opacity:'0',transform:'translateY(14px) scale(.96)'}, to:{opacity:'1',transform:'translateY(0) scale(1)'} },
+        'toast-out': { from:{opacity:'1'}, to:{opacity:'0',transform:'translateY(10px) scale(.96)'} },
+        'modal-in':  { from:{opacity:'0',transform:'translateY(24px) scale(.95)'}, to:{opacity:'1',transform:'translateY(0) scale(1)'} },
+        'float-slow':{'0%,100%':{transform:'translate(0,0) scale(1)'}, '50%':{transform:'translate(3%,-5%) scale(1.1)'} },
+        'bar':       { from:{width:'100%'}, to:{width:'0%'} },
+      },
+      animation: {
+        'fade-up':    'fade-up .7s cubic-bezier(.22,1,.36,1) both',
+        'toast-in':   'toast-in .4s cubic-bezier(.22,1,.36,1) both',
+        'toast-out':  'toast-out .25s ease both',
+        'modal-in':   'modal-in .4s cubic-bezier(.22,1,.36,1) both',
+        'float-slow': 'float-slow 18s ease-in-out infinite',
+        'bar':        'bar 4s linear forwards',
+      },
+    },
+  },
+};
+</script>
+
+<!-- اعمال تم ذخیره‌شده قبل از رندر (پیش‌فرض: روشن) -->
+<script>
+try { if (localStorage.getItem('hy-theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
+
+<!-- توکن‌های معنایی: تم روشن (پایه) و تاریک (مشتق‌شده از همان پالت) -->
+<style>
+  :root {
+    --c-canvas: 246 245 243;     /* #F6F5F3 */
+    --c-surface: 255 255 255;    /* #FFFFFF */
+    --c-line: 232 230 226;       /* #E8E6E2 */
+    --c-heading: 22 24 29;       /* Ink 900 */
+    --c-body: 107 111 121;       /* Ink 500 */
+    --c-muted: 135 139 149;      /* Ink 400 */
+    --c-accent: 242 84 45;       /* Brand 500 */
+    --c-accent-deep: 178 52 23;  /* Brand 700 */
+    color-scheme: light;
+  }
+  html.dark {
+    --c-canvas: 14 16 20;        /* Ink 950 */
+    --c-surface: 22 24 29;       /* همان Ink 900 می‌شود Surface */
+    --c-line: 42 46 55;          /* Ink 800 */
+    --c-heading: 243 244 246;
+    --c-body: 166 170 180;
+    --c-muted: 122 127 138;
+    --c-accent: 255 159 107;     /* Brand 300 */
+    --c-accent-deep: 255 193 158;/* Brand 200 */
+    color-scheme: dark;
+  }
+  html { scroll-behavior: smooth; }
+  /* گذارِ نرمِ تعویض تم — فقط هنگام سوییچ */
+  .theme-anim *, .theme-anim *::before, .theme-anim *::after {
+    transition-property: color, background-color, border-color, fill, stroke, box-shadow !important;
+    transition-duration: .4s !important;
+    transition-timing-function: ease !important;
+  }
+  /* گِرِینِ کاغذی خیلی ملایم برای واقعی‌تر شدن شیشه‌ها */
+  body::after { content:''; position:fixed; inset:0; z-index:100; pointer-events:none; opacity:.03;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>"); }
+  .pretty-scroll::-webkit-scrollbar { width:4px; height:4px; }
+  .pretty-scroll::-webkit-scrollbar-track { background:transparent; }
+  .pretty-scroll::-webkit-scrollbar-thumb { background:rgba(120,120,120,.4); border-radius:99px; }
+  .pretty-scroll { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.4) transparent; }
+</style>
+
+<!-- کامپوننت‌ها: فقط @apply از توکن‌ها — بدون CSS تکراری -->
+<style type="text/tailwindcss">
+@layer components {
+  /* ── سطح‌های شیشه‌ای ─────────────────────────── */
+  .glass      { @apply border border-line bg-surface/70 shadow-glass backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]; }
+  .card       { @apply glass rounded-3xl; }
+  .card-io    { @apply cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-brand-300/60 hover:bg-surface hover:shadow-lift dark:hover:border-brand-300/30 dark:hover:bg-white/[0.09]; }
+  .panel      { @apply rounded-2xl border border-line/80 bg-canvas/60 dark:border-white/[0.07] dark:bg-white/[0.04]; }
+  .divider    { @apply h-px w-full bg-line; }
+
+  /* ── دکمه‌ها ──────────────────────────────────── */
+  .btn       { @apply inline-flex cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap rounded-2xl font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40; }
+  .btn-primary { @apply bg-brand-500 text-white shadow-glow hover:bg-brand-600 dark:hover:bg-brand-400; }
+  .btn-glass   { @apply border border-line bg-surface/70 text-heading shadow-soft backdrop-blur-xl hover:border-brand-300/70 dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:hover:border-brand-300/40; }
+  .btn-ghost   { @apply text-body hover:bg-ink-900/[0.06] hover:text-heading dark:hover:bg-white/10 dark:hover:text-white; }
+  .btn-danger  { @apply border border-brand-700/25 bg-brand-100 text-brand-700 hover:border-brand-500 hover:bg-brand-500 hover:text-white dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300 dark:hover:border-brand-500 dark:hover:bg-brand-500 dark:hover:text-white; }
+  .btn-sm { @apply px-3.5 py-2 text-xs; }
+  .btn-md { @apply px-5 py-2.5 text-sm; }
+  .btn-lg { @apply px-7 py-3.5 text-base; }
+  .icon-btn { @apply grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-xl border border-line bg-surface/70 text-base text-body shadow-soft backdrop-blur-xl transition-all duration-200 hover:border-brand-300/60 hover:text-accent-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 active:scale-95 dark:border-white/10 dark:bg-white/[0.06] dark:text-ink-300 dark:hover:border-brand-300/40 dark:hover:text-brand-300; }
+
+  /* ── نشان‌ها، چیپ‌ها و تگ‌ها ─────────────────── */
+  .badge { @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold leading-5; }
+  .badge-brand { @apply border border-brand-300/50 bg-brand-100 text-brand-700 dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300; }
+  .badge-line  { @apply border border-line bg-surface text-body dark:border-white/10 dark:bg-white/[0.07] dark:text-ink-300; }
+  .badge-deep  { @apply bg-brand-700 text-brand-100 dark:bg-brand-500 dark:text-white; }
+  .chip { @apply inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-xs font-medium text-body transition-colors duration-200 hover:border-brand-400/60 hover:text-brand-700 dark:border-white/10 dark:bg-white/[0.05] dark:text-ink-300 dark:hover:border-brand-300/40 dark:hover:text-brand-300; }
+  .chip.is-on { @apply border-brand-500/50 bg-brand-100 text-brand-700 dark:border-brand-300/40 dark:bg-brand-500/15 dark:text-brand-300; }
+  .chip-static { @apply inline-flex items-center gap-1.5 rounded-full border border-line/80 bg-canvas/70 px-3 py-1.5 text-xs text-body dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-ink-300; }
+  .tag-brand { @apply inline-flex items-center gap-1.5 rounded-full border border-brand-300/50 bg-brand-100 px-3 py-1.5 text-xs font-bold text-brand-700 dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300; }
+  .recipe { @apply inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-line/70 bg-ink-900/[0.04] px-2.5 py-1 font-mono text-[10px] text-muted transition-colors duration-200 hover:border-brand-400/50 hover:text-accent-deep dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-ink-400 dark:hover:text-brand-300; }
+
+  /* ── فرم ──────────────────────────────────────── */
+  .label { @apply mb-2 block text-xs font-bold text-heading; }
+  .input { @apply w-full rounded-2xl border border-line bg-surface/80 px-4 py-3 text-sm text-heading shadow-soft backdrop-blur-md transition-all duration-200 placeholder:text-muted focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-500/15 dark:border-white/10 dark:bg-white/[0.05] dark:text-white dark:placeholder:text-ink-400; }
+  .input-error { @apply border-brand-500/70 focus:border-brand-500/70 focus:ring-brand-500/20; }
+  .hint { @apply mt-2 text-[11px] text-muted; }
+  .hint-error { @apply mt-2 hidden items-center gap-1 text-[11px] font-bold text-accent-deep; }
+  .switch { @apply relative h-6 w-11 shrink-0 cursor-pointer rounded-full border border-line bg-ink-900/[0.07] transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 dark:border-white/10 dark:bg-white/10; }
+  .switch .knob { @apply absolute start-1 top-1 h-4 w-4 rounded-full bg-surface shadow-soft transition-all duration-300 dark:bg-white; }
+  .switch.is-on { @apply border-brand-500 bg-brand-500; }
+  .switch.is-on .knob { @apply -translate-x-5 bg-white; }
+
+  /* ── متن و ساختار کیت ─────────────────────────── */
+  .kicker { @apply text-[11px] font-black text-accent-deep dark:text-accent; }
+  .kit-head { @apply mb-8; }
+  .kit-title { @apply mt-3 text-h1 text-heading; }
+  .kit-desc { @apply mt-3 max-w-2xl text-sm leading-7 text-body; }
+  .route { @apply inline-flex items-center gap-1.5 rounded-lg border border-line/70 bg-ink-900/[0.04] px-2.5 py-1 font-mono text-[10px] text-muted dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-ink-400; }
+  .demo-label { @apply mb-4 flex flex-wrap items-center gap-2 text-[11px] font-bold text-muted; }
+  .demo-block { @apply card p-6 sm:p-8; }
+
+  /* ── ناوبری کیت ───────────────────────────────── */
+  .nav-link { @apply rounded-xl px-3.5 py-2 text-[13px] font-semibold text-body transition-colors duration-200 hover:bg-ink-900/[0.05] hover:text-heading dark:hover:bg-white/10 dark:hover:text-white; }
+  .kit-link { @apply flex items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] font-medium text-body transition-colors duration-200 hover:bg-ink-900/[0.05] hover:text-heading dark:text-ink-300 dark:hover:bg-white/10 dark:hover:text-white; }
+  .kit-link .kit-dot { @apply h-1.5 w-1.5 rounded-full bg-ink-900/20 dark:bg-white/25; }
+  .kit-link.is-active { @apply bg-brand-100 font-bold text-brand-700 dark:bg-brand-500/15 dark:text-brand-300; }
+  .kit-link.is-active .kit-dot { @apply bg-brand-500; }
+  .tab { @apply cursor-pointer rounded-xl px-4 py-2 text-[13px] font-bold text-body transition-all duration-200 hover:text-heading dark:text-ink-300 dark:hover:text-white; }
+  .tab.is-active { @apply border border-line bg-surface text-heading shadow-soft dark:border-white/10 dark:bg-white/10 dark:text-white dark:shadow-none; }
+  .page-btn { @apply grid h-9 w-9 cursor-pointer place-items-center rounded-xl border border-line bg-surface text-xs font-bold text-body shadow-soft transition-all duration-200 hover:border-brand-300/60 hover:text-heading dark:border-white/10 dark:bg-white/[0.05] dark:text-ink-300 dark:hover:border-brand-300/40 dark:hover:text-white; }
+  .page-btn.is-active { @apply border-brand-500/50 bg-brand-100 text-brand-700 dark:border-brand-300/40 dark:bg-brand-500/15 dark:text-brand-300; }
+  .crumb { @apply text-[13px] font-semibold text-body transition-colors duration-200 hover:text-heading dark:hover:text-white; }
+
+  /* ── کاشی آیکون، آواتار، نقطه‌ی زنده ──────────── */
+  .icon-tile { @apply grid h-11 w-11 shrink-0 place-items-center rounded-2xl border text-lg; }
+  .tile-brand { @apply border-brand-300/40 bg-brand-100 text-brand-600 dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300; }
+  .tile-line  { @apply border-line bg-canvas text-body dark:border-white/10 dark:bg-white/[0.06] dark:text-ink-300; }
+  .tile-ink   { @apply border-ink-900 bg-ink-900 text-white dark:border-white/25 dark:bg-white dark:text-ink-900; }
+  .tile-deep  { @apply border-brand-700/30 bg-brand-700 text-white dark:border-brand-400/40 dark:bg-brand-500; }
+  .avatar { @apply grid shrink-0 place-items-center rounded-2xl border border-brand-300/40 bg-brand-100 font-black text-brand-700 dark:border-brand-300/25 dark:bg-brand-500/15 dark:text-brand-300; }
+  .live-dot { @apply relative flex h-2 w-2; }
+  .live-dot::before { @apply absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-60; content:''; }
+  .live-dot::after  { @apply relative inline-flex h-2 w-2 rounded-full bg-brand-500; content:''; }
+
+  /* ── هشدار، تایم‌لاین، لینک ───────────────────── */
+  .alert { @apply flex items-start gap-3 rounded-2xl border p-4; }
+  .alert-brand { @apply border-brand-300/60 bg-brand-100/60 dark:border-brand-300/25 dark:bg-brand-500/10; }
+  .alert-deep  { @apply border-brand-500/40 bg-brand-500/10 dark:border-brand-400/30 dark:bg-brand-500/15; }
+  .alert-line  { @apply border-line bg-surface/70 dark:border-white/10 dark:bg-white/[0.04]; }
+  .timeline { @apply border-s-2 border-line dark:border-white/10; }
+  .tl-item { @apply relative ps-7; }
+  .tl-dot { @apply absolute -start-2 top-1 h-3.5 w-3.5 rounded-full border-[3px] border-surface bg-brand-500 shadow-glow dark:border-ink-900; }
+  .link-arrow { @apply inline-flex cursor-pointer items-center gap-1.5 text-sm font-bold text-accent transition-colors duration-200 hover:text-accent-deep; }
+}
+</style>
+</head>
+
+<body class="bg-canvas font-sans text-body antialiased selection:bg-brand-100 selection:text-brand-700 dark:selection:bg-brand-500/40 dark:selection:text-white">
+
+<!-- ── Mesh Gradient — امضای بصری کیت ─────────────────── -->
+<div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(rgba(22,24,29,0.07)_1px,transparent_1px)] dark:bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)]" style="background-size:28px 28px;"></div>
+  <div class="absolute top-[-10rem] start-[-12rem] h-[34rem] w-[34rem] rounded-full bg-brand-300/30 blur-[130px] animate-float-slow dark:bg-brand-500/[0.12]"></div>
+  <div class="absolute top-1/3 end-[-14rem] h-[38rem] w-[38rem] rounded-full bg-brand-500/[0.13] blur-[150px] animate-float-slow dark:bg-brand-700/25" style="animation-delay:-6s"></div>
+  <div class="absolute bottom-[-14rem] start-1/4 h-[30rem] w-[30rem] rounded-full bg-brand-200/50 blur-[120px] animate-float-slow dark:bg-brand-300/[0.07]" style="animation-delay:-12s"></div>
+  <div id="cursorLight" class="absolute top-0 start-0 h-[36rem] w-[36rem] rounded-full" style="background:radial-gradient(closest-side, rgba(255,159,107,0.14), transparent 70%)"></div>
+</div>
+
+<!-- ── نوار پیشرفت اسکرول ─────────────────────────────── -->
+<div class="fixed top-0 inset-x-0 z-[70] h-0.5"><div id="barFill" class="h-full w-0 bg-brand-500 transition-[width] duration-150"></div></div>
+
+<!-- ── هدر شیشه‌ای ────────────────────────────────────── -->
+<header class="fixed inset-x-0 top-4 z-40 px-4">
+  <div class="mx-auto max-w-6xl">
+    <nav class="glass flex items-center gap-3 rounded-2xl px-3 py-2">
+      <a href="#top" class="flex items-center gap-2.5">
+        <span class="avatar h-9 w-9 rounded-xl text-base">ح</span>
+        <span class="hidden leading-tight sm:block">
+          <span class="block text-sm font-extrabold text-heading">حسین یاری</span>
+          <span class="block font-mono text-[10px] text-muted" dir="ltr">Personal UI Kit · v1.1</span>
+        </span>
+      </a>
+      <div class="mx-auto hidden items-center gap-1 md:flex">
+        <a href="#colors" class="nav-link">مبانی</a>
+        <a href="#buttons" class="nav-link">کامپوننت‌ها</a>
+        <a href="#hero" class="nav-link">الگوهای صفحه</a>
+        <a href="#feedback" class="nav-link">بازخورد</a>
+      </div>
+      <div class="ms-auto flex items-center gap-2">
+        <button data-theme-toggle class="icon-btn" aria-label="تغییر تم"><i id="themeIcon" class="ti ti-moon"></i></button>
+        <button class="icon-btn hidden md:grid" data-demo-link="GitHub" aria-label="گیت‌هاب"><i class="ti ti-brand-github"></i></button>
+        <button class="icon-btn hidden md:grid" data-demo-link="LinkedIn" aria-label="لینکدین"><i class="ti ti-brand-linkedin"></i></button>
+        <a href="#contact" class="btn btn-primary btn-sm hidden md:inline-flex">تماس با من</a>
+        <button id="menuBtn" class="icon-btn md:hidden" aria-label="منو"><i class="ti ti-menu-2"></i></button>
+      </div>
+    </nav>
+    <div id="mobileMenu" class="glass mt-2 hidden flex-col gap-1 rounded-2xl p-3 md:hidden">
+      <a href="#colors" class="nav-link">مبانی</a>
+      <a href="#buttons" class="nav-link">کامپوننت‌ها</a>
+      <a href="#hero" class="nav-link">الگوهای صفحه</a>
+      <a href="#feedback" class="nav-link">بازخورد</a>
+      <a href="#contact" class="nav-link font-bold text-accent-deep dark:text-accent">تماس با من</a>
+    </div>
+  </div>
+</header>
+
+<main class="relative z-10 mx-auto max-w-6xl px-4 pt-28 sm:px-6">
+  <div class="gap-10 lg:grid lg:grid-cols-[240px_minmax(0,1fr)]">
+
+    <!-- ── سایدبار کیت ─────────────────────────────────── -->
+    <aside class="hidden lg:block">
+      <div id="kitNav" class="glass sticky top-28 rounded-3xl p-4">
+        <div class="relative">
+          <i class="ti ti-search pointer-events-none absolute top-1/2 start-3.5 -translate-y-1/2 text-sm text-muted"></i>
+          <input id="kitSearch" type="text" placeholder="جست‌وجو در کیت…" class="input py-2.5 ps-10 text-[13px]">
+        </div>
+        <p id="kitSearchCount" class="mt-2 min-h-4 px-1 text-[10px] text-muted"></p>
+        <nav class="pretty-scroll mt-1 max-h-[calc(100vh-17rem)] space-y-1 overflow-y-auto pe-1">
+          <div class="kit-group">
+            <p class="px-3 pb-1 pt-3 text-[10px] font-bold text-muted">مبانی</p>
+            <a href="#colors" class="kit-link"><span class="kit-dot"></span>رنگ‌ها و مِش</a>
+            <a href="#typography" class="kit-link"><span class="kit-dot"></span>تایپوگرافی</a>
+          </div>
+          <div class="kit-group">
+            <p class="px-3 pb-1 pt-3 text-[10px] font-bold text-muted">کامپوننت‌ها</p>
+            <a href="#buttons" class="kit-link"><span class="kit-dot"></span>دکمه‌ها</a>
+            <a href="#badges" class="kit-link"><span class="kit-dot"></span>نشان‌ها و چیپ‌ها</a>
+            <a href="#forms" class="kit-link"><span class="kit-dot"></span>فرم‌ها</a>
+            <a href="#cards" class="kit-link"><span class="kit-dot"></span>کارت‌ها</a>
+            <a href="#navigation" class="kit-link"><span class="kit-dot"></span>ناوبری</a>
+          </div>
+          <div class="kit-group">
+            <p class="px-3 pb-1 pt-3 text-[10px] font-bold text-muted">الگوهای صفحه</p>
+            <a href="#hero" class="kit-link"><span class="kit-dot"></span>هیرو — صفحه‌ی اصلی</a>
+            <a href="#platforms" class="kit-link"><span class="kit-dot"></span>ویترین پلتفرم‌ها</a>
+            <a href="#platform-detail" class="kit-link"><span class="kit-dot"></span>جزئیات پلتفرم</a>
+            <a href="#blog" class="kit-link"><span class="kit-dot"></span>وبلاگ و تک‌پست</a>
+            <a href="#resume" class="kit-link"><span class="kit-dot"></span>رزومه</a>
+            <a href="#contact" class="kit-link"><span class="kit-dot"></span>تماس</a>
+          </div>
+          <div class="kit-group">
+            <p class="px-3 pb-1 pt-3 text-[10px] font-bold text-muted">سیستم</p>
+            <a href="#feedback" class="kit-link"><span class="kit-dot"></span>بازخورد و حالت‌ها</a>
+            <a href="#footer" class="kit-link"><span class="kit-dot"></span>فوتر</a>
+          </div>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- ── محتوای کیت ──────────────────────────────────── -->
+    <div class="min-w-0 space-y-24 pb-16">
+
+      <!-- معرفی کیت -->
+      <section id="top" data-reveal>
+        <div class="grid items-stretch gap-5 lg:grid-cols-[1fr_320px]">
+          <div class="card relative overflow-hidden p-8 sm:p-10">
+            <div class="pointer-events-none absolute -top-24 -end-24 h-64 w-64 rounded-full bg-brand-300/30 blur-3xl"></div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="kicker">UI KIT · LIGHT GLASS · RTL</span>
+              <span class="route" dir="ltr">tailwind · tabler · mesh</span>
+            </div>
+            <h1 class="mt-5 text-display text-heading">وبسایتِ شخصیِ حسین یاری؛<br>روشن، گرم و <span class="bg-gradient-to-l from-brand-500 to-brand-300 bg-clip-text text-transparent">شیشه‌ای</span></h1>
+            <p class="mt-6 max-w-xl text-sm leading-8 text-body">
+              کیت مینیمال با پالت گرمِ روشن؛ Canvas و Surface برای سطوح، لهجه‌ی Brand 500 برای اقدام،
+              مش گرادیان به‌عنوان امضای بصری و کامپوننت‌های شیشه‌ای. تم تاریک هم از دل همین پالت مشتق شده —
+              سوییچ هدر را بزنید. این صفحه فقط با همین توکن‌ها ساخته شده؛ نه یک خط CSS اضافه.
+            </p>
+            <div class="mt-8 flex flex-wrap items-center gap-3">
+              <a href="#buttons" class="btn btn-primary btn-md"><i class="ti ti-layout-grid"></i>مشاهده‌ی کامپوننت‌ها</a>
+              <a href="#hero" class="btn btn-glass btn-md">الگوهای صفحه<i class="ti ti-arrow-down"></i></a>
+            </div>
+          </div>
+          <div class="flex flex-col gap-5">
+            <div class="card flex-1 p-6">
+              <div class="flex items-center justify-between">
+                <span class="kicker">یک نگاه</span>
+                <span class="badge badge-brand"><span class="live-dot"></span>نسخه‌ی زنده</span>
+              </div>
+              <div class="mt-5 space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="flex items-center gap-2.5 text-[13px] text-body"><span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-palette"></i></span>توکن رنگ</span>
+                  <span class="text-lg font-black text-heading">۲۶</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="flex items-center gap-2.5 text-[13px] text-body"><span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-layout-grid"></i></span>کامپوننت شیشه‌ای</span>
+                  <span class="text-lg font-black text-heading">۲۴+</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="flex items-center gap-2.5 text-[13px] text-body"><span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-template"></i></span>الگوی صفحه</span>
+                  <span class="text-lg font-black text-heading">۸</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="flex items-center gap-2.5 text-[13px] text-body"><span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-moon"></i></span>تم تاریک</span>
+                  <span class="text-lg font-black text-heading">۱ سوییچ</span>
+                </div>
+              </div>
+            </div>
+            <div class="card p-6">
+              <div class="flex items-center gap-3">
+                <span class="icon-tile tile-brand"><i class="ti ti-clock"></i></span>
+                <div class="min-w-0">
+                  <p class="text-[11px] text-muted">تهران، ایران</p>
+                  <p id="clockTime" class="text-xl font-black text-heading">--:--:--</p>
+                </div>
+              </div>
+              <p id="clockDate" class="mt-3 border-t border-line pt-3 text-xs text-body">—</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۰۱ رنگ‌ها، مِش و تم تاریک -->
+      <section id="colors" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۰۱</span>
+            <span class="kicker">مبانی</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">tokens → colors · mesh · dark</span>
+          </div>
+          <h2 class="kit-title">پالت رنگ، مِش و تم تاریک</h2>
+          <p class="kit-desc">پالت دقیقاً طبق بریف: دو لنگرِ جوهر، چهار لنگرِ برند و سه سطح پایه. گام‌های میانی (مشتق) فقط برای پر کردن مقیاس ساخته شده‌اند. روی هر نمونه کلیک کنید تا کپی شود.</p>
+        </header>
+        <div class="space-y-8">
+          <div>
+            <div class="demo-label"><span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span>برند — لهجه و اقدام</div>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              <button class="card card-io group p-3 text-start" data-copy="#B23417">
+                <span class="block h-14 rounded-xl border border-line" style="background:#B23417"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">brand · 700 ★</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#B23417 · عمقِ لهجه</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#F2542D">
+                <span class="block h-14 rounded-xl border border-line" style="background:#F2542D"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">brand · 500 ★</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#F2542D · لهجه‌ی اصلی</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#FF9F6B">
+                <span class="block h-14 rounded-xl border border-line" style="background:#FF9F6B"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">brand · 300 ★</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#FF9F6B · هایلایت</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#FFC19E">
+                <span class="block h-14 rounded-xl border border-line" style="background:#FFC19E"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">brand · 200</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#FFC19E · مشتق</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#FFE3D1">
+                <span class="block h-14 rounded-xl border border-line" style="background:#FFE3D1"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">brand · 100 ★</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#FFE3D1 · چیپ</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#FFF4ED">
+                <span class="block h-14 rounded-xl border border-line" style="background:#FFF4ED"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">brand · 50</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#FFF4ED · مشتق</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <div class="demo-label"><span class="h-1.5 w-1.5 rounded-full bg-ink-500"></span>جوهر — متن و ساختار</div>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+              <button class="card card-io group p-3 text-start" data-copy="#0E1014">
+                <span class="block h-14 rounded-xl border border-line" style="background:#0E1014"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">ink · 950</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#0E1014 · مشتق</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#16181D">
+                <span class="block h-14 rounded-xl border border-line" style="background:#16181D"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">ink · 900 ★</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#16181D · تیترها</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#2A2E37">
+                <span class="block h-14 rounded-xl border border-line" style="background:#2A2E37"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">ink · 800</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#2A2E37 · مشتق</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#6B6F79">
+                <span class="block h-14 rounded-xl border border-line" style="background:#6B6F79"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">ink · 500 ★</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#6B6F79 · متن بدنه</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#A5A9B2">
+                <span class="block h-14 rounded-xl border border-line" style="background:#A5A9B2"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">ink · 300</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#A5A9B2 · مشتق</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <div class="demo-label"><span class="h-1.5 w-1.5 rounded-full bg-ink-300"></span>سطح‌ها — Canvas · Surface · Line</div>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <button class="card card-io group p-3 text-start" data-copy="#F6F5F3">
+                <span class="block h-14 rounded-xl border border-line" style="background:#F6F5F3"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">Canvas ★</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#F6F5F3 · بومِ صفحه</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#FFFFFF">
+                <span class="block h-14 rounded-xl border border-line" style="background:#FFFFFF"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">Surface ★</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#FFFFFF · سطحِ کارت‌ها</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="#E8E6E2">
+                <span class="block h-14 rounded-xl border border-line" style="background:#E8E6E2"></span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">Line ★</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">#E8E6E2 · خطوط و حاشیه</span>
+              </button>
+              <button class="card card-io group p-3 text-start" data-copy="surface/70 + backdrop-blur-xl + line">
+                <span class="relative block h-14 overflow-hidden rounded-xl border border-line bg-canvas">
+                  <span class="absolute start-2 top-1 h-12 w-12 rounded-full bg-brand-300/90 blur-[3px]"></span>
+                  <span class="absolute bottom-1 end-8 h-9 w-16 rounded-full bg-brand-500/80 blur-[3px]"></span>
+                  <span class="absolute inset-0 border border-white/60 bg-white/60 backdrop-blur-md"></span>
+                </span>
+                <span class="mt-3 flex items-center justify-between"><span class="text-xs font-bold text-heading">glass · دستور شیشه</span><i class="ti ti-copy text-xs text-muted transition-colors group-hover:text-accent"></i></span>
+                <span class="mt-0.5 block font-mono text-[10px] text-muted" dir="ltr">surface/70 · blur-xl</span>
+              </button>
+            </div>
+          </div>
+          <div class="grid gap-5 lg:grid-cols-2">
+            <div class="card p-6">
+              <div class="flex items-center justify-between">
+                <span class="kicker">Mesh Gradient</span>
+                <span class="badge badge-brand">امضای بصری</span>
+              </div>
+              <div class="relative mt-4 h-40 overflow-hidden rounded-2xl border border-line bg-canvas">
+                <div class="absolute -top-16 -start-10 h-48 w-48 rounded-full bg-brand-300/50 blur-3xl"></div>
+                <div class="absolute -bottom-20 end-6 h-52 w-52 rounded-full bg-brand-500/25 blur-3xl"></div>
+                <div class="absolute top-8 start-1/2 h-36 w-36 rounded-full bg-brand-200/70 blur-2xl"></div>
+                <span class="absolute inset-0 grid place-items-center">
+                  <span class="glass rounded-full px-4 py-1.5 font-mono text-[10px] text-body" dir="ltr">mesh · brand on canvas</span>
+                </span>
+              </div>
+              <p class="mt-4 text-xs leading-6 text-body">مشِ برند روی Canvas؛ همان چیزی که پس‌زمینه‌ی همین صفحه را زنده نگه می‌دارد — با سه هاله‌ی نرم برند که آرام شنا می‌کنند.</p>
+              <button class="recipe mt-3" data-copy="background: radial-gradient(at 15% 20%, #FF9F6B 0, transparent 50%), radial-gradient(at 85% 30%, #F2542D 0, transparent 55%), radial-gradient(at 50% 90%, #FFE3D1 0, transparent 60%), #F6F5F3;">کپی دستور CSS مش</button>
+            </div>
+            <div class="card p-6">
+              <div class="flex items-center justify-between">
+                <span class="kicker">تم تاریک</span>
+                <span class="badge badge-line">مشتق‌شده از همین پالت</span>
+              </div>
+              <div class="mt-4 space-y-2.5">
+                <div class="panel flex items-center gap-3 px-3.5 py-2.5">
+                  <span class="flex gap-1"><span class="h-5 w-5 rounded-md border border-line" style="background:#F6F5F3"></span><i class="ti ti-arrow-left text-[10px] text-muted"></i><span class="h-5 w-5 rounded-md border border-line" style="background:#0E1014"></span></span>
+                  <span class="text-xs text-body">Canvas</span>
+                  <span class="ms-auto font-mono text-[10px] text-muted" dir="ltr">#F6F5F3 → #0E1014</span>
+                </div>
+                <div class="panel flex items-center gap-3 px-3.5 py-2.5">
+                  <span class="flex gap-1"><span class="h-5 w-5 rounded-md border border-line" style="background:#FFFFFF"></span><i class="ti ti-arrow-left text-[10px] text-muted"></i><span class="h-5 w-5 rounded-md border border-line" style="background:#16181D"></span></span>
+                  <span class="text-xs text-body">Surface</span>
+                  <span class="ms-auto font-mono text-[10px] text-muted" dir="ltr">#FFF → Ink 900</span>
+                </div>
+                <div class="panel flex items-center gap-3 px-3.5 py-2.5">
+                  <span class="flex gap-1"><span class="h-5 w-5 rounded-md border border-line" style="background:#E8E6E2"></span><i class="ti ti-arrow-left text-[10px] text-muted"></i><span class="h-5 w-5 rounded-md border border-line" style="background:#2A2E37"></span></span>
+                  <span class="text-xs text-body">Line</span>
+                  <span class="ms-auto font-mono text-[10px] text-muted" dir="ltr">#E8E6E2 → #2A2E37</span>
+                </div>
+                <div class="panel flex items-center gap-3 px-3.5 py-2.5">
+                  <span class="flex gap-1"><span class="h-5 w-5 rounded-md border border-line" style="background:#F2542D"></span><i class="ti ti-arrow-left text-[10px] text-muted"></i><span class="h-5 w-5 rounded-md border border-line" style="background:#FF9F6B"></span></span>
+                  <span class="text-xs text-body">لهجه</span>
+                  <span class="ms-auto font-mono text-[10px] text-muted" dir="ltr">Brand 500 → 300</span>
+                </div>
+              </div>
+              <div class="mt-5 flex flex-wrap items-center gap-3">
+                <button data-theme-toggle class="btn btn-glass btn-sm"><i class="ti ti-moon"></i>تغییر تم و تماشا کنید</button>
+                <p class="text-[11px] leading-5 text-muted">فقط ۸ متغیر CSS عوض می‌شود؛ هیچ کامپوننتی دوباره نوشته نمی‌شود.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۰۲ تایپوگرافی -->
+      <section id="typography" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۰۲</span>
+            <span class="kicker">مبانی</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">tokens → fontSize</span>
+          </div>
+          <h2 class="kit-title">تایپوگرافی</h2>
+          <p class="kit-desc">وزیرمتن با مقیاس کامل وزن، و JetBrains Mono برای کد و توکن‌ها. تیترها با Ink 900 و بدنه با Ink 500 — همان جفتِ لنگرِ بریف. روی برچسب هر ردیف کلیک کنید تا نام کلاس کپی شود.</p>
+        </header>
+        <div class="demo-block divide-y divide-line">
+          <div class="flex flex-wrap items-baseline justify-between gap-4 py-6 first:pt-0">
+            <p class="text-display text-heading">طراحیِ کم‌گوی و روشن</p>
+            <button class="recipe" data-copy="text-display">text-display · 48 / 900</button>
+          </div>
+          <div class="flex flex-wrap items-baseline justify-between gap-4 py-6">
+            <p class="text-h1 text-heading">حسین یاری، مدیر محصول</p>
+            <button class="recipe" data-copy="text-h1">text-h1 · 32 / 800</button>
+          </div>
+          <div class="flex flex-wrap items-baseline justify-between gap-4 py-6">
+            <p class="text-h2 text-heading">دیزاین‌سیستم برای تیم‌های کوچک</p>
+            <button class="recipe" data-copy="text-h2">text-h2 · 24 / 800</button>
+          </div>
+          <div class="flex flex-wrap items-baseline justify-between gap-4 py-6">
+            <p class="text-h3 text-heading">وضعیت پلتفرم‌ها</p>
+            <button class="recipe" data-copy="text-h3">text-h3 · 18 / 700</button>
+          </div>
+          <div class="flex flex-wrap items-baseline justify-between gap-4 py-6">
+            <p class="max-w-xl text-sm leading-8 text-body">این یک پاراگراف نمونه است تا خوانش متن بدنه را با Ink 500 روی Canvas ببینید؛ ارتفاع خط برای فارسی بازتر گرفته شده و نیم‌فاصله‌ها دقیق‌اند تا چشم خسته نشود.</p>
+            <button class="recipe" data-copy="text-sm leading-8">body · 15 / 400</button>
+          </div>
+          <div class="flex flex-wrap items-baseline justify-between gap-4 py-6">
+            <p class="text-xs text-muted">آخرین به‌روزرسانی: آبان ۱۴۰۳ — نسخه‌ی ۱.۱</p>
+            <button class="recipe" data-copy="text-xs">caption · 12 / 500</button>
+          </div>
+          <div class="flex flex-wrap items-baseline justify-between gap-4 py-6 last:pb-0">
+            <p class="font-mono text-xs text-heading" dir="ltr">tailwind.config = { theme: { extend } }</p>
+            <button class="recipe" data-copy="font-mono">mono · JetBrains</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۰۳ دکمه‌ها -->
+      <section id="buttons" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۰۳</span>
+            <span class="kicker">کامپوننت‌ها</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">.btn .btn-*</span>
+          </div>
+          <h2 class="kit-title">دکمه‌ها</h2>
+          <p class="kit-desc">هر دکمه از یک کلاس پایه + نوع + اندازه ساخته می‌شود؛ مثل <span class="font-mono text-[11px] text-accent-deep dark:text-accent" dir="ltr">btn btn-primary btn-md</span>. دکمه‌ی «خطر» از لایه‌ی عمیق برند (Brand 700) ساخته می‌شود — در این پالتِ تک‌لهجه، تفکیک با شدتِ رنگ انجام می‌شود.</p>
+        </header>
+        <div class="demo-block space-y-8">
+          <div>
+            <div class="demo-label">نوع<button class="recipe" data-copy="btn btn-primary btn-md">btn btn-primary btn-md</button></div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="btn btn-primary btn-md">شروع همکاری</button>
+              <button class="btn btn-glass btn-md"><i class="ti ti-download"></i>دانلود رزومه</button>
+              <button class="btn btn-ghost btn-md">بیشتر بدانید</button>
+              <button class="btn btn-danger btn-md"><i class="ti ti-trash"></i>حذف</button>
+            </div>
+          </div>
+          <div>
+            <div class="demo-label">اندازه<button class="recipe" data-copy="btn btn-glass btn-lg">btn btn-glass btn-lg</button></div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="btn btn-glass btn-sm">کوچک</button>
+              <button class="btn btn-primary btn-md">متوسط</button>
+              <button class="btn btn-glass btn-lg"><i class="ti ti-mail"></i>بزرگ</button>
+            </div>
+          </div>
+          <div class="grid gap-8 sm:grid-cols-2">
+            <div>
+              <div class="demo-label">فقط آیکون<button class="recipe" data-copy="icon-btn">icon-btn</button></div>
+              <div class="flex flex-wrap gap-3">
+                <button class="icon-btn" data-demo-link="GitHub" aria-label="گیت‌هاب"><i class="ti ti-brand-github"></i></button>
+                <button class="icon-btn" data-demo-link="Telegram" aria-label="تلگرام"><i class="ti ti-brand-telegram"></i></button>
+                <button class="icon-btn" data-open-modal aria-label="اشتراک‌گذاری"><i class="ti ti-share"></i></button>
+                <button class="icon-btn relative" data-toast="info|۳ اعلان خوانده‌نشده|از ناحیه‌ی کاربر آن‌ها را ببینید." aria-label="اعلان‌ها">
+                  <i class="ti ti-bell"></i>
+                  <span class="absolute -top-1 -end-1 grid h-4 min-w-4 place-items-center rounded-full bg-brand-700 px-1 text-[9px] font-black text-white dark:bg-brand-500">۳</span>
+                </button>
+              </div>
+            </div>
+            <div>
+              <div class="demo-label">وضعیت‌ها<button class="recipe" data-copy="disabled / loading">disabled · loading</button></div>
+              <div class="flex flex-wrap items-center gap-3">
+                <button class="btn btn-primary btn-md" disabled>غیرفعال</button>
+                <button id="loadingDemo" class="btn btn-glass btn-md"><i class="ti ti-send"></i><span>ارسال و دیدن رفتار</span></button>
+              </div>
+              <p class="hint">دکمه‌ی دوم را بزنید تا رفتار لودینگ و بازخورد موفقیت را ببینید.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۰۴ نشان‌ها -->
+      <section id="badges" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۰۴</span>
+            <span class="kicker">کامپوننت‌ها</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">.badge .chip .tag-brand</span>
+          </div>
+          <h2 class="kit-title">نشان‌ها و چیپ‌ها</h2>
+          <p class="kit-desc">نشان وضعیت برای پلتفرم‌ها (Brand 100 برای مثبت، Line برای خنثی و Brand 700 توپر برای منفی)، چیپ تعاملی برای فیلتر و تگ برندی برای دسته‌ی وبلاگ.</p>
+        </header>
+        <div class="demo-block space-y-8">
+          <div>
+            <div class="demo-label">نشان وضعیت<button class="recipe" data-copy="badge badge-brand">badge badge-brand</button></div>
+            <div class="flex flex-wrap gap-2.5">
+              <span class="badge badge-brand"><span class="live-dot"></span>فعال</span>
+              <span class="badge badge-line"><i class="ti ti-tools text-xs"></i>در توسعه</span>
+              <span class="badge badge-brand"><i class="ti ti-flask text-xs"></i>بتا</span>
+              <span class="badge badge-line opacity-70"><i class="ti ti-archive text-xs"></i>آرشیو</span>
+              <span class="badge badge-deep"><i class="ti ti-alert-circle text-xs"></i>منقضی</span>
+            </div>
+          </div>
+          <div>
+            <div class="demo-label">چیپ تعاملی (برای انتخاب بزنید)<button class="recipe" data-copy="chip">chip · chip is-on</button></div>
+            <div class="flex flex-wrap gap-2">
+              <button class="chip">دیزاین‌سیستم</button>
+              <button class="chip">مدیریت محصول</button>
+              <button class="chip">تجربه‌ی کاربری</button>
+              <button class="chip">Tailwind</button>
+              <button class="chip">Vue</button>
+              <button class="chip">نوشتن</button>
+            </div>
+          </div>
+          <div>
+            <div class="demo-label">چیپ ثابت و تگ برندی<button class="recipe" data-copy="chip-static">chip-static · tag-brand</button></div>
+            <div class="flex flex-wrap gap-2">
+              <span class="chip-static">Tailwind CSS</span>
+              <span class="chip-static">Vue 3</span>
+              <span class="chip-static">TypeScript</span>
+              <span class="chip-static">Figma</span>
+              <span class="tag-brand">دیزاین‌سیستم</span>
+              <span class="tag-brand">فرانت‌اند</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۰۵ فرم‌ها -->
+      <section id="forms" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۰۵</span>
+            <span class="kicker">کامپوننت‌ها</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">.input .switch</span>
+          </div>
+          <h2 class="kit-title">فرم‌ها</h2>
+          <p class="kit-desc">ورودی‌های شیشه‌ای روشن (Surface روی Canvas) با فوکوس برند، حالت خطا، سوییچ RTL و شمارنده‌ی زنده‌ی کاراکتر — همه در همین بخش کار می‌کنند.</p>
+        </header>
+        <div class="demo-block">
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="label" for="fName">نام و نام‌خانوادگی</label>
+              <input id="fName" class="input" placeholder="مثلاً حسین یاری">
+              <p class="hint">همان‌طور که در ایمیل رسمی می‌نویسید.</p>
+            </div>
+            <div>
+              <label class="label" for="fEmail">ایمیل</label>
+              <div class="relative">
+                <i class="ti ti-mail pointer-events-none absolute top-1/2 start-4 -translate-y-1/2 text-base text-muted"></i>
+                <input id="fEmail" type="email" class="input ps-11" placeholder="you@example.com" dir="ltr">
+              </div>
+              <p class="hint">فقط برای پاسخ‌گویی استفاده می‌شود؛ جایی منتشر نمی‌شود.</p>
+            </div>
+            <div>
+              <label class="label" for="fTopic">موضوع</label>
+              <div class="relative">
+                <select id="fTopic" class="input cursor-pointer appearance-none pe-10">
+                  <option class="bg-surface text-heading">همکاری تمام‌وقت</option>
+                  <option class="bg-surface text-heading">پروژه‌ی محصولی</option>
+                  <option class="bg-surface text-heading">مشاوره‌ی دیزاین‌سیستم</option>
+                  <option class="bg-surface text-heading">فقط گفت‌وگو</option>
+                </select>
+                <i class="ti ti-chevron-down pointer-events-none absolute top-1/2 end-4 -translate-y-1/2 text-sm text-muted"></i>
+              </div>
+            </div>
+            <div>
+              <label class="label">اعلان‌ها</label>
+              <div class="panel divide-y divide-line">
+                <div class="flex items-center justify-between gap-3 px-4 py-3">
+                  <span class="text-[13px] text-body">کپی پاسخ برایم بفرست</span>
+                  <button class="switch" role="switch" aria-checked="false" aria-label="کپی پاسخ"><span class="knob"></span></button>
+                </div>
+                <div class="flex items-center justify-between gap-3 px-4 py-3">
+                  <span class="text-[13px] text-body">فقط پروژه‌های محصولی</span>
+                  <button class="switch is-on" role="switch" aria-checked="true" aria-label="پروژه‌های محصولی"><span class="knob"></span></button>
+                </div>
+              </div>
+            </div>
+            <div class="sm:col-span-2">
+              <div class="mb-2 flex items-baseline justify-between">
+                <label class="label mb-0" for="fMsg">پیام</label>
+                <span id="msgCount" class="font-mono text-[10px] text-muted">۰ / ۵۰۰</span>
+              </div>
+              <textarea id="fMsg" rows="4" maxlength="500" class="input resize-none leading-7" placeholder="از چالش محصول‌تان بگویید…"></textarea>
+            </div>
+            <div class="sm:col-span-2">
+              <div class="demo-label mb-3">حالت خطا<button class="recipe" data-copy="input input-error">input · input-error</button></div>
+              <input class="input input-error" value="hussein@@mail" dir="ltr" readonly>
+              <p class="hint-error flex"><i class="ti ti-alert-circle text-xs"></i>قالب ایمیل درست نیست؛ نمونه‌ی صحیح: hi@hosseinyari.ir</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۰۶ کارت‌ها -->
+      <section id="cards" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۰۶</span>
+            <span class="kicker">کامپوننت‌ها</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">.card .card-io</span>
+          </div>
+          <h2 class="kit-title">کارت‌ها</h2>
+          <p class="kit-desc">آجرِ اصلی کیت: Surface شیشه‌ای روی مش + شعاع بزرگ + کاشی آیکون. کارت‌های پلتفرم و وبلاگ را در بخش «الگوهای صفحه» در موقعیت واقعی می‌بینید.</p>
+        </header>
+        <div class="space-y-8">
+          <div>
+            <div class="demo-label">کارت پایه<button class="recipe" data-copy="card p-6">card · p-6</button></div>
+            <div class="grid gap-5 lg:grid-cols-2">
+              <div class="card p-6">
+                <div class="flex items-start gap-4">
+                  <span class="icon-tile tile-brand"><i class="ti ti-layout-dashboard"></i></span>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                      <h3 class="text-h3 text-heading">عنوان کارت</h3>
+                      <span class="badge badge-brand">برچسب</span>
+                    </div>
+                    <p class="mt-1 text-xs text-muted">زیرعنوان یا توضیح کوتاه</p>
+                  </div>
+                </div>
+                <p class="mt-4 text-sm leading-7 text-body">بدنه‌ی کارت برای توضیح اصلی؛ با خوانش راحت و فضای تنفس کافی. شیشه‌ی روشن روی مشِ برند عمق می‌گیرد و نورِ پس‌زمینه درونش حرکت می‌کند.</p>
+                <div class="divider my-5"></div>
+                <div class="flex items-center justify-between">
+                  <button class="btn btn-glass btn-sm">عملیات</button>
+                  <a href="#cards" class="link-arrow group">جزئیات بیشتر<i class="ti ti-arrow-left transition-transform group-hover:-translate-x-1"></i></a>
+                </div>
+              </div>
+              <div class="card flex flex-col p-6">
+                <div class="flex flex-wrap items-center gap-4">
+                  <span class="avatar h-14 w-14 text-2xl">ح</span>
+                  <div class="min-w-0">
+                    <h3 class="text-h3 text-heading">حسین یاری</h3>
+                    <p class="mt-0.5 text-xs text-muted">مدیر محصول · متخصص دیزاین‌سیستم</p>
+                  </div>
+                  <span class="ms-auto"><span class="badge badge-brand"><span class="live-dot"></span>آنلاین</span></span>
+                </div>
+                <p class="mt-4 text-sm leading-7 text-body">کارت پروفایل فشرده برای فوتر پست‌ها، دیدگاه‌ها و بخش «درباره‌ی من».</p>
+                <div class="mt-auto flex items-center gap-2 pt-5">
+                  <button class="btn btn-primary btn-sm" data-toast="success|پیام آماده شد|در الگوی تماس، فرم کامل را می‌بینید."><i class="ti ti-send"></i>ارسال پیام</button>
+                  <button class="icon-btn h-9 w-9 rounded-lg text-sm" data-demo-link="GitHub" aria-label="گیت‌هاب"><i class="ti ti-brand-github"></i></button>
+                  <button class="icon-btn h-9 w-9 rounded-lg text-sm" data-demo-link="LinkedIn" aria-label="لینکدین"><i class="ti ti-brand-linkedin"></i></button>
+                  <button class="icon-btn h-9 w-9 rounded-lg text-sm" data-demo-link="Telegram" aria-label="تلگرام"><i class="ti ti-brand-telegram"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="demo-label">کارت آمار<button class="recipe" data-copy="card card-io p-5">card · card-io · p-5</button></div>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div class="card card-io p-5">
+                <div class="flex items-center gap-4">
+                  <span class="icon-tile tile-brand"><i class="ti ti-rocket"></i></span>
+                  <div>
+                    <p class="text-2xl font-black text-heading">۳</p>
+                    <p class="text-xs text-muted">پلتفرم فعال</p>
+                  </div>
+                  <span class="badge badge-brand ms-auto"><i class="ti ti-arrow-up-right text-xs"></i>۱۲٪</span>
+                </div>
+              </div>
+              <div class="card card-io p-5">
+                <div class="flex items-center gap-4">
+                  <span class="icon-tile tile-line"><i class="ti ti-article"></i></span>
+                  <div>
+                    <p class="text-2xl font-black text-heading">۲۴</p>
+                    <p class="text-xs text-muted">یادداشت فنی</p>
+                  </div>
+                  <span class="badge badge-line ms-auto">۴ پیش‌نویس</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۰۷ ناوبری -->
+      <section id="navigation" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۰۷</span>
+            <span class="kicker">کامپوننت‌ها</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">.tab .page-btn .crumb</span>
+          </div>
+          <h2 class="kit-title">ناوبری</h2>
+          <p class="kit-desc">تب‌ها، مسیر راهنما و صفحه‌بندی — هر سه واقعی‌اند؛ تب‌ها فیلتر می‌کنند و صفحه‌بندی جابه‌جا می‌شود.</p>
+        </header>
+        <div class="space-y-5">
+          <div class="demo-block">
+            <div class="demo-label">تب + فیلتر واقعی<button class="recipe" data-copy="tab">tab · tab is-active</button></div>
+            <div id="filterTabs" class="panel flex flex-wrap gap-1 p-1.5">
+              <button class="tab is-active" data-filter="all">همه</button>
+              <button class="tab" data-filter="active">فعال</button>
+              <button class="tab" data-filter="beta">بتا</button>
+              <button class="tab" data-filter="dev">در توسعه</button>
+            </div>
+            <div id="filterGrid" class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <div class="panel flex items-center gap-3 p-3.5" data-status="active">
+                <span class="icon-tile tile-brand h-9 w-9 rounded-xl text-sm"><i class="ti ti-color-swatch"></i></span>
+                <div class="min-w-0"><p class="text-xs font-bold text-heading">دیبا</p><p class="mt-0.5 text-[10px] text-muted">دیزاین‌سیستم</p></div>
+                <span class="badge badge-brand ms-auto">فعال</span>
+              </div>
+              <div class="panel flex items-center gap-3 p-3.5" data-status="beta">
+                <span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-chart-bar"></i></span>
+                <div class="min-w-0"><p class="text-xs font-bold text-heading">شهاب</p><p class="mt-0.5 text-[10px] text-muted">تحلیل رفتار کاربر</p></div>
+                <span class="badge badge-brand ms-auto">بتا</span>
+              </div>
+              <div class="panel flex items-center gap-3 p-3.5" data-status="dev">
+                <span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-package"></i></span>
+                <div class="min-w-0"><p class="text-xs font-bold text-heading">آبنوس</p><p class="mt-0.5 text-[10px] text-muted">فروشگاه‌ساز هدلس</p></div>
+                <span class="badge badge-line ms-auto">در توسعه</span>
+              </div>
+              <div class="panel flex items-center gap-3 p-3.5" data-status="active">
+                <span class="icon-tile tile-brand h-9 w-9 rounded-xl text-sm"><i class="ti ti-target"></i></span>
+                <div class="min-w-0"><p class="text-xs font-bold text-heading">رایا</p><p class="mt-0.5 text-[10px] text-muted">تحلیل داده</p></div>
+                <span class="badge badge-brand ms-auto">فعال</span>
+              </div>
+              <div class="panel flex items-center gap-3 p-3.5" data-status="active">
+                <span class="icon-tile tile-brand h-9 w-9 rounded-xl text-sm"><i class="ti ti-list-check"></i></span>
+                <div class="min-w-0"><p class="text-xs font-bold text-heading">سنجاق</p><p class="mt-0.5 text-[10px] text-muted">مدیریت تسک</p></div>
+                <span class="badge badge-brand ms-auto">فعال</span>
+              </div>
+              <div class="panel flex items-center gap-3 p-3.5" data-status="beta">
+                <span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-pencil"></i></span>
+                <div class="min-w-0"><p class="text-xs font-bold text-heading">نگار</p><p class="mt-0.5 text-[10px] text-muted">سازنده‌ی صفحه‌ی فرود</p></div>
+                <span class="badge badge-brand ms-auto">بتا</span>
+              </div>
+            </div>
+          </div>
+          <div class="grid gap-5 lg:grid-cols-2">
+            <div class="demo-block">
+              <div class="demo-label">مسیر راهنما (Breadcrumb)</div>
+              <nav class="flex flex-wrap items-center gap-2 text-muted">
+                <a href="#hero" class="crumb">خانه</a>
+                <i class="ti ti-chevron-left text-xs"></i>
+                <a href="#platforms" class="crumb">پلتفرم‌ها</a>
+                <i class="ti ti-chevron-left text-xs"></i>
+                <span class="text-[13px] font-bold text-heading">دیبا</span>
+              </nav>
+              <p class="hint">در مسیر واقعی: <span class="font-mono text-[10px]" dir="ltr">/platforms/diba</span></p>
+            </div>
+            <div class="demo-block">
+              <div class="demo-label">صفحه‌بندی — برای لیست وبلاگ</div>
+              <div class="pager flex items-center gap-2" data-current="1">
+                <button class="page-btn" data-dir="prev" aria-label="قبلی"><i class="ti ti-chevron-right text-xs"></i></button>
+                <button class="page-btn is-active" data-page="1">۱</button>
+                <button class="page-btn" data-page="2">۲</button>
+                <button class="page-btn" data-page="3">۳</button>
+                <button class="page-btn" data-page="4">۴</button>
+                <button class="page-btn" data-page="5">۵</button>
+                <button class="page-btn" data-dir="next" aria-label="بعدی"><i class="ti ti-chevron-left text-xs"></i></button>
+              </div>
+              <p class="hint">در سایت واقعی، هر صفحه از سرور لیست تازه می‌گیرد.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۰۸ الگوی هیرو -->
+      <section id="hero" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۰۸</span>
+            <span class="kicker">الگوی صفحه</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">GET /</span>
+          </div>
+          <h2 class="kit-title">هیرو — صفحه‌ی اصلی</h2>
+          <p class="kit-desc">معرفی هویت، تخصص‌ها، وضعیت همکاری، تیزر پلتفرم‌ها و آخرین یادداشت، و CTAهای اصلی (رزومه + تماس) — همان چیزی که کاربر در سه ثانیه‌ی اول باید ببیند. دکمه‌ی رزومه واقعاً فایل می‌سازد.</p>
+        </header>
+        <div class="space-y-5">
+          <div class="card relative overflow-hidden p-8 sm:p-10">
+            <div class="pointer-events-none absolute -bottom-32 -start-24 h-72 w-72 rounded-full bg-brand-300/25 blur-3xl"></div>
+            <div class="grid items-center gap-10 lg:grid-cols-[1fr_300px]">
+              <div>
+                <div class="flex items-center gap-4">
+                  <span class="avatar h-16 w-16 text-3xl sm:h-20 sm:w-20 sm:text-4xl">ح</span>
+                  <div>
+                    <h3 class="text-h2 text-heading">حسین یاری</h3>
+                    <p class="mt-1.5 flex flex-wrap items-center gap-2 text-sm font-bold text-accent-deep dark:text-accent">
+                      <span id="role" class="transition-all duration-300">مدیر محصول</span>
+                      <span class="h-1 w-1 rounded-full bg-brand-500/60"></span>
+                      <span class="text-xs font-medium text-muted">تهران، ایران</span>
+                    </p>
+                  </div>
+                </div>
+                <p class="mt-6 max-w-xl text-sm leading-8 text-body">من حسین هستم؛ محصول می‌سازم و سیستم طراحی می‌چینم. هشت سال است بین جلسات کشف محصول و کدهای فرانت‌اند رفت‌وآمد می‌کنم و باور دارم رابط‌های خوب کم‌حرف و دقیق‌اند — درست مثل این کیت.</p>
+                <div class="mt-5 flex flex-wrap gap-2">
+                  <span class="chip-static">مدیریت محصول</span>
+                  <span class="chip-static">دیزاین‌سیستم</span>
+                  <span class="chip-static">تجربه‌ی کاربری</span>
+                  <span class="chip-static">توسعه‌ی فرانت‌اند</span>
+                </div>
+                <div class="mt-7 flex flex-wrap items-center gap-3">
+                  <button class="btn btn-primary btn-md resume-download"><i class="ti ti-download"></i>دانلود رزومه</button>
+                  <a href="#contact" class="btn btn-glass btn-md">گفت‌وگو کنیم<i class="ti ti-arrow-left"></i></a>
+                </div>
+              </div>
+              <div class="panel p-5">
+                <span class="badge badge-brand"><span class="live-dot"></span>در دسترس برای پروژه‌ی جدید</span>
+                <div class="mt-5 space-y-4">
+                  <div class="flex items-center gap-3">
+                    <span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-briefcase"></i></span>
+                    <span class="text-[13px] text-body">تجربه‌ی محصول</span>
+                    <span class="ms-auto text-sm font-black text-heading">۸+ سال</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-rocket"></i></span>
+                    <span class="text-[13px] text-body">پلتفرم فعال</span>
+                    <span class="ms-auto text-sm font-black text-heading">۳</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-article"></i></span>
+                    <span class="text-[13px] text-body">یادداشت فنی</span>
+                    <span class="ms-auto text-sm font-black text-heading">۲۴</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="icon-tile tile-line h-9 w-9 rounded-xl text-sm"><i class="ti ti-book"></i></span>
+                    <span class="text-[13px] text-body">در حال خواندن</span>
+                    <span class="ms-auto text-sm font-black text-heading" dir="ltr">Shape Up</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid gap-5 sm:grid-cols-2">
+            <a href="#platforms" class="card card-io group p-5">
+              <div class="flex items-center gap-3.5">
+                <span class="icon-tile tile-brand h-10 w-10 rounded-xl text-base"><i class="ti ti-color-swatch"></i></span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-[10px] font-bold text-muted">تیزر پلتفرم‌ها</p>
+                  <p class="mt-0.5 truncate text-sm font-extrabold text-heading">دیبا — دیزاین‌سیستم RTL</p>
+                </div>
+                <i class="ti ti-arrow-left text-sm text-muted transition-all group-hover:-translate-x-1 group-hover:text-accent"></i>
+              </div>
+            </a>
+            <a href="#blog" class="card card-io group p-5">
+              <div class="flex items-center gap-3.5">
+                <span class="icon-tile tile-brand h-10 w-10 rounded-xl text-base"><i class="ti ti-article"></i></span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-[10px] font-bold text-muted">تیزر آخرین یادداشت</p>
+                  <p class="mt-0.5 truncate text-sm font-extrabold text-heading">معماری Design Token در مقیاس</p>
+                </div>
+                <i class="ti ti-arrow-left text-sm text-muted transition-all group-hover:-translate-x-1 group-hover:text-accent"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۰۹ ویترین پلتفرم‌ها -->
+      <section id="platforms" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۰۹</span>
+            <span class="kicker">الگوی صفحه</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">GET /platforms</span>
+          </div>
+          <h2 class="kit-title">ویترین پلتفرم‌ها</h2>
+          <p class="kit-desc">گرید کارت‌ها به‌صورت پویا از دیتابیس پر می‌شود. چیدمان پیشنهادی: یک کارت شاخص + کارت استاندارد + کارت ردیفی عریض — تا صفحه یکنواخت نشود.</p>
+        </header>
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <span class="text-xs text-muted">۳ پلتفرم · داده‌ی نمونه (در سایت واقعی: از دیتابیس)</span>
+          <span class="recipe" dir="ltr">db → platforms[]</span>
+        </div>
+        <div class="grid gap-5 lg:grid-cols-12">
+          <article class="card card-io group p-7 lg:col-span-7">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div class="flex items-center gap-4">
+                <span class="icon-tile tile-brand"><i class="ti ti-color-swatch"></i></span>
+                <div>
+                  <h3 class="text-h3 text-heading">دیبا</h3>
+                  <p class="mt-0.5 text-xs text-muted">دیزاین‌سیستم اپن‌سورس برای تیم‌های ایرانی</p>
+                </div>
+              </div>
+              <span class="badge badge-brand"><span class="live-dot"></span>فعال</span>
+            </div>
+            <p class="mt-4 text-sm leading-7 text-body">توکن‌های رنگ و تایپ، کامپوننت‌های RTL و مستندات تعاملی؛ همه‌چیز برای اینکه تیم شما دیگر رابط کاربری را از صفر نسازد.</p>
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <span class="flex gap-1.5">
+                <span class="h-4 w-4 rounded-full border border-line bg-brand-200"></span>
+                <span class="h-4 w-4 rounded-full border border-line bg-brand-300"></span>
+                <span class="h-4 w-4 rounded-full border border-line bg-brand-400"></span>
+                <span class="h-4 w-4 rounded-full border border-line bg-brand-600"></span>
+                <span class="h-4 w-4 rounded-full border border-line bg-brand-700"></span>
+              </span>
+              <span class="h-px flex-1 bg-line"></span>
+              <span class="chip-static">Tailwind</span>
+              <span class="chip-static">Vue 3</span>
+              <span class="chip-static">Design Tokens</span>
+            </div>
+            <div class="mt-5 flex items-center justify-between">
+              <a href="#platform-detail" class="link-arrow group">صفحه‌ی پلتفرم<i class="ti ti-arrow-left transition-transform group-hover:-translate-x-1"></i></a>
+              <span class="font-mono text-[10px] text-muted" dir="ltr">v2.4.0</span>
+            </div>
+          </article>
+          <article class="card card-io p-7 lg:col-span-5">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div class="flex items-center gap-4">
+                <span class="icon-tile tile-line"><i class="ti ti-chart-bar"></i></span>
+                <div>
+                  <h3 class="text-h3 text-heading">شهاب</h3>
+                  <p class="mt-0.5 text-xs text-muted">تحلیل رفتار کاربر درون‌برنامه‌ای</p>
+                </div>
+              </div>
+              <span class="badge badge-brand"><i class="ti ti-flask text-xs"></i>بتا</span>
+            </div>
+            <p class="mt-4 text-sm leading-7 text-body">رویدادها را بدون یک خط کد اضافه تعریف کنید و قیف‌های رفتاری را زنده ببینید.</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="chip-static">TypeScript</span>
+              <span class="chip-static">ClickHouse</span>
+              <span class="chip-static">Kafka</span>
+            </div>
+            <div class="mt-5"><a href="#platform-detail" class="link-arrow group">صفحه‌ی پلتفرم<i class="ti ti-arrow-left transition-transform group-hover:-translate-x-1"></i></a></div>
+          </article>
+          <article class="card card-io p-7 lg:col-span-12">
+            <div class="flex flex-wrap items-center gap-6">
+              <span class="icon-tile tile-line"><i class="ti ti-package"></i></span>
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2.5">
+                  <h3 class="text-h3 text-heading">آبنوس</h3>
+                  <span class="badge badge-line"><i class="ti ti-tools text-xs"></i>در توسعه</span>
+                </div>
+                <p class="mt-2 text-sm leading-7 text-body">فروشگاه‌ساز هدلس برای برندهایی که سرعت می‌خواهند و محدودیت پلتفرم‌های آماده را نمی‌خواهند.</p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <span class="chip-static">Next.js</span>
+                  <span class="chip-static">GraphQL</span>
+                  <span class="chip-static">Strapi</span>
+                </div>
+              </div>
+              <div class="flex flex-col items-end gap-3">
+                <span class="chip-static"><i class="ti ti-calendar-event text-xs text-muted"></i>عرضه: بهار ۱۴۰۴</span>
+                <button class="link-arrow group" data-toast="success|ثبت شد|به‌محض عرضه‌ی عمومی آبنوس خبرتان می‌کنیم.">اطلاع از عرضه<i class="ti ti-bell"></i></button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ۱۰ جزئیات پلتفرم -->
+      <section id="platform-detail" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۱۰</span>
+            <span class="kicker">الگوی صفحه</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">GET /platforms/diba</span>
+          </div>
+          <h2 class="kit-title">جزئیات پلتفرم — دیبا</h2>
+          <p class="kit-desc">مسئله / راه‌حل / امکانات در تب‌های واقعی، اسکرین‌شات با ماک مرورگر، مشخصات و استک فنی، و دکمه‌ی دمو — دقیقاً مطابق نقشه‌ی سایت.</p>
+        </header>
+        <div class="space-y-5">
+          <div class="card p-7 sm:p-8">
+            <div class="flex flex-wrap items-start justify-between gap-5">
+              <div class="flex items-center gap-4">
+                <span class="icon-tile tile-brand h-14 w-14 text-2xl"><i class="ti ti-color-swatch"></i></span>
+                <div>
+                  <div class="flex flex-wrap items-center gap-2.5">
+                    <h3 class="text-h2 text-heading">دیبا</h3>
+                    <span class="badge badge-brand"><span class="live-dot"></span>فعال</span>
+                  </div>
+                  <p class="mt-1 text-sm text-body">دیزاین‌سیستم RTL با توکن‌های معنایی و مستندات زنده</p>
+                </div>
+              </div>
+              <div class="flex flex-wrap items-center gap-2.5">
+                <button id="demoBtn" class="btn btn-primary btn-md">مشاهده‌ی دمو<i class="ti ti-external-link"></i></button>
+                <button id="sourceBtn" class="btn btn-glass btn-md"><i class="ti ti-brand-github"></i>سورس</button>
+              </div>
+            </div>
+          </div>
+          <div class="grid gap-5 lg:grid-cols-[1fr_360px]">
+            <div class="card p-7 sm:p-8" data-tabs>
+              <div class="panel flex flex-wrap gap-1 p-1.5">
+                <button class="tab is-active" data-tab="problem">مسئله</button>
+                <button class="tab" data-tab="solution">راه‌حل</button>
+                <button class="tab" data-tab="features">امکانات</button>
+              </div>
+              <div data-panel="problem" class="mt-6">
+                <p class="text-sm leading-8 text-body">هر پروژه‌ی جدید با یک پوشه‌ی CSS تازه شروع می‌شد: رنگ‌های نزدیک‌به‌هم، شعاع‌های متفاوت و دکمه‌هایی که هر بار شکل دیگری داشتند. طراحی بین Figma و کد گم می‌شد و «هم‌نوا بودن» به حافظه‌ی اعضای تیم وابسته بود.</p>
+              </div>
+              <div data-panel="solution" class="mt-6 hidden">
+                <p class="text-sm leading-8 text-body">دیبا لایه‌ی توکن معنایی را بین طراحی و کد نشاند: اسم‌هایی مثل <span class="font-mono text-xs text-accent-deep dark:text-accent" dir="ltr">brand-500</span> یا <span class="font-mono text-xs text-accent-deep dark:text-accent" dir="ltr">text-h1</span> که در فایل Tailwind و فایل Figma یکی‌اند. کامپوننت‌ها فقط با همین توکن‌ها ساخته می‌شوند — هیچ مقدار خامی در کد نیست.</p>
+              </div>
+              <div data-panel="features" class="mt-6 hidden">
+                <ul class="space-y-3.5">
+                  <li class="flex items-center gap-3 text-sm text-body"><i class="ti ti-circle-check text-base text-accent-deep dark:text-accent"></i>۴۰+ کامپوننت RTL از پیش ساخته‌شده</li>
+                  <li class="flex items-center gap-3 text-sm text-body"><i class="ti ti-circle-check text-base text-accent-deep dark:text-accent"></i>تم روشن و تاریک فقط با عوض کردن توکن‌ها</li>
+                  <li class="flex items-center gap-3 text-sm text-body"><i class="ti ti-circle-check text-base text-accent-deep dark:text-accent"></i>پشتیبانی کامل از ارقام و نیم‌فاصله‌ی فارسی</li>
+                  <li class="flex items-center gap-3 text-sm text-body"><i class="ti ti-circle-check text-base text-accent-deep dark:text-accent"></i>مستندات زنده — درست مثل همین صفحه</li>
+                </ul>
+              </div>
+            </div>
+            <div class="space-y-5">
+              <div class="card overflow-hidden p-0">
+                <div class="flex items-center gap-2 border-b border-line bg-canvas/70 px-4 py-3">
+                  <span class="h-2.5 w-2.5 rounded-full bg-brand-500/80"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-ink-300"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-brand-300"></span>
+                  <span class="ms-2 flex-1 rounded-lg border border-line bg-surface px-3 py-1 font-mono text-[10px] text-muted" dir="ltr">diba.hosseinyari.ir</span>
+                </div>
+                <div class="grid grid-cols-[56px_1fr]">
+                  <div class="flex flex-col items-center gap-3 border-e border-line bg-canvas/40 py-4">
+                    <span class="h-8 w-8 rounded-xl border border-brand-300/50 bg-brand-100"></span>
+                    <span class="h-8 w-8 rounded-xl border border-line bg-surface"></span>
+                    <span class="h-8 w-8 rounded-xl border border-line bg-surface"></span>
+                    <span class="h-8 w-8 rounded-xl border border-line bg-surface"></span>
+                  </div>
+                  <div class="space-y-4 p-4">
+                    <div class="grid grid-cols-3 gap-3">
+                      <div class="panel p-3"><p class="font-mono text-[9px] text-muted" dir="ltr">tokens</p><p class="mt-1 text-sm font-black text-heading">128</p></div>
+                      <div class="panel p-3"><p class="font-mono text-[9px] text-muted" dir="ltr">components</p><p class="mt-1 text-sm font-black text-heading">42</p></div>
+                      <div class="panel p-3"><p class="font-mono text-[9px] text-muted" dir="ltr">installs</p><p class="mt-1 text-sm font-black text-heading">3.1k</p></div>
+                    </div>
+                    <div class="panel p-4">
+                      <div class="flex items-center justify-between">
+                        <p class="text-[10px] font-bold text-body">مصرف توکن‌ها (۹۰ روز)</p>
+                        <span class="badge badge-brand">+۱۸٪</span>
+                      </div>
+                      <div class="mt-3 flex h-20 items-end gap-1.5" dir="ltr">
+                        <span class="w-3 rounded-t-md bg-brand-400/30 dark:bg-brand-300/25" style="height:35%"></span>
+                        <span class="w-3 rounded-t-md bg-brand-400/30 dark:bg-brand-300/25" style="height:55%"></span>
+                        <span class="w-3 rounded-t-md bg-brand-400/30 dark:bg-brand-300/25" style="height:40%"></span>
+                        <span class="w-3 rounded-t-md bg-brand-400/30 dark:bg-brand-300/25" style="height:70%"></span>
+                        <span class="w-3 rounded-t-md bg-brand-400/30 dark:bg-brand-300/25" style="height:50%"></span>
+                        <span class="w-3 rounded-t-md bg-brand-400/30 dark:bg-brand-300/25" style="height:85%"></span>
+                        <span class="w-3 rounded-t-md bg-brand-400/30 dark:bg-brand-300/25" style="height:60%"></span>
+                        <span class="w-3 rounded-t-md bg-brand-500 dark:bg-brand-400" style="height:95%"></span>
+                        <span class="w-3 rounded-t-md bg-brand-400/30 dark:bg-brand-300/25" style="height:75%"></span>
+                        <span class="w-3 rounded-t-md bg-brand-400/30 dark:bg-brand-300/25" style="height:100%"></span>
+                      </div>
+                    </div>
+                    <div class="space-y-2 pb-1">
+                      <span class="block h-2 w-3/4 rounded-full bg-line dark:bg-white/10"></span>
+                      <span class="block h-2 w-1/2 rounded-full bg-line dark:bg-white/10"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card p-6">
+                <p class="kicker">مشخصات</p>
+                <div class="mt-4 space-y-3.5">
+                  <div class="flex items-center justify-between text-[13px]"><span class="text-muted">وضعیت</span><span class="flex items-center gap-2 font-bold text-heading"><span class="live-dot"></span>فعال و پایدار</span></div>
+                  <div class="flex items-center justify-between text-[13px]"><span class="text-muted">نسخه</span><span class="font-mono text-xs text-heading" dir="ltr">2.4.0</span></div>
+                  <div class="flex items-center justify-between text-[13px]"><span class="text-muted">لایسنس</span><span class="font-mono text-xs text-heading" dir="ltr">MIT</span></div>
+                  <div class="flex items-center justify-between text-[13px]"><span class="text-muted">به‌روزرسانی</span><span class="font-bold text-heading">آبان ۱۴۰۳</span></div>
+                </div>
+                <div class="divider my-5"></div>
+                <p class="mb-3 text-[11px] font-bold text-muted">استک فنی</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="chip-static">Tailwind</span>
+                  <span class="chip-static">Vue 3</span>
+                  <span class="chip-static">Vite</span>
+                  <span class="chip-static">Storybook</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۱۱ وبلاگ و تک‌پست -->
+      <section id="blog" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۱۱</span>
+            <span class="kicker">الگوی صفحه</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">GET /blog · /blog/{slug}</span>
+          </div>
+          <h2 class="kit-title">یادداشت‌های فنی</h2>
+          <p class="kit-desc">لیست با یک یادداشت شاخص + ردیف‌های فشرده، و پس از آن الگوی کامل تک‌پست با نقل‌قول و بلوک کد قابل‌کپی. بلوک کد همیشه تیره می‌ماند — مثل یک ترمینال واقعی.</p>
+        </header>
+        <div class="space-y-5">
+          <article class="card card-io group p-7 sm:p-9">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="tag-brand">دیزاین‌سیستم</span>
+              <span class="text-xs text-muted">۱۲ آبان ۱۴۰۳</span>
+              <span class="h-1 w-1 rounded-full bg-ink-300"></span>
+              <span class="text-xs text-muted"><i class="ti ti-clock text-xs align-middle"></i> ۸ دقیقه مطالعه</span>
+            </div>
+            <h3 class="mt-4 text-h2 text-heading transition-colors group-hover:text-accent-deep dark:group-hover:text-accent">معماری Design Token در پروژه‌های مقیاس‌پذیر</h3>
+            <p class="mt-3 max-w-3xl text-sm leading-8 text-body">چرا هاردکد کردن رنگ در کلاس‌ها مقیاس‌پذیری طراحی را می‌کُشد — و چطور سه لایه‌ی توکن (primitive، semantic، component) این مشکل را برای همیشه حل می‌کند.</p>
+            <a href="#post" class="link-arrow group mt-5">خواندن یادداشت<i class="ti ti-arrow-left transition-transform group-hover:-translate-x-1"></i></a>
+          </article>
+          <div class="card divide-y divide-line p-2 sm:p-3">
+            <a href="#post" class="group flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-4 transition-colors hover:bg-canvas/70 dark:hover:bg-white/[0.04] sm:px-5">
+              <span class="min-w-0 flex-1">
+                <span class="block text-sm font-bold text-heading transition-colors group-hover:text-accent-deep dark:group-hover:text-accent">RTL واقعی؛ چیزی که اکثر کیت‌ها فراموش می‌کنند</span>
+                <span class="mt-1 block text-[11px] text-muted">۲۸ مهر ۱۴۰۳ · ۶ دقیقه</span>
+              </span>
+              <span class="chip-static">فرانت‌اند</span>
+              <i class="ti ti-arrow-left text-sm text-muted transition-all group-hover:-translate-x-1 group-hover:text-accent"></i>
+            </a>
+            <a href="#post" class="group flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-4 transition-colors hover:bg-canvas/70 dark:hover:bg-white/[0.04] sm:px-5">
+              <span class="min-w-0 flex-1">
+                <span class="block text-sm font-bold text-heading transition-colors group-hover:text-accent-deep dark:group-hover:text-accent">از Figma تا Tailwind؛ پلی که خودم ساختم</span>
+                <span class="mt-1 block text-[11px] text-muted">۱۴ مهر ۱۴۰۳ · ۵ دقیقه</span>
+              </span>
+              <span class="chip-static">ابزار</span>
+              <i class="ti ti-arrow-left text-sm text-muted transition-all group-hover:-translate-x-1 group-hover:text-accent"></i>
+            </a>
+            <a href="#post" class="group flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-4 transition-colors hover:bg-canvas/70 dark:hover:bg-white/[0.04] sm:px-5">
+              <span class="min-w-0 flex-1">
+                <span class="block text-sm font-bold text-heading transition-colors group-hover:text-accent-deep dark:group-hover:text-accent">کمتر، اما بهتر: مینیمالیسم در محصول</span>
+                <span class="mt-1 block text-[11px] text-muted">۳۰ شهریور ۱۴۰۳ · ۴ دقیقه</span>
+              </span>
+              <span class="chip-static">فلسفه‌ی محصول</span>
+              <i class="ti ti-arrow-left text-sm text-muted transition-all group-hover:-translate-x-1 group-hover:text-accent"></i>
+            </a>
+          </div>
+
+          <!-- الگوی تک‌پست -->
+          <div id="post" class="scroll-mt-28">
+            <div class="mb-4 flex items-center justify-between">
+              <div class="demo-label mb-0">الگوی تک‌پست</div>
+              <span class="route" dir="ltr">/blog/design-tokens</span>
+            </div>
+            <article class="card p-7 sm:p-10">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="tag-brand">دیزاین‌سیستم</span>
+                <span class="text-xs text-muted">۱۲ آبان ۱۴۰۳</span>
+                <span class="h-1 w-1 rounded-full bg-ink-300"></span>
+                <span class="text-xs text-muted"><i class="ti ti-clock text-xs align-middle"></i> ۸ دقیقه</span>
+              </div>
+              <h2 class="mt-4 text-h1 text-heading">معماری Design Token در پروژه‌های مقیاس‌پذیر</h2>
+              <p class="mt-6 text-sm leading-8 text-body">هر سیستم طراحی، پیش از آنکه کتابخانه‌ای از کامپوننت‌ها باشد، قراردادی است بین طراحی و کد. اگر این قرارداد فقط در فایل Figma بماند، دیر یا زود شکسته می‌شود.</p>
+              <p class="mt-4 text-sm leading-8 text-body">در دیبا توکن‌ها را در سه لایه تعریف کردیم: primitive برای مقادیر خام، semantic برای نقش‌ها (مثل accent یا surface) و component برای تصمیم‌های موضعی. نتیجه؟ تغییر برندینگ کل محصول، یک PR یک‌خطی شد — همین کیت هم دقیقاً با همین ساختار ساخته شده است.</p>
+              <blockquote class="mt-7 border-s-2 border-brand-400 ps-5 text-h3 text-heading">توکن، قراردادِ طراحی و کد است؛ هر جا این قرارداد شکسته شود، فرسایشِ سیستم از همان‌جا آغاز می‌شود.</blockquote>
+              <p class="mt-7 text-sm leading-8 text-body">قاعده‌ی ساده‌ای هم داریم: هیچ کامپوننتی حق ندارد مستقیم از توکن primitive استفاده کند؛ همیشه باید از لایه‌ی semantic بخرد. همین یک قاعده، ۸۰٪ ناهماهنگی‌های ما را از بین برد.</p>
+              <div class="mt-7 overflow-hidden rounded-2xl border border-ink-800 bg-ink-950">
+                <div class="flex items-center justify-between border-b border-ink-800 px-4 py-2.5">
+                  <span class="flex items-center gap-2 font-mono text-[10px] text-ink-300" dir="ltr"><i class="ti ti-terminal-2 text-xs text-brand-300"></i>tailwind.config.js</span>
+                  <button id="codeCopy" class="recipe dark:bg-white/[0.06]">کپی</button>
+                </div>
+                <pre class="overflow-x-auto p-4 font-mono text-xs leading-6 text-ink-100" dir="ltr"><code id="codeSnippet">colors: {
+  brand: { 500: '#F2542D' },    // primitive
+  accent: 'rgb(var(--c-accent))', // semantic
+}</code></pre>
+              </div>
+              <div class="mt-7 flex flex-wrap gap-2">
+                <span class="tag-brand">دیزاین‌سیستم</span>
+                <span class="tag-brand">Tailwind</span>
+                <span class="tag-brand">توکن</span>
+              </div>
+              <div class="divider my-7"></div>
+              <div class="flex flex-wrap items-center gap-4">
+                <span class="avatar h-12 w-12 text-xl">ح</span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-extrabold text-heading">حسین یاری</p>
+                  <p class="mt-0.5 text-xs text-muted">مدیر محصول · می‌نویسم تا بهتر فکر کنم</p>
+                </div>
+                <button class="btn btn-ghost btn-sm" data-toast="info|دنبال شدید|یادداشت‌های بعدی برایتان ارسال می‌شود."><i class="ti ti-rss"></i>دنبال کردن</button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۱۲ رزومه -->
+      <section id="resume" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۱۲</span>
+            <span class="kicker">الگوی صفحه</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">GET /resume</span>
+          </div>
+          <h2 class="kit-title">رزومه</h2>
+          <p class="kit-desc">نسخه‌ی خوانا در صفحه + دکمه‌ی دانلود که همین‌جا هم واقعاً کار می‌کند و فایل رزومه را می‌سازد.</p>
+        </header>
+        <div class="card p-7 sm:p-9">
+          <div class="flex flex-wrap items-start justify-between gap-5">
+            <div class="max-w-xl">
+              <h3 class="text-h2 text-heading">حسین یاری</h3>
+              <p class="mt-3 text-sm leading-8 text-body">مدیر محصول با پیشینه‌ی فرانت‌اند؛ هم می‌توانم استراتژی ببندم، هم بفهمم تیم فنی چه می‌گوید. تمرکزم روی دیزاین‌سیستم و محصولاتی است که تیم‌ها دوست دارند بسازند و کاربر دوست دارد استفاده کند.</p>
+            </div>
+            <button class="btn btn-primary btn-md resume-download"><i class="ti ti-download"></i>دانلود رزومه</button>
+          </div>
+          <div class="divider my-8"></div>
+          <div class="grid gap-10 lg:grid-cols-[1fr_300px]">
+            <div>
+              <p class="kicker">تجربه‌ی کاری</p>
+              <div class="timeline mt-6 space-y-9">
+                <div class="tl-item">
+                  <span class="tl-dot"></span>
+                  <div class="flex flex-wrap items-center gap-2.5">
+                    <h4 class="text-h3 text-heading">مدیر محصول و طراحی</h4>
+                    <span class="badge badge-brand">استودیو بومرنگ</span>
+                  </div>
+                  <p class="mt-1.5 font-mono text-[10px] text-muted" dir="ltr">1400 — now</p>
+                  <ul class="mt-3 space-y-2 text-sm leading-7 text-body">
+                    <li class="flex gap-2.5"><i class="ti ti-point-filled mt-1.5 text-xs text-accent-deep dark:text-accent"></i>رهبری دیزاین‌سیستم واحد برای ۴ محصول با ۲ میلیون کاربر</li>
+                    <li class="flex gap-2.5"><i class="ti ti-point-filled mt-1.5 text-xs text-accent-deep dark:text-accent"></i>کاهش ۳۵ درصدی زمان تحویل رابط کاربری</li>
+                  </ul>
+                </div>
+                <div class="tl-item">
+                  <span class="tl-dot"></span>
+                  <div class="flex flex-wrap items-center gap-2.5">
+                    <h4 class="text-h3 text-heading">مدیر محصول</h4>
+                    <span class="badge badge-brand">پلتفرم نگاه</span>
+                  </div>
+                  <p class="mt-1.5 font-mono text-[10px] text-muted" dir="ltr">1397 — 1400</p>
+                  <ul class="mt-3 space-y-2 text-sm leading-7 text-body">
+                    <li class="flex gap-2.5"><i class="ti ti-point-filled mt-1.5 text-xs text-accent-deep dark:text-accent"></i>رساندن محصول SaaS تحلیل داده از صفر به ۱۲ هزار کاربر فعال</li>
+                    <li class="flex gap-2.5"><i class="ti ti-point-filled mt-1.5 text-xs text-accent-deep dark:text-accent"></i>ایجاد فرایند کشف محصول برای ۳ اسکواد</li>
+                  </ul>
+                </div>
+                <div class="tl-item">
+                  <span class="tl-dot"></span>
+                  <div class="flex flex-wrap items-center gap-2.5">
+                    <h4 class="text-h3 text-heading">توسعه‌دهنده‌ی فرانت‌اند</h4>
+                    <span class="badge badge-brand">آژانس پیکسل‌پارس</span>
+                  </div>
+                  <p class="mt-1.5 font-mono text-[10px] text-muted" dir="ltr">1394 — 1397</p>
+                  <ul class="mt-3 space-y-2 text-sm leading-7 text-body">
+                    <li class="flex gap-2.5"><i class="ti ti-point-filled mt-1.5 text-xs text-accent-deep dark:text-accent"></i>پیاده‌سازی رابط کاربری بیش از ۳۰ پروژه برای برندهای داخلی</li>
+                    <li class="flex gap-2.5"><i class="ti ti-point-filled mt-1.5 text-xs text-accent-deep dark:text-accent"></i>مهاجرت تدریجی تیم از jQuery به Vue</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-5">
+              <div class="panel p-5">
+                <p class="kicker">مهارت‌ها</p>
+                <div class="mt-4 space-y-4">
+                  <div>
+                    <p class="mb-2 text-[11px] font-bold text-muted">محصول</p>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="chip-static">استراتژی</span><span class="chip-static">کشف محصول</span><span class="chip-static">OKR</span><span class="chip-static">تحلیل داده</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="mb-2 text-[11px] font-bold text-muted">طراحی</p>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="chip-static">دیزاین‌سیستم</span><span class="chip-static">UX</span><span class="chip-static">پروتوتایپ</span><span class="chip-static">Figma</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="mb-2 text-[11px] font-bold text-muted">فنی</p>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="chip-static">Tailwind</span><span class="chip-static">JavaScript</span><span class="chip-static">Vue</span><span class="chip-static">HTML/CSS</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel p-5">
+                <p class="kicker">تحصیلات و گواهی‌ها</p>
+                <div class="mt-4 space-y-4">
+                  <div class="flex items-center gap-3">
+                    <span class="icon-tile tile-line h-10 w-10 rounded-xl text-base"><i class="ti ti-school"></i></span>
+                    <div>
+                      <p class="text-[13px] font-bold text-heading">کارشناسی مهندسی نرم‌افزار</p>
+                      <p class="mt-0.5 font-mono text-[10px] text-muted" dir="ltr">1390 — 1394</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="icon-tile tile-line h-10 w-10 rounded-xl text-base"><i class="ti ti-award"></i></span>
+                    <div>
+                      <p class="text-[13px] font-bold text-heading">CSPO — مالکیت محصول</p>
+                      <p class="mt-0.5 font-mono text-[10px] text-muted" dir="ltr">1398</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۱۳ تماس -->
+      <section id="contact" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۱۳</span>
+            <span class="kicker">الگوی صفحه</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">GET /contact</span>
+          </div>
+          <h2 class="kit-title">تماس</h2>
+          <p class="kit-desc">فرم ساده (نام، ایمیل، پیام) با اعتبارسنجی واقعی و حالت موفقیت — کنار کارت‌های اطلاعات تماس.</p>
+        </header>
+        <div class="grid gap-5 lg:grid-cols-[340px_1fr]">
+          <div class="space-y-5">
+            <div class="card p-6">
+              <p class="kicker">راه‌های ارتباطی</p>
+              <div class="mt-5 space-y-5">
+                <div class="flex items-center gap-3.5">
+                  <span class="icon-tile tile-brand"><i class="ti ti-mail"></i></span>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-[11px] text-muted">ایمیل</p>
+                    <a href="mailto:hi@hosseinyari.ir" class="block font-mono text-xs text-heading transition-colors hover:text-accent-deep dark:hover:text-accent" dir="ltr">hi@hosseinyari.ir</a>
+                  </div>
+                  <button class="icon-btn h-8 w-8 rounded-lg text-xs" data-copy="hi@hosseinyari.ir" aria-label="کپی ایمیل"><i class="ti ti-copy"></i></button>
+                </div>
+                <div class="flex items-center gap-3.5">
+                  <span class="icon-tile tile-line"><i class="ti ti-brand-telegram"></i></span>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-[11px] text-muted">تلگرام</p>
+                    <p class="block font-mono text-xs text-heading" dir="ltr">@hosseinyari</p>
+                  </div>
+                  <button class="icon-btn h-8 w-8 rounded-lg text-xs" data-copy="@hosseinyari" aria-label="کپی آیدی تلگرام"><i class="ti ti-copy"></i></button>
+                </div>
+                <div class="flex items-center gap-3.5">
+                  <span class="icon-tile tile-line"><i class="ti ti-map-pin"></i></span>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-[11px] text-muted">موقعیت</p>
+                    <p class="text-xs font-bold text-heading">تهران، ایران</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card p-6">
+              <div class="flex items-center gap-2.5">
+                <span class="live-dot"></span>
+                <p class="text-sm font-bold text-heading">پذیرش پروژه باز است</p>
+              </div>
+              <p class="mt-3 text-xs leading-6 text-body">معمولاً ظرف ۲۴ ساعت پاسخ می‌دهم. اگر موضوع پروژه‌ی محصولی یا دیزاین‌سیستم است، یک خط درباره‌ی چالش فعلی‌تان هم بنویسید.</p>
+              <div class="mt-4 flex gap-2">
+                <button class="icon-btn h-9 w-9 rounded-lg text-sm" data-demo-link="GitHub" aria-label="گیت‌هاب"><i class="ti ti-brand-github"></i></button>
+                <button class="icon-btn h-9 w-9 rounded-lg text-sm" data-demo-link="LinkedIn" aria-label="لینکدین"><i class="ti ti-brand-linkedin"></i></button>
+                <button class="icon-btn h-9 w-9 rounded-lg text-sm" data-demo-link="Telegram" aria-label="تلگرام"><i class="ti ti-brand-telegram"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="card p-7 sm:p-8">
+            <div id="contactFormWrap">
+              <p class="kicker">فرم تماس</p>
+              <h3 class="mt-2 text-h3 text-heading">برایم بنویسید</h3>
+              <form id="contactForm" class="mt-6 space-y-5" novalidate>
+                <div class="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label class="label" for="cf-name">نام</label>
+                    <input id="cf-name" class="input" placeholder="نام شما">
+                    <p class="hint-error" data-err="name"><i class="ti ti-alert-circle text-xs"></i>نام باید حداقل ۳ حرف باشد.</p>
+                  </div>
+                  <div>
+                    <label class="label" for="cf-email">ایمیل</label>
+                    <input id="cf-email" type="email" class="input" placeholder="you@example.com" dir="ltr">
+                    <p class="hint-error" data-err="email"><i class="ti ti-alert-circle text-xs"></i>قالب ایمیل معتبر نیست.</p>
+                  </div>
+                </div>
+                <div>
+                  <label class="label" for="cf-message">پیام</label>
+                  <textarea id="cf-message" rows="5" class="input resize-none leading-7" placeholder="از محصول‌تان و چالش‌تان بگویید…"></textarea>
+                  <p class="hint-error" data-err="message"><i class="ti ti-alert-circle text-xs"></i>پیام باید حداقل ۱۰ حرف باشد.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-4">
+                  <button type="submit" id="cf-submit" class="btn btn-primary btn-md"><i class="ti ti-send"></i><span>ارسال پیام</span></button>
+                  <p class="hint mt-0">با زدن ارسال، رفتار اعتبارسنجی و موفقیت را می‌بینید.</p>
+                </div>
+              </form>
+            </div>
+            <div id="contactSuccess" class="hidden py-10 text-center">
+              <span class="icon-tile tile-brand mx-auto h-16 w-16 text-3xl"><i class="ti ti-circle-check"></i></span>
+              <h3 class="mt-5 text-h2 text-heading">پیام‌تان رسید</h3>
+              <p class="mx-auto mt-3 max-w-sm text-sm leading-7 text-body">ممنون که نوشتید؛ معمولاً ظرف ۲۴ ساعت پاسخ می‌دهم. اگر عجله دارید، تلگرام سریع‌تر است.</p>
+              <button id="contactReset" class="btn btn-glass btn-md mt-6">ارسال پیام دیگر</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۱۴ بازخورد -->
+      <section id="feedback" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۱۴</span>
+            <span class="kicker">سیستم</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">toast · alert · modal · empty</span>
+          </div>
+          <h2 class="kit-title">بازخورد و حالت‌ها</h2>
+          <p class="kit-desc">توست، هشدار درون‌صفحه‌ای، مودال شیشه‌ای و حالت خالی. در این پالتِ تک‌لهجه، تفکیکِ حالت‌ها با شدتِ رنگ و آیکون انجام می‌شود: Brand 100 برای موفقیت، Brand 500/700 برای هشدار و Line برای خنثی.</p>
+        </header>
+        <div class="grid gap-5 lg:grid-cols-2">
+          <div class="demo-block">
+            <div class="demo-label">هشدار درون‌صفحه‌ای<button class="recipe" data-copy="alert alert-brand">alert · alert-brand</button></div>
+            <div class="space-y-3">
+              <div class="alert alert-brand">
+                <i class="ti ti-circle-check mt-0.5 text-lg text-accent-deep dark:text-accent"></i>
+                <div><p class="text-sm font-bold text-heading">رزومه دانلود شد.</p><p class="mt-0.5 text-xs text-body">فایل در پوشه‌ی Downloads شماست.</p></div>
+              </div>
+              <div class="alert alert-deep">
+                <i class="ti ti-alert-circle mt-0.5 text-lg text-accent-deep dark:text-accent"></i>
+                <div><p class="text-sm font-bold text-heading">ارسال پیام ناموفق بود.</p><p class="mt-0.5 text-xs text-body">اتصال اینترنت را بررسی کنید و دوباره تلاش کنید.</p></div>
+              </div>
+              <div class="alert alert-line">
+                <i class="ti ti-info-circle mt-0.5 text-lg text-body"></i>
+                <div><p class="text-sm font-bold text-heading">نسخه‌ی ۱.۱ منتشر شد.</p><p class="mt-0.5 text-xs text-body">پالت روشن + مش گرادیان + تم تاریک مشتق‌شده.</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-5">
+            <div class="demo-block">
+              <div class="demo-label">توست</div>
+              <div class="flex flex-wrap gap-3">
+                <button class="btn btn-glass btn-sm" data-toast="success|کپی شد|متن توکن در کلیپ‌بورد است.">موفقیت</button>
+                <button class="btn btn-glass btn-sm" data-toast="error|ارسال نشد|اتصال اینترنت را بررسی کنید.">خطا</button>
+                <button class="btn btn-glass btn-sm" data-toast="info|نسخه‌ی ۱.۱|این کیت، زنده است.">اطلاع</button>
+              </div>
+            </div>
+            <div class="demo-block">
+              <div class="demo-label">مودال<button class="recipe" data-copy="glass rounded-3xl">glass · rounded-3xl</button></div>
+              <button class="btn btn-primary btn-md" data-open-modal><i class="ti ti-share"></i>باز کردن مودال</button>
+            </div>
+          </div>
+          <div class="demo-block lg:col-span-2">
+            <div class="demo-label">حالت خالی (Empty State)</div>
+            <div class="flex flex-col items-center py-6 text-center">
+              <span class="icon-tile tile-line h-16 w-16 text-3xl"><i class="ti ti-notes"></i></span>
+              <h4 class="mt-5 text-h3 text-heading">هنوز یادداشتی وجود ندارد</h4>
+              <p class="mt-2 max-w-sm text-sm leading-7 text-body">وقتی اولین یادداشت فنی منتشر شد، همین‌جا لیست می‌شود. می‌توانید از الگوی وبلاگ شروع کنید.</p>
+              <a href="#blog" class="btn btn-glass btn-md mt-6">رفتن به وبلاگ</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۱۵ فوتر -->
+      <section id="footer" class="scroll-mt-28" data-reveal>
+        <header class="kit-head">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-xs font-bold text-accent-deep dark:text-accent">۱۵</span>
+            <span class="kicker">الگوی صفحه</span>
+            <span class="h-px flex-1 bg-line"></span>
+            <span class="route" dir="ltr">layout: footer</span>
+          </div>
+          <h2 class="kit-title">فوتر</h2>
+          <p class="kit-desc">معرفی، نقشه‌ی سایت و کپی‌رایت — همه‌ی لینک‌ها در همین صفحه کار می‌کنند.</p>
+        </header>
+        <footer class="card overflow-hidden p-8 sm:p-10">
+          <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+            <div>
+              <div class="flex items-center gap-2.5">
+                <span class="avatar h-10 w-10 rounded-xl text-lg">ح</span>
+                <div><p class="text-sm font-extrabold text-heading">حسین یاری</p><p class="text-[11px] text-muted">محصول می‌سازم و می‌نویسم.</p></div>
+              </div>
+              <p class="mt-4 max-w-xs text-xs leading-6 text-body">این فوتر هم مثل بقیه‌ی صفحه، فقط با توکن‌های همین کیت ساخته شده — بدون حتی یک استایل اضافه.</p>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold text-muted">صفحات</p>
+              <ul class="mt-4 space-y-2.5 text-[13px]">
+                <li><a href="#hero" class="crumb">خانه</a></li>
+                <li><a href="#platforms" class="crumb">پلتفرم‌ها</a></li>
+                <li><a href="#resume" class="crumb">رزومه</a></li>
+                <li><a href="#blog" class="crumb">وبلاگ</a></li>
+                <li><a href="#contact" class="crumb">تماس</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold text-muted">پلتفرم‌ها</p>
+              <ul class="mt-4 space-y-2.5 text-[13px]">
+                <li><a href="#platform-detail" class="crumb">دیبا</a></li>
+                <li><a href="#platforms" class="crumb">شهاب</a></li>
+                <li><a href="#platforms" class="crumb">آبنوس</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold text-muted">ارتباط</p>
+              <ul class="mt-4 space-y-2.5 text-[13px]">
+                <li><a href="mailto:hi@hosseinyari.ir" class="crumb">ایمیل</a></li>
+                <li><button class="crumb" data-demo-link="GitHub">گیت‌هاب</button></li>
+                <li><button class="crumb" data-demo-link="LinkedIn">لینکدین</button></li>
+                <li><button class="crumb" data-demo-link="Telegram">تلگرام</button></li>
+              </ul>
+            </div>
+          </div>
+          <div class="divider my-8"></div>
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <p class="text-xs text-muted">© ۱۴۰۳ حسین یاری — ساخته‌شده با همین کیت.</p>
+            <div class="flex items-center gap-3">
+              <span class="flex items-center gap-1.5 text-[11px] text-muted"><i class="ti ti-heart text-xs text-accent-deep dark:text-accent"></i>Tailwind + Tabler</span>
+              <button id="toTop" class="icon-btn" aria-label="بازگشت به بالا"><i class="ti ti-arrow-up"></i></button>
+            </div>
+          </div>
+        </footer>
+      </section>
+
+      <div class="pb-4 pt-2 text-center" data-reveal>
+        <p class="text-xs leading-7 text-muted">پایان نسخه‌ی ۱.۱ — همه‌ی آنچه دیدید، فقط با توکن‌ها و کلاس‌های همین کیت ساخته شد؛ در هر دو تم.</p>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- ── مودال ──────────────────────────────────────────── -->
+<div id="modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
+  <div class="absolute inset-0 bg-ink-950/40 backdrop-blur-sm" data-close-modal></div>
+  <div class="card relative w-full max-w-md p-6 animate-modal-in">
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="icon-tile tile-brand"><i class="ti ti-share"></i></span>
+        <div>
+          <h3 class="text-h3 text-heading">اشتراک‌گذاری پیوند</h3>
+          <p class="mt-0.5 text-xs text-muted">این صفحه را با دیگران بفرستید</p>
+        </div>
+      </div>
+      <button class="icon-btn h-8 w-8 rounded-lg text-sm" data-close-modal aria-label="بستن"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="mt-5 flex items-center gap-2">
+      <input id="shareInput" readonly value="https://hosseinyari.ir/" dir="ltr" class="input font-mono text-xs">
+      <button id="copyShare" class="btn btn-primary btn-md shrink-0"><i class="ti ti-copy"></i>کپی</button>
+    </div>
+    <p class="hint">با کلید Esc یا کلیک روی پس‌زمینه هم بسته می‌شود.</p>
+  </div>
+</div>
+
+<!-- ── جعبه‌ی توست ─────────────────────────────────────── -->
+<div id="toastBox" class="pointer-events-none fixed bottom-6 end-6 z-[90] flex flex-col gap-3"></div>
+
+<script>
+/* ── ابزارها ─────────────────────────────────────────── */
+const $  = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+const FA = '۰۱۲۳۴۵۶۷۸۹';
+const toFa = v => String(v).replace(/\d/g, d => FA[d]);
+
+/* ── سیستم توست ──────────────────────────────────────── */
+const toastIcons = { success:'ti-circle-check', error:'ti-alert-circle', info:'ti-info-circle' };
+const toastTiles = { success:'tile-brand', error:'tile-deep', info:'tile-line' };
+const toastBox = $('#toastBox');
+function toast(type = 'info', title = '', msg = '') {
+  const el = document.createElement('div');
+  el.className = 'glass pointer-events-auto relative flex w-[22rem] max-w-[calc(100vw-3rem)] items-start gap-3 overflow-hidden rounded-2xl p-4 animate-toast-in';
+  el.innerHTML = `
+    <span class="icon-tile ${toastTiles[type]} h-9 w-9 rounded-xl text-base"><i class="ti ${toastIcons[type]}"></i></span>
+    <div class="min-w-0 flex-1">
+      ${title ? `<p class="text-sm font-bold text-heading">${title}</p>` : ''}
+      ${msg ? `<p class="mt-0.5 text-xs leading-5 text-body">${msg}</p>` : ''}
+    </div>
+    <button class="t-close mt-0.5 text-muted transition-colors hover:text-heading"><i class="ti ti-x text-sm"></i></button>
+    <span class="absolute bottom-0 start-0 h-0.5 bg-brand-500/70 animate-bar"></span>`;
+  toastBox.appendChild(el);
+  const kill = () => { if (el.dataset.dead) return; el.dataset.dead = 1; el.classList.add('animate-toast-out'); setTimeout(() => el.remove(), 260); };
+  el.querySelector('.t-close').addEventListener('click', kill);
+  setTimeout(kill, 4000);
+}
+
+/* ── تعویض تم (روشن پایه / تاریک مشتق‌شده) ─────────────── */
+const themeIcon = $('#themeIcon');
+function applyTheme(dark) {
+  document.documentElement.classList.toggle('dark', dark);
+  themeIcon.className = 'ti ' + (dark ? 'ti-sun' : 'ti-moon');
+}
+function toggleTheme() {
+  const dark = !document.documentElement.classList.contains('dark');
+  document.documentElement.classList.add('theme-anim');
+  applyTheme(dark);
+  try { localStorage.setItem('hy-theme', dark ? 'dark' : 'light'); } catch (e) {}
+  setTimeout(() => document.documentElement.classList.remove('theme-anim'), 500);
+  toast('info', dark ? 'تم تاریک' : 'تم روشن', dark ? 'از همان پالت — روی سطح‌های جوهر.' : 'Canvas و Surface — پالت اصلی کیت.');
+}
+document.addEventListener('click', e => { if (e.target.closest('[data-theme-toggle]')) toggleTheme(); });
+applyTheme(document.documentElement.classList.contains('dark'));
+
+/* ── کپی، توست و پیوند نمونه (delegate) ──────────────── */
+async function copyText(t) {
+  try { await navigator.clipboard.writeText(t); }
+  catch {
+    const x = document.createElement('textarea');
+    x.value = t; x.style.position = 'fixed'; x.style.opacity = '0';
+    document.body.appendChild(x); x.select();
+    try { document.execCommand('copy'); } catch (_) {}
+    x.remove();
+  }
+  return t;
+}
+document.addEventListener('click', async e => {
+  const cp = e.target.closest('[data-copy]');
+  if (cp) { const v = await copyText(cp.dataset.copy); toast('success', 'کپی شد', v.length > 44 ? v.slice(0, 44) + '…' : v); return; }
+  const ts = e.target.closest('[data-toast]');
+  if (ts) { const [type, title, msg] = ts.dataset.toast.split('|'); toast(type || 'info', title || '', msg || ''); return; }
+  const dl = e.target.closest('[data-demo-link]');
+  if (dl) { toast('info', 'پیوند نمونه', 'در سایت نهایی، این دکمه به ' + dl.dataset.demoLink + ' وصل می‌شود.'); }
+});
+
+/* ── ساعت تهران ───────────────────────────────────────── */
+const clockTime = $('#clockTime'), clockDate = $('#clockDate');
+function tick() {
+  const now = new Date();
+  clockTime.textContent = now.toLocaleTimeString('fa-IR', { hour12: false, timeZone: 'Asia/Tehran' });
+  clockDate.textContent = now.toLocaleDateString('fa-IR', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) + ' · تهران';
+}
+tick(); setInterval(tick, 1000);
+
+/* ── اسکرول‌اسپای + نوار پیشرفت ──────────────────────── */
+const kitLinks = $$('.kit-link');
+const secIds = kitLinks.map(l => l.getAttribute('href').slice(1));
+const barFill = $('#barFill');
+function onScroll() {
+  const pos = scrollY + 200;
+  let cur = secIds[0];
+  for (const id of secIds) { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top + scrollY <= pos) cur = id; }
+  kitLinks.forEach(l => l.classList.toggle('is-active', l.getAttribute('href') === '#' + cur));
+  const h = document.documentElement.scrollHeight - innerHeight;
+  barFill.style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + '%';
+}
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+/* ── جست‌وجوی سایدبار ─────────────────────────────────── */
+const kitSearch = $('#kitSearch'), kitCount = $('#kitSearchCount');
+kitSearch.addEventListener('input', () => {
+  const q = kitSearch.value.trim();
+  let n = 0;
+  kitLinks.forEach(l => { const ok = !q || l.textContent.includes(q); l.classList.toggle('hidden', !ok); if (ok) n++; });
+  $$('#kitNav .kit-group').forEach(g => {
+    const vis = $$('.kit-link', g).some(l => !l.classList.contains('hidden'));
+    g.classList.toggle('hidden', !vis);
+  });
+  kitCount.textContent = q ? (n ? toFa(n) + ' مورد پیدا شد' : 'موردی پیدا نشد') : '';
+});
+
+/* ── نمایان‌شدن هنگام اسکرول ─────────────────────────── */
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(es => es.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add('animate-fade-up'); io.unobserve(en.target); }
+  }), { threshold: 0.05 });
+  $$('[data-reveal]').forEach(el => { el.classList.add('opacity-0'); io.observe(el); });
+}
+
+/* ── تب‌های عمومی ─────────────────────────────────────── */
+ $$('[data-tabs]').forEach(box => {
+  box.addEventListener('click', e => {
+    const btn = e.target.closest('.tab'); if (!btn) return;
+    $$('.tab', box).forEach(t => t.classList.toggle('is-active', t === btn));
+    $$('[data-panel]', box).forEach(p => p.classList.toggle('hidden', p.dataset.panel !== btn.dataset.tab));
+  });
+});
+
+/* ── تب فیلتر پلتفرم‌ها ───────────────────────────────── */
+const fTabs = $$('#filterTabs .tab'), fTiles = $$('#filterGrid > *');
+fTabs.forEach(t => t.addEventListener('click', () => {
+  fTabs.forEach(x => x.classList.toggle('is-active', x === t));
+  const f = t.dataset.filter;
+  fTiles.forEach(el => el.classList.toggle('hidden', f !== 'all' && el.dataset.status !== f));
+}));
+
+/* ── صفحه‌بندی ────────────────────────────────────────── */
+ $$('.pager').forEach(pg => {
+  const nums = $$('.page-btn[data-page]', pg);
+  const set = n => { nums.forEach(b => b.classList.toggle('is-active', +b.dataset.page === n)); pg.dataset.current = n; };
+  pg.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.page) set(+b.dataset.page);
+    else { const d = b.dataset.dir === 'next' ? 1 : -1; set(Math.min(nums.length, Math.max(1, +pg.dataset.current + d))); }
+    toast('info', 'صفحه‌ی ' + toFa(pg.dataset.current), 'الگوی صفحه‌بندی؛ در سایت واقعی لیست از سرور می‌آید.');
+  });
+});
+
+/* ── سوییچ و چیپ ─────────────────────────────────────── */
+ $$('.switch').forEach(s => s.addEventListener('click', () => {
+  s.classList.toggle('is-on');
+  s.setAttribute('aria-checked', s.classList.contains('is-on'));
+}));
+ $$('.chip').forEach(c => c.addEventListener('click', () => c.classList.toggle('is-on')));
+
+/* ── شمارنده‌ی پیام ───────────────────────────────────── */
+const fMsg = $('#fMsg'), msgCount = $('#msgCount');
+fMsg.addEventListener('input', () => { msgCount.textContent = toFa(fMsg.value.length) + ' / ۵۰۰'; });
+
+/* ── چرخش نقش‌ها در هیرو ──────────────────────────────── */
+const roleEl = $('#role');
+const roles = ['مدیر محصول', 'متخصص دیزاین‌سیستم', 'طراح تجربه‌ی کاربری', 'توسعه‌دهنده‌ی فرانت‌اند'];
+let ri = 0;
+setInterval(() => {
+  roleEl.style.opacity = '0'; roleEl.style.transform = 'translateY(6px)';
+  setTimeout(() => { ri = (ri + 1) % roles.length; roleEl.textContent = roles[ri]; roleEl.style.opacity = '1'; roleEl.style.transform = 'translateY(0)'; }, 320);
+}, 3200);
+
+/* ── دکمه‌ی لودینگ ────────────────────────────────────── */
+const loadBtn = $('#loadingDemo');
+const loadHTML = loadBtn.innerHTML;
+loadBtn.addEventListener('click', () => {
+  if (loadBtn.disabled) return;
+  loadBtn.disabled = true;
+  loadBtn.innerHTML = '<i class="ti ti-loader animate-spin"></i><span>در حال ارسال…</span>';
+  setTimeout(() => {
+    loadBtn.innerHTML = '<i class="ti ti-circle-check"></i><span>ارسال شد</span>';
+    toast('success', 'فرم ارسال شد', 'پاسخ به ایمیل شما فرستاده می‌شود.');
+    setTimeout(() => { loadBtn.disabled = false; loadBtn.innerHTML = loadHTML; }, 1500);
+  }, 1400);
+});
+
+/* ── دانلود واقعی رزومه ──────────────────────────────── */
+const RESUME_MD = `# حسین یاری
+مدیر محصول · متخصص دیزاین‌سیستم
+تهران، ایران — hi@hosseinyari.ir
+
+## تجربه
+- مدیر محصول و طراحی — استودیو بومرنگ (۱۴۰۰ تا اکنون)
+- مدیر محصول — پلتفرم نگاه (۱۳۹۷ تا ۱۴۰۰)
+- توسعه‌دهنده‌ی فرانت‌اند — آژانس پیکسل‌پارس (۱۳۹۴ تا ۱۳۹۷)
+
+## مهارت‌ها
+محصول: استراتژی، کشف محصول، OKR، تحلیل داده
+طراحی: دیزاین‌سیستم، UX، پروتوتایپ، Figma
+فنی: Tailwind، JavaScript، Vue، HTML/CSS
+
+## تحصیلات
+کارشناسی مهندسی نرم‌افزار (۱۳۹۰–۱۳۹۴)`;
+ $$('.resume-download').forEach(b => b.addEventListener('click', () => {
+  const blob = new Blob(['\ufeff' + RESUME_MD], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'Hossein-Yari-Resume.md';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  toast('success', 'رزومه دانلود شد', 'فایل Hossein-Yari-Resume.md در پوشه‌ی Downloads.');
+}));
+
+/* ── دمو و سورس پلتفرم ────────────────────────────────── */
+ $('#demoBtn').addEventListener('click', () => toast('info', 'دموی زنده', 'در سایت نهایی، این دکمه به diba.hosseinyari.ir می‌رود.'));
+ $('#sourceBtn').addEventListener('click', async () => {
+  await copyText('https://github.com/hosseinyari/diba');
+  toast('success', 'مخزن کپی شد', 'آدرس گیت‌هاب دیبا در کلیپ‌بورد شماست.');
+});
+
+/* ── کپی بلوک کد ─────────────────────────────────────── */
+ $('#codeCopy').addEventListener('click', async () => {
+  await copyText($('#codeSnippet').textContent);
+  toast('success', 'کد کپی شد', 'tailwind.config.js — بخش colors');
+});
+
+/* ── فرم تماس ────────────────────────────────────────── */
+const cForm = $('#contactForm');
+cForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const rules = {
+    'cf-name':    v => v.trim().length >= 3,
+    'cf-email':   v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
+    'cf-message': v => v.trim().length >= 10,
+  };
+  let firstBad = null;
+  Object.keys(rules).forEach(id => {
+    const inp = document.getElementById(id);
+    const err = $(`[data-err="${id.replace('cf-', '')}"]`);
+    const ok = rules[id](inp.value);
+    inp.classList.toggle('input-error', !ok);
+    err.classList.toggle('hidden', ok);
+    if (!ok && !firstBad) firstBad = inp;
+  });
+  if (firstBad) { firstBad.focus(); toast('error', 'فرم کامل نیست', 'فیلدهای مشخص‌شده را بررسی کنید.'); return; }
+  const btn = $('#cf-submit');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader animate-spin"></i><span>در حال ارسال…</span>';
+  setTimeout(() => {
+    $('#contactFormWrap').classList.add('hidden');
+    const ok = $('#contactSuccess');
+    ok.classList.remove('hidden'); ok.classList.add('animate-fade-up');
+    toast('success', 'پیام ثبت شد', 'معمولاً ظرف ۲۴ ساعت پاسخ می‌گیرید.');
+  }, 1200);
+});
+ $$('#contactForm input, #contactForm textarea').forEach(i => i.addEventListener('input', () => {
+  i.classList.remove('input-error');
+  const err = $(`[data-err="${i.id.replace('cf-', '')}"]`);
+  if (err) err.classList.add('hidden');
+}));
+ $('#contactReset').addEventListener('click', () => {
+  cForm.reset();
+  const btn = $('#cf-submit');
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-send"></i><span>ارسال پیام</span>';
+  $('#contactSuccess').classList.add('hidden');
+  $('#contactFormWrap').classList.remove('hidden');
+});
+
+/* ── مودال ───────────────────────────────────────────── */
+const modal = $('#modal');
+const openModal  = () => { modal.classList.remove('hidden'); modal.classList.add('flex'); document.body.style.overflow = 'hidden'; };
+const closeModal = () => { modal.classList.add('hidden'); modal.classList.remove('flex'); document.body.style.overflow = ''; };
+ $$('[data-open-modal]').forEach(b => b.addEventListener('click', openModal));
+modal.addEventListener('click', e => { if (e.target.closest('[data-close-modal]')) closeModal(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('flex')) closeModal(); });
+ $('#copyShare').addEventListener('click', async () => {
+  await copyText($('#shareInput').value);
+  toast('success', 'لینک کپی شد', 'پیوند پروفایل آماده‌ی اشتراک است.');
+});
+
+/* ── منوی موبایل ─────────────────────────────────────── */
+const menuBtn = $('#menuBtn'), mMenu = $('#mobileMenu');
+menuBtn.addEventListener('click', () => { mMenu.classList.toggle('hidden'); mMenu.classList.toggle('flex'); });
+ $$('#mobileMenu a').forEach(a => a.addEventListener('click', () => { mMenu.classList.add('hidden'); mMenu.classList.remove('flex'); }));
+
+/* ── بازگشت به بالا ──────────────────────────────────── */
+ $('#toTop').addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ── نور گرم تعقیب‌کننده‌ی موس (روی مش) ──────────────── */
+const light = $('#cursorLight');
+if (matchMedia('(pointer:fine)').matches) {
+  let tx = innerWidth * .6, ty = innerHeight * .35, cx = tx, cy = ty;
+  addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; });
+  (function loop() {
+    cx += (tx - cx) * .055; cy += (ty - cy) * .055;
+    light.style.transform = `translate(${cx - 288}px, ${cy - 288}px)`;
+    requestAnimationFrame(loop);
+  })();
+}
+</script>
+</body>
+</html>

@@ -25,3 +25,4 @@ Thumbs.db
 
 # ابزار ساخت
 /build-tools/node_modules
+/storage/app/backups
