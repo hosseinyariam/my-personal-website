@@ -59,7 +59,7 @@ class CreateAdminUser extends Command
 
         // رمز: از متغیر محیطی یا پرسش مخفی
         $password = $this->option('env-password')
-            ? (string) env('ADMIN_PASSWORD')
+            ? (string) config('app.admin_password')
             : (string) $this->secret('رمز عبور (هنگام تایپ نمایش داده نمی‌شود)');
 
         if (mb_strlen($password) < 12) {

@@ -55,9 +55,16 @@ class ProductionSeeder extends Seeder
      */
     private function seedFirstAdmin(): void
     {
+        // ── چرا از config و نه env ──
+        // با `config:cache` (که در تولید همیشه فعال است)، `env()`
+        // بیرون از فایل‌های config مقدار null برمی‌گرداند. نسخه‌ی
+        // اول این کد `env('ADMIN_PASSWORD')` می‌خواند و در تولید
+        // همیشه خالی می‌گرفت — یعنی کاربر مدیر هرگز ساخته نمی‌شد
+        // بدون اینکه خطای روشنی بدهد. مقادیر از config می‌آیند که
+        // یک‌بار در زمان کش از env پر می‌شود.
         $email = trim((string) config('app.admin_emails', ''));
-        $name = trim((string) env('ADMIN_NAME', ''));
-        $password = (string) env('ADMIN_PASSWORD', '');
+        $name = trim((string) config('app.admin_name', ''));
+        $password = (string) config('app.admin_password', '');
 
         // فهرست می‌تواند چند ایمیل با کاما داشته باشد؛ برای ساخت کاربر
         // اولین ایمیل معتبر کافی است (بقیه صرفاً مجاز به ورود می‌شوند).
