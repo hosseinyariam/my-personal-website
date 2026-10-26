@@ -5,6 +5,18 @@
 
     RewriteEngine On
 
+    # ── اجبار HTTPS ──────────────────────────────────────────
+    # چرا لازم است: روی هاست اشتراکی، http و https هر دو پاسخ می‌دهند.
+    # نتیجه: دو نسخه از سایت با محتوای یکسان — محتوای تکراری که SEO را
+    # ضعیف می‌کند، و هشدار «اتصال ناامن» در مرورگر.
+    #
+    # شرط `%{HTTP:X-Forwarded-Proto} !https` برای هاست‌هایی است که SSL
+    # در لایه‌ی پروکسی ترمینیت می‌شود و Apache درخواست را http می‌بیند.
+    # بدون این شرط، حلقه‌ی بی‌پایان ریدایرکت ساخته می‌شود.
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -22,4 +34,60 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+</IfModule>
+
+# ── فشرده‌سازی ────────────────────────────────────────────────
+# الزام عملکردی: کاهش حجم انتقال برای مخاطبی که اتصال متغیر دارد.
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE application/xml application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ── سیاست کش ──────────────────────────────────────────────────
+# دارایی‌های هش‌دار Vite و فونت‌ها تغییرناپذیرند: نام فایل با هر
+# تغییر عوض می‌شود، پس کش طولانی امن است.
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # دارایی‌های هش‌دار — کش یک‌ساله
+    <FilesMatch "\.(css|js|woff2?|ttf|otf)$">
+        ExpiresDefault "access plus 1 year"
+        Header set Cache-Control "public, immutable"
+    </FilesMatch>
+
+    # تصاویر — کش یک‌ماهه (ممکن است جایشان عوض شود)
+    <FilesMatch "\.(png|jpe?g|webp|avif|gif|svg|ico)$">
+        ExpiresDefault "access plus 1 month"
+    </FilesMatch>
+
+    # HTML هرگز کش نمی‌شود — محتوا از پنل می‌آید و باید فوری دیده شود.
+    # این تصمیم آگاهانه است: کش HTML یعنی مدیر محتوا را عوض می‌کند و
+    # بازدیدکننده نسخه‌ی قبلی را می‌بیند.
+    <FilesMatch "\.(html|php)$">
+        ExpiresDefault "access plus 0 seconds"
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ── مسدودسازی فایل‌های حساس ──────────────────────────────────
+# این فایل‌ها در docroot نیستند ولی این لایه‌ی دفاعی دوم است: اگر
+# روزی کسی چیدمان مسیرها را عوض کرد، دسترسی به راز بسته می‌ماند.
+<FilesMatch "^\.env|\.env\.|composer\.(json|lock)$|\.git">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ── هدرهای امنیتی در لایه‌ی وب‌سرور ─────────────────────────
+# این‌ها در middleware لاراول هم ست می‌شوند. تکرار عمدی است: اگر
+# لاراول به هر دلیلی کد ۵۰۰ بدهد، وب‌سرور هنوز هدرها را می‌فرستد.
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
 </IfModule>
