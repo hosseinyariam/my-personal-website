@@ -26,6 +26,23 @@ use App\Models\TimelineEvent;
  */
 function seedPublicSite(): void
 {
+    // کاربر مدیر — چون `app.admin_emails` در phpunit.xml ست شده است،
+    // این کاربر واقعاً مجاز به ورود به پنل است. بدون آن، فرمان
+    // `site:health` به‌درستی «هیچ مدیر فعالی نیست» گزارش می‌کرد و
+    // تست‌های دسترسی پنل بی‌معنا می‌شدند.
+    //
+    // توجه: این یک کاربر تست است، نه seed تولید. روی هاست، مدیر
+    // واقعی از `ProductionSeeder` و فقط از متغیرهای محیطی ساخته می‌شود.
+    \App\Models\User::firstOrCreate(
+        ['email' => 'admin@hosseinyariam.test'],
+        [
+            'name' => 'مدیر تست',
+            'password' => 'TestPassword12345!',
+            'is_active' => true,
+            'email_verified_at' => now(),
+        ]
+    );
+
     // ماژول‌ها — همه روشن (حالت تولید پس از seed)
     foreach (['biography', 'projects', 'products', 'companies', 'notes', 'timeline'] as $key) {
         Module::create(['key' => $key, 'name' => $key, 'is_enabled' => true]);

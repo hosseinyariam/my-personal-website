@@ -42,20 +42,28 @@ trait Publishable
      *
      * `null` یعنی «این مدل وضعیت انتشار ندارد و انتشارش فقط با
      * published_at سنجیده می‌شود» — مورد Product و Project.
+     *
+     * ── چرا public است و نه protected ──
+     * `PublishingService` باید بداند آیا ستون `status` این مدل
+     * **وضعیت انتشار** است یا **چرخه‌ی دامنه**. بدون این تشخیص،
+     * نوشتن `status = 'published'` روی Project یک `ValueError` می‌دهد
+     * (چون `published` در `ProjectStatus` وجود ندارد) و دکمه‌ی
+     * انتشار پنل برای پروژه‌ها می‌شکند. پس این قرارداد باید از بیرون
+     * قابل پرسیدن باشد.
      */
-    protected function publicationStatusColumn(): ?string
+    public function publicationStatusColumn(): ?string
     {
         return 'status';
     }
 
     /** آیا این مدل ستون `visibility` دارد؟ */
-    protected function hasVisibilityColumn(): bool
+    public function hasVisibilityColumn(): bool
     {
         return true;
     }
 
     /** آیا این مدل ستون `published_at` دارد؟ */
-    protected function hasPublishedAtColumn(): bool
+    public function hasPublishedAtColumn(): bool
     {
         return true;
     }

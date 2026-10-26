@@ -42,7 +42,7 @@ class PublishingService
         return DB::transaction(function () use ($model, $at): Model {
             $attributes = [];
 
-            if ($this->hasColumn($model, 'status')) {
+            if ($this->hasPublicationStatus($model)) {
                 $attributes['status'] = PublicationStatus::Published->value;
             }
 
@@ -72,11 +72,12 @@ class PublishingService
         $this->assertPublishable($model);
 
         return DB::transaction(function () use ($model): Model {
-            if ($this->hasColumn($model, 'status')) {
+            if ($this->hasPublicationStatus($model)) {
                 $model->forceFill(['status' => PublicationStatus::Draft->value])->save();
             } else {
-                // مدل‌هایی که ستون status ندارند (Product/Project) با
-                // پاک‌کردن published_at از دید عمومی خارج می‌شوند.
+                // مدل‌هایی که وضعیت انتشار ندارند (Product/Project:
+                // ستون `status` آن‌ها چرخه‌ی دامنه است) با پاک‌کردن
+                // `published_at` از دید عمومی خارج می‌شوند.
                 $model->forceFill(['published_at' => null])->save();
             }
 
@@ -89,14 +90,23 @@ class PublishingService
     /**
      * آرشیو — محتوا از مسیرهای عمومی حذف می‌شود ولی تاریخچه می‌ماند.
      * Blueprint:91: آرشیو حذف نیست.
+     *
+     * توجه: برای Product/Project که وضعیت انتشار ندارند، «آرشیو» یعنی
+     * پایان نمایش عمومی — و چون ستون `status` آن‌ها معنای دیگری دارد،
+     * فقط `published_at` پاک می‌شود. اینجا نمی‌توانیم مقدار دامنه را
+     * به `archived` ببریم چون در ProjectStatus وجود دارد ولی در
+     * ProductStatus هم معنای «متوقف» می‌دهد نه «آرشیو انتشار»؛ تغییر
+     * آن، وضعیت دامنه‌ی واقعی محصول را جعل می‌کند.
      */
     public function archive(Model $model): Model
     {
         $this->assertPublishable($model);
 
         return DB::transaction(function () use ($model): Model {
-            if ($this->hasColumn($model, 'status')) {
+            if ($this->hasPublicationStatus($model)) {
                 $model->forceFill(['status' => PublicationStatus::Archived->value])->save();
+            } elseif ($this->hasColumn($model, 'published_at')) {
+                $model->forceFill(['published_at' => null])->save();
             }
 
             $this->forgetCaches();
@@ -106,19 +116,34 @@ class PublishingService
     }
 
     /**
-     * فهرست محتوایی که زمان انتشارش رسیده ولی هنوز پردازش نشده.
+     * فهرست محتوایی که زمان انتشارش رسیده ولی هنوز منتشر نشده.
      *
      * برای فرمان زمان‌بند `contents:publish-scheduled`.
+     *
+     * منطق: محتوایی که `published_at` آن رسیده ولی از دید عمومی
+     * پنهان است. برای مدل‌هایی با وضعیت انتشار، شرط `status = draft`
+     * هم لازم است؛ برای Product/Project فقط نبود نمایش کافی است.
      *
      * @return Collection<int, Model>
      */
     public function dueForScheduledPublishing(string $modelClass): Collection
     {
-        return $modelClass::query()
-            ->where('status', PublicationStatus::Draft->value)
+        /** @var Model $probe */
+        $probe = new $modelClass;
+
+        $query = $modelClass::query()
             ->whereNotNull('published_at')
-            ->where('published_at', '<=', now())
-            ->get();
+            ->where('published_at', '<=', now());
+
+        if ($this->hasPublicationStatus($probe)) {
+            $query->where('status', PublicationStatus::Draft->value);
+        } else {
+            // بدون وضعیت انتشار: «منتشر نشده» یعنی هنوز نمایش داده نمی‌شود.
+            // برای این مدل‌ها، رسیدن زمان یعنی باید نشان داده شود، پس
+            // هیچ شرط اضافه‌ای لازم نیست.
+        }
+
+        return $query->get();
     }
 
     private function assertPublishable(Model $model): void
@@ -128,6 +153,37 @@ class PublishingService
                 'مدل '.$model::class.' از Concern انتشار استفاده نمی‌کند و قابل انتشار نیست.'
             );
         }
+    }
+
+    /**
+     * آیا ستون `status` این مدل **وضعیت انتشار** است، نه چرخه‌ی دامنه؟
+     *
+     * ── چرا این تشخیص لازم است ──
+     * هر دو نوع مدل ستونی به نام `status` دارند، ولی معنایشان فرق
+     * دارد: در Note/Company/TimelineEvent مقدارش `draft|published|
+     * archived` است؛ در Project/Product مقدارش چرخه‌ی دامنه است
+     * (`idea|in_progress|completed` و `idea|beta|live`).
+     *
+     * اگر فقط وجود ستون را چک کنیم (نسخه‌ی اولِ این کد همین کار را
+     * می‌کرد)، نوشتن `status = 'published'` روی Project یک
+     * `ValueError` می‌دهد چون آن مقدار در `ProjectStatus` وجود ندارد —
+     * یعنی دکمه‌ی انتشار پنل برای پروژه‌ها خطا می‌داد.
+     *
+     * تشخیص درست: از خودِ مدل بپرس. متد `publicationStatusColumn()`
+     * در Concern `Publishable` دقیقاً برای همین تعریف شده و
+     * Product/Project مقدار `null` برمی‌گردانند.
+     */
+    private function hasPublicationStatus(Model $model): bool
+    {
+        if (! method_exists($model, 'publicationStatusColumn')) {
+            return false;
+        }
+
+        if ($model->publicationStatusColumn() === null) {
+            return false;
+        }
+
+        return $this->hasColumn($model, 'status');
     }
 
     private function hasColumn(Model $model, string $column): bool

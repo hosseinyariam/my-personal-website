@@ -71,7 +71,7 @@ class Product extends Model
      * یک محصول «فعال» لزوماً نباید روی سایت نمایش داده شود؛ انتشار
      * فقط با `published_at` تعیین می‌شود.
      */
-    protected function publicationStatusColumn(): ?string
+    public function publicationStatusColumn(): ?string
     {
         return null;
     }

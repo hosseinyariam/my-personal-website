@@ -83,7 +83,7 @@ class Project extends Model
      * `status` چرخه‌ی دامنه است، پس معیار انتشار نیست.
      * انتشار اینجا فقط با `published_at` تعیین می‌شود.
      */
-    protected function publicationStatusColumn(): ?string
+    public function publicationStatusColumn(): ?string
     {
         return null;
     }

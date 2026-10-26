@@ -32,5 +32,19 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+
+        <!--
+            فهرست مجاز پنل در تست.
+
+            بدون این مقدار، `app.admin_emails` خالی می‌ماند و کاربر
+            تستی که تست‌ها می‌سازند هرگز مجاز به ورود به پنل نمی‌شود
+            (چون رفتار عمدی «شکست امن» است). نتیجه: تست‌های دسترسی
+            پنل و فرمان `site:health` به‌دلیل نبود مدیر، مشکل بحرانی
+            گزارش می‌کنند در حالی که کد سالم است.
+
+            توجه: این مقدار فقط برای محیط تست است و هیچ اثری روی
+            تولید ندارد — `ADMIN_EMAIL` واقعی از `.env` هاست می‌آید.
+        -->
+        <env name="ADMIN_EMAIL" value="admin@hosseinyariam.test"/>
     </php>
 </phpunit>
