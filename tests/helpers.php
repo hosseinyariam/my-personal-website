@@ -16,6 +16,7 @@ use App\Models\Project;
 use App\Models\Skill;
 use App\Models\Technology;
 use App\Models\TimelineEvent;
+use App\Models\User;
 
 /**
  * ساخت داده‌ی واقعی برای تست صفحات.
@@ -33,7 +34,7 @@ function seedPublicSite(): void
     //
     // توجه: این یک کاربر تست است، نه seed تولید. روی هاست، مدیر
     // واقعی از `ProductionSeeder` و فقط از متغیرهای محیطی ساخته می‌شود.
-    \App\Models\User::firstOrCreate(
+    User::firstOrCreate(
         ['email' => 'admin@hosseinyariam.test'],
         [
             'name' => 'مدیر تست',

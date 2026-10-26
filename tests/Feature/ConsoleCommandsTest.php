@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Models\Company;
 use App\Models\ContactMessage;
 use App\Models\Note;
+use App\Models\Product;
+use App\Models\Profile;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 
@@ -17,7 +19,6 @@ use Illuminate\Support\Facades\Cache;
  * نمی‌شود تا وقتی که مدیر ببیند محتوای زمان‌بندی‌شده‌اش منتشر نشده
  * یا دیتابیس پر از اسپم شده. این تست‌ها همان سکوت را می‌شکنند.
  */
-
 beforeEach(function (): void {
     seedPublicSite();
     Cache::flush();
@@ -88,7 +89,7 @@ it('فرمان زمان‌بند روی محصول و پروژه خطا نمی�
     // این دو وضعیت انتشار ندارند (تصمیم D17). فرمان نباید آن‌ها را
     // پردازش کند و نباید ValueError بدهد.
     Project::query()->update(['published_at' => now()->subDay()]);
-    \App\Models\Product::query()->update(['published_at' => now()->subDay()]);
+    Product::query()->update(['published_at' => now()->subDay()]);
 
     $this->artisan('contents:publish-scheduled')->assertSuccessful();
 });
@@ -189,7 +190,7 @@ it('فرمان سلامت خروجی JSON معتبر می‌دهد', function ()
 });
 
 it('فرمان سلامت نبود پروفایل را هشدار می‌دهد نه خطای بحرانی', function (): void {
-    \App\Models\Profile::query()->delete();
+    Profile::query()->delete();
 
     // صفحه‌ی راه‌اندازی نمایش داده می‌شود، پس این بحرانی نیست
     $this->artisan('site:health')
@@ -207,7 +208,7 @@ it('فرمان ساخت کاربر مدیر رمز کوتاه را رد می‌�
         ->expectsQuestion('رمز عبور (هنگام تایپ نمایش داده نمی‌شود)', 'short')
         ->assertFailed();
 
-    expect(\App\Models\User::query()->where('email', 'new@example.com')->exists())->toBeFalse();
+    expect(User::query()->where('email', 'new@example.com')->exists())->toBeFalse();
 });
 
 it('فرمان ساخت کاربر مدیر ایمیل نامعتبر را رد می‌کند', function (): void {

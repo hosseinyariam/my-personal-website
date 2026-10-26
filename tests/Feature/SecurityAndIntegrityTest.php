@@ -3,23 +3,25 @@
 declare(strict_types=1);
 
 use App\Enums\CurrentFocusType;
+use App\Enums\ProjectStatus;
 use App\Enums\PublicationStatus;
-use App\Models\Category;
+use App\Enums\SettingType;
 use App\Models\Company;
 use App\Models\CurrentFocus;
+use App\Models\Experience;
 use App\Models\Media;
 use App\Models\Module;
 use App\Models\Note;
 use App\Models\Product;
 use App\Models\Project;
-use App\Models\Setting;
-use App\Models\Tag;
-use App\Models\TimelineEvent;
+use App\Models\SeoMetadata;
 use App\Models\User;
 use App\Services\Ai\SsrfGuard;
 use App\Services\ContactService;
+use App\Services\MediaService;
 use App\Services\PublishingService;
 use App\Services\SettingService;
+use App\Support\CacheKeys;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
@@ -115,7 +117,7 @@ it('وضعیت دامنه پروژه معیار انتشار نیست', function
         'published_at' => null,
     ]);
 
-    expect($completed->status)->toBe(\App\Enums\ProjectStatus::Completed)
+    expect($completed->status)->toBe(ProjectStatus::Completed)
         ->and($completed->isViewable())->toBeFalse();
 
     // و برعکس: پروژه‌ی «در حال ساخت» که منتشر شده — باید دیده شود
@@ -256,8 +258,8 @@ it('SettingService ذخیره‌ی کلید حساس را رد می‌کند', f
 it('SettingService تنظیم عادی را می‌پذیرد و با نوع درست برمی‌گرداند', function (): void {
     $service = app(SettingService::class);
 
-    $service->set('site.test_flag', true, \App\Enums\SettingType::Boolean, 'general', false);
-    $service->set('site.test_count', 42, \App\Enums\SettingType::Integer, 'general', false);
+    $service->set('site.test_flag', true, SettingType::Boolean, 'general', false);
+    $service->set('site.test_count', 42, SettingType::Integer, 'general', false);
 
     expect($service->get('site.test_flag'))->toBeTrue()
         ->and($service->get('site.test_count'))->toBe(42);
@@ -278,7 +280,7 @@ it('حذف پروژه محتوای مرتبط را cascade نمی‌کند', fun
 });
 
 it('حذف شرکت سابقه کاری را پاک نمی‌کند بلکه ارجاع را خالی می‌گذارد', function (): void {
-    $experience = \App\Models\Experience::query()->firstOrFail();
+    $experience = Experience::query()->firstOrFail();
     $company = Company::query()->firstOrFail();
 
     expect($experience->company_id)->toBe($company->getKey());
@@ -286,7 +288,7 @@ it('حذف شرکت سابقه کاری را پاک نمی‌کند بلکه ا�
     $company->forceDelete();
 
     $experience->refresh();
-    expect(\App\Models\Experience::query()->whereKey($experience->getKey())->exists())->toBeTrue()
+    expect(Experience::query()->whereKey($experience->getKey())->exists())->toBeTrue()
         ->and($experience->company_id)->toBeNull();
 });
 
@@ -298,7 +300,7 @@ it('حذف موجودیت، ردیف SEO یتیم باقی نمی‌گذارد',
 
     $project->forceDelete();
 
-    expect(\App\Models\SeoMetadata::query()
+    expect(SeoMetadata::query()
         ->where('seoable_type', $project->getMorphClass())
         ->where('seoable_id', $project->getKey())
         ->exists())->toBeFalse();
@@ -373,7 +375,7 @@ it('خاموش کردن ماژول کش را باطل می‌کند', function (
 
     Module::query()->where('key', 'projects')->update(['is_enabled' => false]);
     // مدل در `saved` کش را باطل می‌کند؛ اینجا update مستقیم است پس دستی باطل می‌کنیم
-    Cache::forget(\App\Support\CacheKeys::moduleEnabled('projects'));
+    Cache::forget(CacheKeys::moduleEnabled('projects'));
 
     expect(Module::isEnabled('projects'))->toBeFalse();
 });
@@ -381,7 +383,7 @@ it('خاموش کردن ماژول کش را باطل می‌کند', function (
 it('نبود رکورد ماژول یعنی روشن، نه خاموش', function (): void {
     // اگر seed اجرا نشده باشد، سایت نباید همه‌ی صفحاتش را ۴۰۴ کند
     Module::query()->where('key', 'notes')->delete();
-    Cache::forget(\App\Support\CacheKeys::moduleEnabled('notes'));
+    Cache::forget(CacheKeys::moduleEnabled('notes'));
 
     expect(Module::isEnabled('notes'))->toBeTrue();
     $this->get('/notes')->assertOk();
@@ -432,14 +434,14 @@ it('رسانه‌ی مشترک قابل حذف مستقیم نیست', function 
     ]);
 
     // وصل به دو موجودیت
-    app(\App\Services\MediaService::class)->attach($media, $project);
-    app(\App\Services\MediaService::class)->attach($media, $note);
+    app(MediaService::class)->attach($media, $project);
+    app(MediaService::class)->attach($media, $note);
 
     expect($media->usageCount())->toBe(2)
         ->and($media->isShared())->toBeTrue();
 
     // حذف بدون force باید استثنا بدهد — جلوگیری از شکستن محتوای دیگر
-    expect(fn () => app(\App\Services\MediaService::class)->delete($media))
+    expect(fn () => app(MediaService::class)->delete($media))
         ->toThrow(RuntimeException::class);
 });
 

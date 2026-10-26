@@ -1,59 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# hosseinyariam.ir
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+وب‌سایت شخصی و زیرساخت هویت حرفه‌ای — پیاده‌سازی ۱۱ سند استراتژی، معماری و طراحی.
 
-## About Laravel
+> **اصل حاکم:** محتوا از پنل می‌آید، نه از کد. برای تغییر هر متن، تصویر یا
+> افزودن پروژه‌ی جدید نیازی به استقرار مجدد نیست.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ماهیت محصول
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+این سایت یک **Professional Identity Hub** است، نه رزومه، نه Portfolio،
+نه وبلاگ و نه سایت یک محصول. هدف: وقتی کسی نام «حسین یاریم» را جست‌وجو
+می‌کند، بفهمد او کیست، چه ساخته و چگونه به مسائل نگاه می‌کند.
 
-## Learning Laravel
+```
+مسائل واقعی را به راهکارهای فناورانه و محصولات کاربردی تبدیل می‌کنم.
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## استک
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| لایه | فناوری |
+|---|---|
+| بک‌اند | PHP 8.3 · Laravel 12.70 |
+| پنل مدیریت | Filament 3.3 (۲۳ منبع) |
+| فرانت‌اند | Blade · Tailwind CSS 4 · جاوااسکریپت وانیلا (بدون SPA) |
+| Asset | Vite 7 |
+| دیتابیس | MySQL 8 / MariaDB 10.6+ · `utf8mb4_unicode_ci` |
+| تست | Pest 3.8 · ۹۰ تست |
+| میزبانی | هاست اشتراکی cPanel — بدون worker، صف sync، کش database |
+| فونت | وزیرمتن متغیر، **خودمیزبان** |
 
-## Laravel Sponsors
+**بدون** React، Vue، Next.js، Docker، Redis، Elasticsearch — طبق منع صریح مستندات.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## راه‌اندازی محلی
 
-### Premium Partners
+```bash
+composer install
+npm install
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+cp .env.example .env
+php artisan key:generate
 
-## Contributing
+# دیتابیس محلی SQLite کافی است
+php artisan migrate --seed     # در محیط local، DemoSeeder هم اجرا می‌شود
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+npm run build                  # یا: npm run dev
+php artisan serve
+```
 
-## Code of Conduct
+سپس `http://localhost:8000`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**برای ورود به پنل**، در `.env` این‌ها را پر کنید:
 
-## Security Vulnerabilities
+```dotenv
+ADMIN_EMAIL=you@example.com
+ADMIN_PASSWORD=یک-رمز-قوی-حداقل-۱۲-کاراکتر
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+سپس:
 
-## License
+```bash
+php artisan db:seed --force      # کاربر مدیر از همین دو متغیر ساخته می‌شود
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+`ADMIN_EMAIL` هم سازنده‌ی کاربر است و هم **فهرست مجاز ورود به `/admin`**.
+اگر خالی باشد، هیچ‌کس نمی‌تواند وارد پنل شود — این رفتار عمدی «شکست امن»
+است، نه باگ.
+
+## ساختار مسیرها
+
+### عمومی
+
+| مسیر | نقش |
+|---|---|
+| `/` | صفحه اصلی — «Living Profile» |
+| `/biography` | پرونده‌ی حرفه‌ای (نه رزومه) |
+| `/projects` · `/projects/{slug}` | فهرست و پرونده‌ی پروژه |
+| `/products` · `/products/{slug}` | فهرست و جزئیات محصول |
+| `/companies` · `/companies/{slug}` | شرکت‌ها |
+| `/notes` · `/notes/{slug}` | یادداشت‌ها و مقالات |
+| `/journey` | خط زمان حرفه‌ای (Curated) |
+| `/contact` | کانال‌های ارتباط + فرم امن |
+| `/search` | جست‌وجوی داخلی (`noindex`) |
+| `/feed` · `/sitemap.xml` · `/robots.txt` | خروجی‌های SEO |
+
+هر مسیر متعلق به یک **ماژول** است و با middleware `module:` محافظت
+می‌شود. ماژول خاموش = ۴۰۴ صریح. خاموش‌کردن ماژول **داده را حذف نمی‌کند**.
+
+### پنل مدیریت `/admin`
+
+گروه‌بندی منطبق بر CMS Blueprint §3: هویت · نمونه‌کار · محتوا · مسیر ·
+نمایش · رسانه · تنظیمات.
+
+## تصمیم‌های کلیدی معماری
+
+این‌ها جاهایی هستند که مستندات متناقض بودند و تصمیم مستند گرفته شد
+(۱۷ تصمیم در `docs/implementation/01-discovery-and-decisions.md`):
+
+| موضوع | تصمیم |
+|---|---|
+| وضعیت انتشار و وضعیت دامنه | دو مفهوم جدا. `Note`/`Company` وضعیت انتشار دارند؛ `Project`/`Product` وضعیت دامنه دارند و انتشارشان با `published_at` + `visibility` سنجیده می‌شود |
+| اسلاگ فارسی | **حفظ حروف فارسی**، نه نویسه‌گردانی. `Str::slug` متن فارسی را به ناخوانا تبدیل می‌کند که برای SEO بی‌ارزش است |
+| انتشار | **fail-closed**: محتوای بدون `published_at` منتشرشده نیست، حتی اگر وضعیتش `published` باشد |
+| جدایی موجودیت‌ها | `Project ≠ Product ≠ Company` — رابطه‌شان چند‌به‌چند است و حذف یکی، دیگری را پاک نمی‌کند |
+| یکپارچگی چندریختی | Observer ردیف‌های `seo_metadata` و `media_attachments` یتیم را پاک می‌کند |
+| وابستگی خارجی | صفر. فونت خودمیزبان، آواتار محلی، بدون CDN |
+
+## تست
+
+```bash
+php artisan test            # یا: vendor/bin/pest
+php vendor/bin/pint --test  # سبک کد
+```
+
+| فایل | پوشش |
+|---|---|
+| `Feature/PublicPagesTest.php` | رندر واقعی هر صفحه با بررسی محتوا (نه فقط status) |
+| `Feature/SecurityAndIntegrityTest.php` | کنترل دسترسی، SSRF، یکپارچگی داده، اسلاگ |
+| `Feature/ConsoleCommandsTest.php` | فرمان‌های زمان‌بند و سلامت |
+
+> **فلسفه‌ی تست:** صفحه‌ی خالی هم ۲۰۰ برمی‌گرداند. تست‌ها محتوای
+> رندرشده را بررسی می‌کنند، نه فقط کد وضعیت.
+
+## فرمان‌های مفید
+
+```bash
+php artisan site:health                 # smoke test — پیش و پس از استقرار
+php artisan site:health --json          # خروجی JSON برای پایش
+php artisan contents:publish-scheduled  # انتشار محتوای زمان‌بندی‌شده
+php artisan contact:prune-spam          # پاک‌سازی اسپم قدیمی
+php artisan admin:create-user           # ساخت کاربر مدیر با رمز امن
+```
+
+## مستندات
+
+### اسناد مرجع پروژه (`docs/`)
+
+یازده سند استراتژی، معماری، دیتابیس و طراحی که پیاده‌سازی از آن‌ها استخراج شده.
+
+### اسناد تصمیم و اجرا (`docs/implementation/`)
+
+| سند | محتوا |
+|---|---|
+| [`01-discovery-and-decisions.md`](docs/implementation/01-discovery-and-decisions.md) | ممیزی محیط، ۱۷ تصمیم ثبت‌شده، حل تناقض‌های مستندات |
+| [`02-technical-baseline.md`](docs/implementation/02-technical-baseline.md) | Baseline قفل‌شده: مدل دامنه، جدول مسیرها، سیاست امنیت |
+| [`07-qa-report.md`](docs/implementation/07-qa-report.md) | گزارش QA، ۱۶ باگ اصلاح‌شده، ممیزی امنیت/SEO/دسترس‌پذیری |
+| [`08-deployment-plan.md`](docs/implementation/08-deployment-plan.md) | برنامه‌ی کامل استقرار روی cPanel + Rollback |
+
+## اصول غیرقابل‌مذاکره
+
+1. **Evidence Over Claims** — هیچ مهارت، دستاورد یا آماری بدون شاهد واقعی منتشر نمی‌شود.
+2. **بدون محتوای ساختگی** — محتوای نمایشی فقط در `DemoSeeder` است و در تولید مسدود می‌شود.
+3. **Identity First** — صفحه اصلی در ۳۰ ثانیه به «من کیستم / چه ساخته‌ام / الان روی چه کار می‌کنم» پاسخ می‌دهد.
+4. **شکست امن** — نبود پیکربندی، دسترسی را باز نمی‌کند؛ می‌بندد.
+5. **RTL واقعی** — ویژگی‌های منطقی CSS، نه `text-align: right`.
+6. **محتوا از پنل** — تغییر محتوا نیازمند دیپلوی نیست.
+7. **صفر وابستگی خارجی** — فونت، آواتار و دارایی‌ها محلی‌اند.
