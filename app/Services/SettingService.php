@@ -106,6 +106,29 @@ class SettingService
     }
 
     /**
+     * آیا این کلید برای ذخیره در جدول تنظیمات امن است؟
+     *
+     * چرا این متد عمومی است: پنل باید بتواند **قبل از** تلاش برای
+     * ذخیره، اعتبارسنجی کند و پیام خطای فرم فارسی نشان دهد. بدون آن،
+     * `set()` استثنا پرتاب می‌کند و کاربر یک خطای ۵۰۰ می‌بیند — که
+     * تجربه‌ی بدی است برای ورودی‌ای که کاملاً قابل پیش‌بینی است.
+     * منطق در یک جا می‌ماند (`assertKeyIsSafe` هم از همین الگوها
+     * استفاده می‌کند) تا دو منبع حقیقت نسازیم.
+     */
+    public function isKeySafe(string $key): bool
+    {
+        $lower = mb_strtolower($key);
+
+        foreach (self::FORBIDDEN_KEY_PATTERNS as $pattern) {
+            if (str_contains($lower, $pattern)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * @throws \InvalidArgumentException
      */
     private function assertKeyIsSafe(string $key): void

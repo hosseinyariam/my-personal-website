@@ -12,6 +12,7 @@ use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\Publishable;
 use App\Support\Persian;
 use App\Support\Slugger;
+use Database\Factories\NoteFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Note extends Model
 {
-    /** @use HasFactory<\Database\Factories\NoteFactory> */
+    /** @use HasFactory<NoteFactory> */
     use HasFactory;
 
     use HasMedia;

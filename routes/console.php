@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schedule;
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Schedule;
 RateLimiter::for('contact-submissions', function (Request $request): Limit {
     return Limit::perHour(5)
         ->by($request->ip())
-        ->response(fn (): \Illuminate\Contracts\View\View => view('errors.429', [
+        ->response(fn (): View => view('errors.429', [
             'message' => 'تعداد پیام‌های ارسالی شما بیش از حد مجاز است. لطفاً یک ساعت دیگر تلاش کنید.',
         ]));
 });

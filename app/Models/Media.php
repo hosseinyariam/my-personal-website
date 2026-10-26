@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Persian;
+use Database\Factories\MediaFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,7 +24,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Media extends Model
 {
-    /** @use HasFactory<\Database\Factories\MediaFactory> */
+    /** @use HasFactory<MediaFactory> */
     use HasFactory;
 
     protected $table = 'media';
@@ -98,8 +100,8 @@ class Media extends Model
         }
 
         $formatted = $unit === 0
-            ? \App\Support\Persian::digits((string) (int) $size)
-            : \App\Support\Persian::digits(number_format($size, 1));
+            ? Persian::digits((string) (int) $size)
+            : Persian::digits(number_format($size, 1));
 
         return $formatted.' '.$units[$unit];
     }

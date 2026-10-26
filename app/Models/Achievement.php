@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\PublicationStatus;
 use App\Support\Persian;
+use Database\Factories\AchievementFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Achievement extends Model
 {
-    /** @use HasFactory<\Database\Factories\AchievementFactory> */
+    /** @use HasFactory<AchievementFactory> */
     use HasFactory;
 
     protected $fillable = [

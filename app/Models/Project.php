@@ -10,6 +10,7 @@ use App\Models\Concerns\HasMedia;
 use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\Publishable;
 use App\Support\Slugger;
+use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,7 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Project extends Model
 {
-    /** @use HasFactory<\Database\Factories\ProjectFactory> */
+    /** @use HasFactory<ProjectFactory> */
     use HasFactory;
 
     use HasMedia;

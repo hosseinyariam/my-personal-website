@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\PublicationStatus;
 use App\Support\Persian;
+use Database\Factories\CertificateFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Certificate extends Model
 {
-    /** @use HasFactory<\Database\Factories\CertificateFactory> */
+    /** @use HasFactory<CertificateFactory> */
     use HasFactory;
 
     protected $fillable = [

@@ -9,6 +9,7 @@ use App\Enums\TimelineEventType;
 use App\Enums\Visibility;
 use App\Models\Concerns\Publishable;
 use App\Support\Persian;
+use Database\Factories\TimelineEventFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,7 +28,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class TimelineEvent extends Model
 {
-    /** @use HasFactory<\Database\Factories\TimelineEventFactory> */
+    /** @use HasFactory<TimelineEventFactory> */
     use HasFactory;
 
     use Publishable;

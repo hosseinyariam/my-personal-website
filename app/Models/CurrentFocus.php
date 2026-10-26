@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\CurrentFocusStatus;
 use App\Enums\CurrentFocusType;
+use Database\Factories\CurrentFocusFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class CurrentFocus extends Model
 {
-    /** @use HasFactory<\Database\Factories\CurrentFocusFactory> */
+    /** @use HasFactory<CurrentFocusFactory> */
     use HasFactory;
 
     /**

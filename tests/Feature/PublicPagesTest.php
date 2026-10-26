@@ -6,7 +6,9 @@ use App\Models\Company;
 use App\Models\Module;
 use App\Models\Note;
 use App\Models\Product;
+use App\Models\Profile;
 use App\Models\Project;
+use App\Models\Skill;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -17,7 +19,6 @@ use Illuminate\Support\Facades\Cache;
  * نیست؛ اینجا بررسی می‌شود که محتوای واقعی در HTML هست. این همان
  * الزام دستورالعمل است: «صرفاً سبز بودن تست‌ها کافی نیست».
  */
-
 beforeEach(function (): void {
     seedPublicSite();
     Cache::flush(); // کش ماژول و صفحه اصلی باید خالی باشد تا داده‌ی تازه خوانده شود
@@ -68,7 +69,7 @@ it('مهارت فقط با شاهد واقعی نمایش داده می‌شود
     $this->get('/biography')->assertOk()->assertSee('معماری نرم‌افزار');
 
     // مهارت بدون هیچ پروژه — نباید نمایش داده شود
-    \App\Models\Skill::create(['name' => 'مهارت-بی-شاهد-یکتا']);
+    Skill::create(['name' => 'مهارت-بی-شاهد-یکتا']);
 
     $this->get('/biography')->assertOk()->assertDontSee('مهارت-بی-شاهد-یکتا');
 });
@@ -82,7 +83,7 @@ it('مهارت پروژه منتشرنشده را به عنوان شاهد نم�
         'published_at' => null, // کلید ماجرا
     ]);
 
-    $skill = \App\Models\Skill::create(['name' => 'مهارت-فقط-در-پیش‌نویس']);
+    $skill = Skill::create(['name' => 'مهارت-فقط-در-پیش‌نویس']);
     $project->skills()->attach($skill->id);
 
     $this->get('/biography')->assertOk()->assertDontSee('مهارت-فقط-در-پیش‌نویس');
@@ -278,7 +279,7 @@ it('sitemap فقط محتوای عمومی را فهرست می‌کند', funct
 it('sitemap xml معتبر و ساختار درست دارد', function (): void {
     $content = $this->get('/sitemap.xml')->getContent();
 
-    $doc = new DOMDocument();
+    $doc = new DOMDocument;
 
     expect($doc->loadXML($content))->toBeTrue();
 
@@ -300,7 +301,7 @@ it('robots.txt پنل را مسدود می‌کند', function (): void {
 it('خوراک RSS معتبر است', function (): void {
     $content = $this->get('/feed')->getContent();
 
-    $doc = new DOMDocument();
+    $doc = new DOMDocument;
     expect($doc->loadXML($content))->toBeTrue();
 
     $this->get('/feed')
@@ -332,7 +333,7 @@ it('صفحه جست‌وجو noindex است', function (): void {
 // ── حالت خالی ──
 
 it('حالت بدون پروفایل صفحه راه‌اندازی نشان می‌دهد نه خطا', function (): void {
-    \App\Models\Profile::query()->delete();
+    Profile::query()->delete();
     Cache::flush();
 
     $this->get('/')

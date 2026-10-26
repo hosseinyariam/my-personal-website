@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\PublicationStatus;
 use App\Support\Persian;
+use Database\Factories\EducationFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Education extends Model
 {
-    /** @use HasFactory<\Database\Factories\EducationFactory> */
+    /** @use HasFactory<EducationFactory> */
     use HasFactory;
 
     protected $table = 'education';

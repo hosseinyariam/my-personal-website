@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\CurrentFocus;
 use App\Models\HomepageSection;
+use App\Models\Module;
 use App\Models\Note;
 use App\Models\Product;
 use App\Models\Profile;
@@ -94,7 +95,7 @@ class HomepageService
                     return true;
                 }
 
-                return \App\Models\Module::isEnabled((string) $section->module_key);
+                return Module::isEnabled((string) $section->module_key);
             })
             ->values();
     }

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\ContactChannelType;
 use App\Enums\ContactPurpose;
+use Database\Factories\ContactChannelFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ContactChannel extends Model
 {
-    /** @use HasFactory<\Database\Factories\ContactChannelFactory> */
+    /** @use HasFactory<ContactChannelFactory> */
     use HasFactory;
 
     protected $fillable = [

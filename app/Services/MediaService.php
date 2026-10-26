@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Media;
 use App\Models\MediaAttachment;
+use App\Support\Persian;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -159,7 +160,7 @@ class MediaService
         }
 
         if ($file->getSize() > self::MAX_SIZE_KB * 1024) {
-            $max = \App\Support\Persian::digits((string) (self::MAX_SIZE_KB / 1024));
+            $max = Persian::digits((string) (self::MAX_SIZE_KB / 1024));
 
             throw new \InvalidArgumentException("حجم فایل بیشتر از {$max} مگابایت است.");
         }

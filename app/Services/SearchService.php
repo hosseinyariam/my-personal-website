@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Module;
 use App\Models\Note;
 use App\Models\Product;
 use App\Models\Project;
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Persian;
 use Illuminate\Support\Collection;
 
 /**
@@ -82,7 +83,7 @@ class SearchService
      */
     private function searchProjects(string $term): Collection
     {
-        if (! \App\Models\Module::isEnabled('projects')) {
+        if (! Module::isEnabled('projects')) {
             return collect();
         }
 
@@ -99,7 +100,7 @@ class SearchService
                 'type' => 'project',
                 'label' => 'پروژه',
                 'title' => (string) $p->title,
-                'excerpt' => \App\Support\Persian::excerpt($p->summary, 140),
+                'excerpt' => Persian::excerpt($p->summary, 140),
                 'url' => route('projects.show', $p),
             ]);
     }
@@ -109,7 +110,7 @@ class SearchService
      */
     private function searchProducts(string $term): Collection
     {
-        if (! \App\Models\Module::isEnabled('products')) {
+        if (! Module::isEnabled('products')) {
             return collect();
         }
 
@@ -126,7 +127,7 @@ class SearchService
                 'type' => 'product',
                 'label' => 'محصول',
                 'title' => (string) $p->name,
-                'excerpt' => \App\Support\Persian::excerpt($p->summary, 140),
+                'excerpt' => Persian::excerpt($p->summary, 140),
                 'url' => route('products.show', $p),
             ]);
     }
@@ -136,7 +137,7 @@ class SearchService
      */
     private function searchNotes(string $term): Collection
     {
-        if (! \App\Models\Module::isEnabled('notes')) {
+        if (! Module::isEnabled('notes')) {
             return collect();
         }
 
@@ -153,7 +154,7 @@ class SearchService
                 'type' => 'note',
                 'label' => 'یادداشت',
                 'title' => (string) $n->title,
-                'excerpt' => \App\Support\Persian::excerpt($n->excerpt ?: $n->body, 140),
+                'excerpt' => Persian::excerpt($n->excerpt ?: $n->body, 140),
                 'url' => route('notes.show', $n),
             ]);
     }
@@ -172,7 +173,7 @@ class SearchService
 
         $term = trim((string) $query);
         $term = str_replace(['ي', 'ك', 'ة', 'ۀ'], ['ی', 'ک', 'ه', 'ه'], $term);
-        $term = \App\Support\Persian::toLatinDigits($term);
+        $term = Persian::toLatinDigits($term);
         // نیم‌فاصله به فاصله — کاربر معمولاً آن را تایپ نمی‌کند
         $term = str_replace("\u{200C}", ' ', $term);
         $term = preg_replace('/\s+/u', ' ', $term) ?? $term;

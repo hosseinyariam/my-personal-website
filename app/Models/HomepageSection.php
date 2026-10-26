@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\CacheKeys;
+use Database\Factories\HomepageSectionFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Cache;
  */
 class HomepageSection extends Model
 {
-    /** @use HasFactory<\Database\Factories\HomepageSectionFactory> */
+    /** @use HasFactory<HomepageSectionFactory> */
     use HasFactory;
 
     /**

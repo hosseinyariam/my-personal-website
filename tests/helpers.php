@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\CurrentFocusType;
 use App\Models\Company;
 use App\Models\ContactChannel;
 use App\Models\CurrentFocus;

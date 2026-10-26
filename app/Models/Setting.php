@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\SettingType;
 use App\Support\CacheKeys;
+use Database\Factories\SettingFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Cache;
  */
 class Setting extends Model
 {
-    /** @use HasFactory<\Database\Factories\SettingFactory> */
+    /** @use HasFactory<SettingFactory> */
     use HasFactory;
 
     protected $fillable = [

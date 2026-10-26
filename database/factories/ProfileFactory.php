@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Profile;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * پروفایل با داده‌ی واقعی آزمایشی.
@@ -11,7 +12,7 @@ use App\Models\Profile;
  * مقادیر نباید روی سایت عمومی بروند — تست‌ها در دیتابیس in-memory
  * اجرا می‌شوند و seed تولید فقط از `ProductionSeeder` می‌آید.
  */
-return new class extends \Illuminate\Database\Eloquent\Factories\Factory
+return new class extends Factory
 {
     protected $model = Profile::class;
 

@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Services\SeoService;
 use Illuminate\Contracts\View\View;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * پروژه‌ها — فهرست و جزئیات.

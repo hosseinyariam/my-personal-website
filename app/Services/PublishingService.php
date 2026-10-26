@@ -9,6 +9,7 @@ use App\Models\Concerns\Publishable;
 use App\Models\Module;
 use App\Support\CacheKeys;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -109,9 +110,9 @@ class PublishingService
      *
      * برای فرمان زمان‌بند `contents:publish-scheduled`.
      *
-     * @return \Illuminate\Support\Collection<int, Model>
+     * @return Collection<int, Model>
      */
-    public function dueForScheduledPublishing(string $modelClass): \Illuminate\Support\Collection
+    public function dueForScheduledPublishing(string $modelClass): Collection
     {
         return $modelClass::query()
             ->where('status', PublicationStatus::Draft->value)

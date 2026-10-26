@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\ModuleKey;
 use App\Support\CacheKeys;
+use Database\Factories\ModuleFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Cache;
  */
 class Module extends Model
 {
-    /** @use HasFactory<\Database\Factories\ModuleFactory> */
+    /** @use HasFactory<ModuleFactory> */
     use HasFactory;
 
     protected $fillable = [

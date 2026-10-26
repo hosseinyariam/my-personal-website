@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
-use App\Models\Profile;
 use App\Services\SeoService;
 use Illuminate\Http\Response;
 

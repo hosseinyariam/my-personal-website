@@ -6,12 +6,13 @@ namespace App\Services;
 
 use App\Models\Concerns\HasSeo;
 use App\Models\ContactChannel;
+use App\Models\Module;
 use App\Models\Note;
 use App\Models\Product;
 use App\Models\Project;
-use App\Support\CacheKeys;
 use App\Support\Persian;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -179,7 +180,7 @@ class SeoService
         ];
 
         foreach ($staticPages as $page) {
-            if ($page['module'] !== null && ! \App\Models\Module::isEnabled($page['module'])) {
+            if ($page['module'] !== null && ! Module::isEnabled($page['module'])) {
                 continue;
             }
 
@@ -241,7 +242,7 @@ class SeoService
     }
 
     /** RSS برای یادداشت‌ها. */
-    public function feedItems(int $limit = 20): \Illuminate\Support\Collection
+    public function feedItems(int $limit = 20): Collection
     {
         return Note::query()
             ->listable()
@@ -254,14 +255,14 @@ class SeoService
     /**
      * کانال‌های عمومی تماس — برای داده‌ی ساختاریافته و فوتر.
      *
-     * @return \Illuminate\Support\Collection<int, ContactChannel>
+     * @return Collection<int, ContactChannel>
      */
-    public function publicContactChannels(): \Illuminate\Support\Collection
+    public function publicContactChannels(): Collection
     {
         return Cache::remember(
             'public.contact_channels',
             now()->addHours(6),
-            fn (): \Illuminate\Support\Collection => ContactChannel::query()
+            fn (): Collection => ContactChannel::query()
                 ->public()
                 ->ordered()
                 ->get()

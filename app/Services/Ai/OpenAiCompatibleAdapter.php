@@ -130,7 +130,7 @@ class OpenAiCompatibleAdapter implements ProviderAdapter
     /**
      * ساخت و اعتبارسنجی آدرس endpoint.
      *
-     * @return string|null  `null` یعنی آدرس نامعتبر است
+     * @return string|null `null` یعنی آدرس نامعتبر است
      */
     private function endpointUrl(): ?string
     {

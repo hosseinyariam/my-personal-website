@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\AiProviderFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AiProvider extends Model
 {
-    /** @use HasFactory<\Database\Factories\AiProviderFactory> */
+    /** @use HasFactory<AiProviderFactory> */
     use HasFactory;
 
     protected $fillable = [
