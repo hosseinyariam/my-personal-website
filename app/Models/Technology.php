@@ -66,11 +66,18 @@ class Technology extends Model
         return $query->orderBy('sort_order')->orderBy('name');
     }
 
-    /** فناوری‌هایی که در یک پروژه‌ی عمومی استفاده شده‌اند. */
+    /**
+     * فناوری‌هایی که در یک پروژه‌ی عمومی استفاده شده‌اند.
+     *
+     * توجه (تصمیم D17): معیار انتشار پروژه `published_at` و
+     * `visibility` است، نه `status` — چون `status` چرخه‌ی دامنه است.
+     */
     public function scopeEvidenced(Builder $query): Builder
     {
         return $query->whereHas('projects', function (Builder $q): void {
-            $q->where('status', 'published')->where('visibility', 'public');
+            $q->whereNotNull('published_at')
+                ->where('published_at', '<=', now())
+                ->where('visibility', 'public');
         });
     }
 }

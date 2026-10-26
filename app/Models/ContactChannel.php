@@ -73,4 +73,36 @@ class ContactChannel extends Model
     {
         return $this->channel_type !== ContactChannelType::Email;
     }
+
+    /**
+     * آدرس قابل استفاده در `href`.
+     *
+     * ── چرا این متد لازم است ──
+     * مقدار `url` برای ایمیل، خودِ آدرس است (`hello@example.com`)، نه
+     * یک URL. اگر مستقیم در `href` گذاشته شود، مرورگر آن را به‌عنوان
+     * مسیر نسبی تفسیر می‌کند و لینک به `/hello@example.com` می‌رود —
+     * لینکی که وجود ندارد. این متد پیشوند `mailto:` را اضافه می‌کند.
+     *
+     * برای تلفن هم همین منطق: `tel:` لازم است.
+     */
+    public function href(): string
+    {
+        $value = trim((string) $this->url);
+
+        // اگر مدیر خودش پیشوند را گذاشته باشد، دوباره اضافه نمی‌کنیم —
+        // جلوگیری از `mailto:mailto:...`
+        if (preg_match('#^(mailto:|tel:|https?://)#i', $value) === 1) {
+            return $value;
+        }
+
+        return match ($this->channel_type) {
+            ContactChannelType::Email => 'mailto:'.$value,
+            ContactChannelType::Phone => 'tel:'.preg_replace('/[^0-9+]/', '', $value),
+            // وب‌سایت و شبکه‌ی اجتماعی بدون پیشوند، URL ناقص‌اند
+            ContactChannelType::Website, ContactChannelType::Social => str_starts_with($value, '//')
+                ? 'https:'.$value
+                : 'https://'.ltrim($value, '/'),
+            default => $value,
+        };
+    }
 }

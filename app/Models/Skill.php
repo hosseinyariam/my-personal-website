@@ -73,11 +73,19 @@ class Skill extends Model
      *
      * در سایت عمومی فقط همین‌ها باید نمایش داده شوند: مهارتی که به هیچ
      * پروژه‌ای وصل نیست، ادعای بی‌شاهد است.
+     *
+     * توجه (تصمیم D17): معیار اینجا `published_at` و `visibility` است،
+     * نه `projects.status`. دلیل: `status` در پروژه چرخه‌ی **دامنه**
+     * است (ایده / در حال ساخت / تکمیل‌شده) و انتشار با `published_at`
+     * سنجیده می‌شود. اگر اینجا `status = 'published'` می‌گذاشتیم،
+     * هیچ مهارتی هرگز نمایش داده نمی‌شد.
      */
     public function scopeEvidenced(Builder $query): Builder
     {
         return $query->whereHas('projects', function (Builder $q): void {
-            $q->where('status', 'published')->where('visibility', 'public');
+            $q->whereNotNull('published_at')
+                ->where('published_at', '<=', now())
+                ->where('visibility', 'public');
         });
     }
 }

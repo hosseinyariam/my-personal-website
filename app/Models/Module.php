@@ -90,9 +90,16 @@ class Module extends Model
         return (bool) Cache::remember(
             CacheKeys::moduleEnabled($keyValue),
             now()->addMinutes(30),
-            fn (): bool => (bool) static::query()
-                ->where('key', $keyValue)
-                ->value('is_enabled') ?? true
+            function () use ($keyValue): bool {
+                $value = static::query()->where('key', $keyValue)->value('is_enabled');
+
+                // مقایسه صریح با null، نه `??` روی نتیجه‌ی cast.
+                // چرا: `(bool) $value ?? true` غلط است چون `(bool)` زودتر
+                // از `??` اعمال می‌شود و null را به false تبدیل می‌کند؛
+                // نتیجه این بود که با نبود رکورد، همه‌ی مسیرهای ماژولی
+                // ۴۰۴ می‌شدند.
+                return $value === null ? true : (bool) $value;
+            }
         );
     }
 

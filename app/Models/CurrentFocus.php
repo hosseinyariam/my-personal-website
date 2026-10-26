@@ -25,6 +25,13 @@ class CurrentFocus extends Model
     /** @use HasFactory<\Database\Factories\CurrentFocusFactory> */
     use HasFactory;
 
+    /**
+     * نام جدول صریح است چون pluralizer لاراول `current_focus` را به
+     * `current_foci` تبدیل می‌کند (جمع لاتین) که با migration ما
+     * (`current_focuses`) نمی‌خواند.
+     */
+    protected $table = 'current_focuses';
+
     protected $fillable = [
         'title',
         'description',

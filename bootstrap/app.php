@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\EnsureModuleEnabled;
+use App\Http\Middleware\NoIndexAdmin;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -19,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // هدرهای امنیتی روی همه‌ی پاسخ‌ها — وب و پنل
         $middleware->append(SecurityHeaders::class);
 
+        // مسیرهای مدیریتی هرگز نباید ایندکس شوند
+        $middleware->append(NoIndexAdmin::class);
+
         // نام مستعار برای محافظت ماژولی در مسیرها
         $middleware->alias([
             'module' => EnsureModuleEnabled::class,
@@ -27,21 +31,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         /*
         | هیچ اطلاعات محیطی نباید در پاسخ خطا لو برود (دستورالعمل بخش ۱۱).
-        | لاراول با APP_DEBUG=false خودش این کار را می‌کند، ولی اینجا
-        | برای درخواست‌های JSON و مسیرهای API صریح می‌کنیم تا خطای
-        | اعتبارسنجی هم پیام ساختاریافته بدهد نه stack trace.
+        | لاراول با APP_DEBUG=false خودش این کار را می‌کند؛ اینجا فقط
+        | برای درخواست‌های JSON صریح می‌کنیم تا پیام ساختاریافته بدهد
+        | نه stack trace.
         */
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request): bool => $request->is('api/*') || $request->expectsJson()
         );
-
-        // مسیرهای پنل هرگز نباید در موتور جست‌وجو ایندکس شوند،
-        // حتی صفحه‌ی ورود که قابل دسترسی عمومی است.
-        $exceptions->respond(function ($response, $exception, Request $request) {
-            if (str_starts_with($request->path(), 'admin')) {
-                $response->headers->set('X-Robots-Tag', 'noindex, nofollow');
-            }
-
-            return $response;
-        });
     })->create();
